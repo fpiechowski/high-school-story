@@ -1,0 +1,27 @@
+﻿package pro.piechowski.highschoolstory.movement
+
+import com.github.quillraven.fleks.Component
+import com.github.quillraven.fleks.ComponentType
+import pro.piechowski.highschoolstory.animation.DirectionAnimations
+
+sealed class MovementAnimation(
+    open val animations: DirectionAnimations,
+) {
+    data class Idle(
+        override val animations: DirectionAnimations,
+    ) : MovementAnimation(animations),
+        Component<Idle> {
+        override fun type(): ComponentType<Idle> = Idle
+
+        companion object : ComponentType<Idle>()
+    }
+
+    data class Walk(
+        override val animations: DirectionAnimations,
+    ) : MovementAnimation(animations),
+        Component<Walk> {
+        override fun type(): ComponentType<Walk> = Walk
+
+        companion object : ComponentType<Walk>()
+    }
+}
