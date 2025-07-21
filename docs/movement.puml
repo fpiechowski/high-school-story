@@ -1,86 +1,95 @@
 ﻿@startuml
-'https://plantuml.com/component-diagram
 
+skinparam roundcorner 15
 skinparam componentStyle rectangle
 
+<style>
+process {
+    BackgroundColor #C5DFEE
+}
+</style>
+
 package "Input" {
-    [Gdx.input]
+    component "Gdx.input" as GdxInput
 }
 
 package Movement {
-    package Movement.Input {
-        [ControllerMovementInputSystem]
-        [MultiplexMovementInputSystem]
-        interface MovementInput.AI
-        interface MovementInput.Controller
-        interface MovementInput.Multiplex
+    package Input as Movement.Input {
+        process ControllerMovementInputSystem
+        process MultiplexMovementInputSystem
+        process AIMovementInputSystem
+        component MovementInput.AI
+        component MovementInput.Controller
+        component MovementInput.Multiplex
     }
 
-    package Movement.FaceDirection {
-        interface FaceDirection
-        [FaceDirectionSystem]
+    package FaceDirection as Movement.FaceDirection {
+        component FaceDirection
+        process FaceDirectionSystem
     }
 
-    package Movement.Velocity{
-        interface Velocity
-        [VelocitySystem]
+    package Velocity as Movement.Velocity {
+        component Velocity
+        process VelocitySystem
     }
 
-    package Movement.Position{
-        interface Position
-        [PositionChangeSystem]
+    package Position as Movement.Position{
+        component Position
+        process PositionChangeSystem
     }
 
-    interface Speed
+    component Speed
 
-    package Movement.Animation {
-        [MovementAnimationSystem]
+    package Animation as Movement.Animation {
+        process MovementAnimationSystem
     }
 }
 
 package Animation {
-    interface CurrentAnimation
-    [SpriteAnimationSystem]
+    component CurrentAnimation
+    process SpriteAnimationSystem
 }
 
 package Sprite {
-    interface CurrentSprite
-    [CurrentSpritePositionSystem]
-    [SpriteRenderingSystem]
+    component CurrentSprite
+    process CurrentSpritePositionSystem
+    process SpriteRenderingSystem
 }
 
-[Gdx.input] --> [ControllerMovementInputSystem]
+GdxInput --> ControllerMovementInputSystem
 
-[ControllerMovementInputSystem] --> MovementInput.Controller
+ControllerMovementInputSystem --> MovementInput.Controller
 
-MovementInput.Controller --> [MultiplexMovementInputSystem]
-MovementInput.AI --> [MultiplexMovementInputSystem]
+MovementInput.Controller --> MultiplexMovementInputSystem
 
-[MultiplexMovementInputSystem] --> MovementInput.Multiplex
+AIMovementInputSystem --> MovementInput.AI
+MovementInput.AI --> MultiplexMovementInputSystem
 
-MovementInput.Multiplex --> [FaceDirectionSystem]
-[FaceDirectionSystem] --> FaceDirection
+MultiplexMovementInputSystem --> MovementInput.Multiplex
 
-FaceDirection --> [MovementAnimationSystem]
-Velocity --> [MovementAnimationSystem]
-[MovementAnimationSystem] --> CurrentAnimation
+MovementInput.Multiplex --> FaceDirectionSystem
+FaceDirectionSystem --> FaceDirection
 
-MovementInput.Multiplex --> [VelocitySystem]
+FaceDirection --> MovementAnimationSystem
+Velocity --> MovementAnimationSystem
+MovementAnimationSystem --> CurrentAnimation
 
-[VelocitySystem] --> Velocity
+MovementInput.Multiplex --> VelocitySystem
 
-Velocity --> [PositionChangeSystem]
-Speed --> [VelocitySystem]
+VelocitySystem --> Velocity
 
-[PositionChangeSystem] --> Position
+Velocity --> PositionChangeSystem
+Speed --> VelocitySystem
 
-Position --> [CurrentSpritePositionSystem]
-[CurrentSpritePositionSystem] --> CurrentSprite: setOriginBasedPosition
+PositionChangeSystem --> Position
 
-CurrentSprite --> [SpriteRenderingSystem]
+Position --> CurrentSpritePositionSystem
+CurrentSpritePositionSystem --> CurrentSprite: setOriginBasedPosition
 
-CurrentAnimation --> [SpriteAnimationSystem]
+CurrentSprite --> SpriteRenderingSystem
 
-[SpriteAnimationSystem] --> CurrentSprite
+CurrentAnimation --> SpriteAnimationSystem
+
+SpriteAnimationSystem --> CurrentSprite
 
 @enduml

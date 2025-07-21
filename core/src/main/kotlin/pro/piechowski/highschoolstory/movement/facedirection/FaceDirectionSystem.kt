@@ -8,7 +8,7 @@ import io.github.oshai.kotlinlogging.KotlinLogging
 import pro.piechowski.highschoolstory.ReadOnly
 import pro.piechowski.highschoolstory.Write
 import pro.piechowski.highschoolstory.debug
-import pro.piechowski.highschoolstory.direction.Direction
+import pro.piechowski.highschoolstory.direction.Direction8
 import pro.piechowski.highschoolstory.movement.input.MovementInput
 
 class FaceDirectionSystem :
@@ -27,7 +27,7 @@ class FaceDirectionSystem :
         val faceDirection = entity[FaceDirection]
 
         if (movementInput.movementInput != Vector2.Zero) {
-            faceDirection.faceDirection = Direction.from(movementInput.movementInput)
+            faceDirection.faceDirection = Direction8.from(movementInput.movementInput)
 
             logger.debug(faceDirection, entity)
         }

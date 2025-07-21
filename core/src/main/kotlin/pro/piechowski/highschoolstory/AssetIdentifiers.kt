@@ -6,5 +6,6 @@ import ktx.assets.async.Identifier
 object AssetIdentifiers {
     object Textures {
         val PlayerCharacter = Identifier("player_character.png", Texture::class.java)
+        val Character = Identifier("character.png", Texture::class.java)
     }
 }

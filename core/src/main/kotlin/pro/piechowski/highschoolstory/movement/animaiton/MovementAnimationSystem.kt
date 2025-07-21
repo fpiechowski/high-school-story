@@ -29,7 +29,7 @@ class MovementAnimationSystem :
 
         if (velocity.len() > 0) {
             entity[MovementAnimation.Walk]
-                .animations[entity[FaceDirection].faceDirection]
+                .animations[entity[FaceDirection].faceDirection.toDirection4()]
                 .let {
                     if (currentAnimation.animation != it) {
                         currentAnimation.animation = it
@@ -38,7 +38,7 @@ class MovementAnimationSystem :
                 }
         } else {
             entity[MovementAnimation.Idle]
-                .animations[entity[FaceDirection].faceDirection]
+                .animations[entity[FaceDirection].faceDirection.toDirection4()]
                 .let {
                     if (currentAnimation.animation != it) {
                         currentAnimation.animation = it

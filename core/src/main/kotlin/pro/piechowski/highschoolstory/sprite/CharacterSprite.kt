@@ -3,10 +3,12 @@
 import com.badlogic.gdx.graphics.g2d.Sprite
 import com.badlogic.gdx.graphics.g2d.TextureRegion
 
-class CharacterSprite(textureRegion: TextureRegion) : Sprite(textureRegion) {
+class CharacterSprite(
+    textureRegion: TextureRegion,
+) : Sprite(textureRegion) {
     companion object {
         const val ORIGIN_X = 24f
-        const val ORIGIN_Y = 0f
+        const val ORIGIN_Y = 24f
         const val WIDTH = 48f
         const val HEIGHT = 96f
     }

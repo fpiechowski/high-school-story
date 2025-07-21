@@ -8,6 +8,7 @@ import com.github.quillraven.fleks.Component
 import com.github.quillraven.fleks.UniqueId
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.modules.SerializersModule
+import kotlinx.serialization.modules.contextual
 import kotlinx.serialization.modules.polymorphic
 import ktx.assets.async.AssetStorage
 import org.koin.dsl.module
@@ -24,6 +25,8 @@ val mainModule =
             Json {
                 serializersModule =
                     SerializersModule {
+                        contextual(Vector2Serializer)
+
                         polymorphic(Component::class) {
                             subclass(FaceDirection::class, FaceDirection.serializer())
                         }

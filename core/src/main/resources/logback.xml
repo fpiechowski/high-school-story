@@ -8,7 +8,9 @@
     <logger name="pro.piechowski.highschoolstory.movement.input.MultiplexMovementInputSystem" level="info"/>
     <logger name="pro.piechowski.highschoolstory.movement.velocity.VelocitySystem" level="info"/>
     <logger name="pro.piechowski.highschoolstory.movement.CurrentSpritePositionSystem" level="info"/>
-    <logger name="pro.piechowski.highschoolstory.movement.facedirection.FaceDirectionSystem" level="debug"/>
+    <logger name="pro.piechowski.highschoolstory.movement.facedirection.FaceDirectionSystem" level="info"/>
+    <logger name="pro.piechowski.highschoolstory.interaction.input.InteractionInputProcessor" level="info"/>
+    <logger name="pro.piechowski.highschoolstory.input.GameInputMultiplexer" level="info"/>
     <root level="info">
         <appender-ref ref="STDOUT" />
     </root>

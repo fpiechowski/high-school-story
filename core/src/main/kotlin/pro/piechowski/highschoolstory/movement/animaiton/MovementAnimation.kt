@@ -2,13 +2,13 @@
 
 import com.github.quillraven.fleks.Component
 import com.github.quillraven.fleks.ComponentType
-import pro.piechowski.highschoolstory.animation.DirectionAnimations
+import pro.piechowski.highschoolstory.animation.Direction4Animations
 
 sealed class MovementAnimation(
-    open val animations: DirectionAnimations,
+    open val animations: Direction4Animations,
 ) {
     data class Idle(
-        override val animations: DirectionAnimations,
+        override val animations: Direction4Animations,
     ) : MovementAnimation(animations),
         Component<Idle> {
         override fun type(): ComponentType<Idle> = Idle
@@ -17,7 +17,7 @@ sealed class MovementAnimation(
     }
 
     data class Walk(
-        override val animations: DirectionAnimations,
+        override val animations: Direction4Animations,
     ) : MovementAnimation(animations),
         Component<Walk> {
         override fun type(): ComponentType<Walk> = Walk
