@@ -20,6 +20,7 @@ fun gameModule() =
         includes(RenderingModule)
 
         single { GameScreen() }
+
         single { InputProcessorMultiplexer() }
 
         single<World> { World() }

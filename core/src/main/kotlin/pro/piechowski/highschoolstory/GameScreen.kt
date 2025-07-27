@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.Camera
 import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.badlogic.gdx.math.Vector2
+import com.badlogic.gdx.scenes.scene2d.Stage
 import com.badlogic.gdx.utils.viewport.Viewport
 import com.github.quillraven.fleks.World
 import ktx.app.KtxScreen
@@ -28,6 +29,8 @@ import pro.piechowski.highschoolstory.physics.px
 import pro.piechowski.highschoolstory.physics.times
 import pro.piechowski.highschoolstory.rendering.pixelCameraQualifier
 import pro.piechowski.highschoolstory.rendering.pixelViewportQualifier
+import pro.piechowski.highschoolstory.ui.addActors
+import pro.piechowski.highschoolstory.ui.uiViewportQualifier
 
 class GameScreen :
     KtxScreen,
@@ -51,8 +54,10 @@ class GameScreen :
     private val camera: Camera by inject(pixelCameraQualifier)
     private val pixelViewport: Viewport by inject(pixelViewportQualifier)
     private val meterViewport: Viewport by inject(meterViewportQualifier)
+    private val uiViewport: Viewport by inject(uiViewportQualifier)
     private val world: World by inject()
     private val physicsWorld: PhysicsWorld by inject()
+    private val stage: Stage by inject()
 
     init {
         with(world) {
@@ -73,6 +78,10 @@ class GameScreen :
                 }
             }
         }
+
+        with(stage) {
+            addActors()
+        }
     }
 
     override fun render(delta: Float) {
@@ -83,6 +92,9 @@ class GameScreen :
         clearScreen(red = 0.7f, green = 0.7f, blue = 0.7f)
 
         world.update(delta)
+
+        stage.act()
+        stage.draw()
     }
 
     override fun dispose() {
@@ -96,5 +108,6 @@ class GameScreen :
     ) {
         pixelViewport.update(width, height)
         meterViewport.update(width, height)
+        uiViewport.update(width, height)
     }
 }
