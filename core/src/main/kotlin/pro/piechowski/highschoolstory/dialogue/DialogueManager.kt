@@ -1,61 +1,96 @@
 ﻿package pro.piechowski.highschoolstory.dialogue
 
+import kotlinx.coroutines.flow.MutableStateFlow
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 
 class DialogueManager : KoinComponent {
-    private var dialogue: Dialogue? = null
-    private var currentSentenceId: SentenceId? = dialogue?.rootIds?.firstOrNull()
+    private val dialogue: MutableStateFlow<Dialogue?> = MutableStateFlow(null)
+    private val currentSentenceId: MutableStateFlow<SentenceId?> = MutableStateFlow(null)
     private val dialogueUserInterface: DialogueUserInterface by inject()
 
-    val currentSentence get() = dialogue?.sentences?.get(currentSentenceId)
-    var currentOptionIdx: Int = 0
+    val currentSentence get() = dialogue.value?.sentences?.get(currentSentenceId.value)
+    val currentOptionIdx: MutableStateFlow<Int> = MutableStateFlow(0)
 
     fun startDialogue(dialogue: Dialogue) {
-        this.dialogue = dialogue
+        this.dialogue.value = dialogue
 
         updateUserInterface()
     }
 
     fun advance() {
-        currentSentenceId =
-            currentSentenceId
-                ?.let { dialogue?.sentences?.getValue(it) }
-                ?.childIds[currentOptionIdx]
+        ifIsCurrentlyInDialogue { dialogue ->
+            ifIsAlreadyAdvanced(
+                dialogue,
+                then = { sentence ->
+                    currentSentenceId.value = sentence.childIds[currentOptionIdx.value]
+                },
+                otherwise = {
+                    currentSentenceId.value = dialogue.rootIds[currentOptionIdx.value]
+                },
+            )
+
+            if (currentSentenceId.value == null) endDialogue()
+        }
 
         updateUserInterface()
 
-        currentOptionIdx = 0
+        currentOptionIdx.value = 0
     }
 
     fun endDialogue() {
-        dialogue = null
-        currentSentenceId = null
+        dialogue.value = null
+        currentSentenceId.value = null
+        currentOptionIdx.value = 0
 
         updateUserInterface()
     }
 
-    fun isInDialogue(): Boolean = dialogue != null
-
     fun selectPreviousOption() {
-        if (currentOptionIdx == 0) {
-            currentOptionIdx = (currentSentence?.childIds ?: dialogue?.rootIds)?.size ?: 0
+        if (currentOptionIdx.value == 0) {
+            ifIsCurrentlyInDialogue { dialogue ->
+                ifIsAlreadyAdvanced(
+                    dialogue,
+                    then = { sentence ->
+                        currentOptionIdx.value = sentence.childIds.lastIndex
+                    },
+                    otherwise = {
+                        currentOptionIdx.value = dialogue.rootIds.lastIndex
+                    },
+                )
+            }
+        } else {
+            currentOptionIdx.value--
         }
-
-        currentOptionIdx--
     }
 
     fun selectNextOption() {
-        if (currentOptionIdx == (((currentSentence?.childIds ?: dialogue?.rootIds)?.size?.let { it - 1 }) ?: 0)) {
-            currentOptionIdx = 0
+        ifIsCurrentlyInDialogue { dialogue ->
+            ifIsAlreadyAdvanced(
+                dialogue,
+                then = { sentence ->
+                    if (currentOptionIdx.value == sentence.childIds.lastIndex) {
+                        currentOptionIdx.value = 0
+                    } else {
+                        currentOptionIdx.value++
+                    }
+                },
+                otherwise = {
+                    if (currentOptionIdx.value == dialogue.rootIds.lastIndex) {
+                        currentOptionIdx.value = 0
+                    } else {
+                        currentOptionIdx.value++
+                    }
+                },
+            )
         }
-
-        currentOptionIdx++
     }
+
+    fun <R> ifIsCurrentlyInDialogue(then: (dialogue: Dialogue) -> R) = dialogue.value?.let { then(it) }
 
     private fun updateUserInterface() =
         with(dialogueUserInterface) {
-            dialogueBox.isVisible = dialogue != null
+            dialogueBox.isVisible = dialogue.value != null
 
             dialogueOptions.isVisible = false
             ifChoice {
@@ -67,31 +102,35 @@ class DialogueManager : KoinComponent {
             dialogueLabel.setText(currentSentence?.line)
         }
 
-    private fun <R> ifIsCurrentlyInDialogue(then: (dialogue: Dialogue) -> R) {
-        if (dialogue != null) {
-            then(dialogue!!)
+    private fun <R> ifIsAlreadyAdvanced(
+        dialogue: Dialogue,
+        then: (sentence: Dialogue.Sentence) -> R,
+        otherwise: () -> R? = { null },
+    ) = currentSentenceId.value?.let {
+        then(dialogue.sentences[it] ?: sentenceNotFoundError(it))
+    } ?: otherwise()
+
+    private fun ifChoice(then: (options: List<Dialogue.Sentence>) -> Unit) {
+        ifIsCurrentlyInDialogue { dialogue ->
+            ifIsAlreadyAdvanced(
+                dialogue,
+                then = { sentence ->
+                    val options = dialogue.sentences.filter { it.key in sentence.childIds }.values
+                    if (options.size > 1) {
+                        then(options.toList())
+                    }
+                },
+                otherwise = {
+                    val options = dialogue.sentences.filter { it.key in dialogue.rootIds }.values
+                    if (options.size > 1) {
+                        then(options.toList())
+                    }
+                },
+            )
         }
     }
 
-    private fun ifChoice(then: (options: List<Dialogue.Sentence>) -> Unit) {
-        if (dialogue != null && currentSentence == null && dialogue!!.rootIds.size > 1) {
-            then(
-                dialogue!!
-                    .sentences
-                    .filter { it.key in dialogue!!.rootIds }
-                    .values
-                    .toList(),
-            )
-        }
-
-        if (dialogue != null && currentSentence != null && currentSentence!!.childIds.size > 1) {
-            then(
-                dialogue!!
-                    .sentences
-                    .filter { it.key in currentSentence!!.childIds }
-                    .values
-                    .toList(),
-            )
-        }
+    private fun sentenceNotFoundError(string: SentenceId): Nothing {
+        error("Sentence with id $string not found in dialogue")
     }
 }

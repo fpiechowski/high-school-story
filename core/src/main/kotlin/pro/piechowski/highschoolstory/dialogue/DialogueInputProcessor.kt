@@ -11,20 +11,20 @@ class DialogueInputProcessor :
     private val dialogueManager: DialogueManager by inject()
 
     override fun keyUp(keycode: Int): Boolean {
-        if (dialogueManager.isInDialogue()) {
-            when (keycode) {
-                Input.Keys.ENTER -> {
-                    dialogueManager.advance()
-                    return true
-                }
-                Input.Keys.UP -> {
-                    dialogueManager.selectPreviousOption()
-                    return true
-                }
-                Input.Keys.DOWN -> {
-                    dialogueManager.selectNextOption()
-                    return true
-                }
+        when (keycode) {
+            Input.Keys.ENTER -> {
+                dialogueManager.advance()
+                return true
+            }
+
+            Input.Keys.UP -> {
+                dialogueManager.selectPreviousOption()
+                return true
+            }
+
+            Input.Keys.DOWN -> {
+                dialogueManager.selectNextOption()
+                return true
             }
         }
 
