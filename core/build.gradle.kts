@@ -80,10 +80,18 @@ dependencies {
     if (enableGraalNative == "true") {
         implementation("io.github.berstanio:gdx-svmhelper-annotations:$graalHelperVersion")
     }
+
+    testImplementation(kotlin("test"))
+    testImplementation("org.junit.jupiter:junit-jupiter:5.13.4")
+    testImplementation("io.kotest:kotest-assertions-core:5.9.1")
 }
 
 kotlin {
     compilerOptions {
         freeCompilerArgs.add("-Xcontext-parameters")
     }
+}
+
+tasks.test {
+    useJUnitPlatform()
 }

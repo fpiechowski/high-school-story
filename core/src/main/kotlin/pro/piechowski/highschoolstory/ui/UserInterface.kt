@@ -3,22 +3,28 @@
 import com.badlogic.gdx.scenes.scene2d.Stage
 import ktx.scene2d.actors
 import ktx.scene2d.table
-import pro.piechowski.highschoolstory.dialogue.dialogueUi
+import org.koin.core.component.KoinComponent
+import org.koin.core.component.inject
+import pro.piechowski.highschoolstory.dialogue.DialogueUserInterface
 
-context(stage: Stage)
-fun addActors() =
-    stage.actors {
-        table { tableActor ->
-            setFillParent(true)
-            defaults().pad(10f)
+class UserInterface : KoinComponent {
+    private val stage: Stage by inject()
+    private val dialogueUserInterface: DialogueUserInterface by inject()
 
-            row()
+    fun addActors() =
+        stage.actors {
+            table { tableActor ->
+                setFillParent(true)
+                defaults().pad(10f)
 
-            bottom()
+                row()
 
-            add(dialogueUi)
-                .height(stage.viewport.worldHeight * 0.25f)
-                .expandX()
-                .fill()
+                bottom()
+
+                add(dialogueUserInterface.dialogueBox)
+                    .height(stage.viewport.worldHeight * 0.25f)
+                    .expandX()
+                    .fill()
+            }
         }
-    }
+}

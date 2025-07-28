@@ -19,6 +19,9 @@ import org.koin.core.module.Module
 import pro.piechowski.highschoolstory.asset.AssetIdentifiers
 import pro.piechowski.highschoolstory.character.Character
 import pro.piechowski.highschoolstory.character.PlayerCharacter
+import pro.piechowski.highschoolstory.dialogue.Dialogue
+import pro.piechowski.highschoolstory.dialogue.DialogueManager
+import pro.piechowski.highschoolstory.dialogue.dialogue
 import pro.piechowski.highschoolstory.ecs.plusAssign
 import pro.piechowski.highschoolstory.gdx.PhysicsWorld
 import pro.piechowski.highschoolstory.input.InputProcessorMultiplexer
@@ -29,7 +32,7 @@ import pro.piechowski.highschoolstory.physics.px
 import pro.piechowski.highschoolstory.physics.times
 import pro.piechowski.highschoolstory.rendering.pixelCameraQualifier
 import pro.piechowski.highschoolstory.rendering.pixelViewportQualifier
-import pro.piechowski.highschoolstory.ui.addActors
+import pro.piechowski.highschoolstory.ui.UserInterface
 import pro.piechowski.highschoolstory.ui.uiViewportQualifier
 
 class GameScreen :
@@ -58,6 +61,8 @@ class GameScreen :
     private val world: World by inject()
     private val physicsWorld: PhysicsWorld by inject()
     private val stage: Stage by inject()
+    private val dialogueManager: DialogueManager by inject()
+    private val userInterface: UserInterface by inject()
 
     init {
         with(world) {
@@ -70,18 +75,25 @@ class GameScreen :
                     entity {
                         it += Character.archetype(AssetIdentifiers.Textures.Character)
                         it[PhysicsBody].body.setTransform(Vector2(300f, 100f) * px.toMeter(), 0f)
+                        it += Dialogue.Actor("NPC")
                         it +=
                             Interactable {
-                                println("Interacting with the character!")
+                                dialogueManager.startDialogue(
+                                    dialogue {
+                                        val npc = it[Dialogue.Actor]
+
+                                        npc.says("Hello there!") {
+                                            npc.says("Hello again!")
+                                        }
+                                    },
+                                )
                             }
                     }
                 }
             }
         }
 
-        with(stage) {
-            addActors()
-        }
+        userInterface.addActors()
     }
 
     override fun render(delta: Float) {
