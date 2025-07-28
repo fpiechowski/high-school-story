@@ -6,5 +6,6 @@ val DialogueModule =
     module {
         single { DialogueManager() }
         single { DialogueUserInterface() }
+        single { DialogueUserInterfaceUpdater() }
         single { DialogueInputProcessor() }
     }

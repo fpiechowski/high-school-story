@@ -27,7 +27,7 @@ class DialogueUserInterface : KoinComponent {
             )
     }
 
-    val dialogueOptions =
+    val dialogueOptionsList =
         scene2d.listWidget<String>(ListStyle.DIALOGUE_OPTIONS) {
             isVisible = false
             this.style.selection.topHeight = 10f
@@ -50,7 +50,7 @@ class DialogueUserInterface : KoinComponent {
                         dialogueLabelPadding.right,
                     ).expand()
                 row()
-                add(dialogueOptions)
+                add(dialogueOptionsList)
                     .top()
                     .left()
                     .expand()

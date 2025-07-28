@@ -6,9 +6,10 @@ import org.koin.core.component.inject
 import pro.piechowski.highschoolstory.input.InputState
 
 class DialogueManager : KoinComponent {
-    private val dialogue: MutableStateFlow<Dialogue?> = MutableStateFlow(null)
-    private val currentSentenceId: MutableStateFlow<SentenceId?> = MutableStateFlow(null)
-    private val dialogueUserInterface: DialogueUserInterface by inject()
+    val dialogue: MutableStateFlow<Dialogue?> = MutableStateFlow(null)
+    val currentSentenceId: MutableStateFlow<SentenceId?> = MutableStateFlow(null)
+
+    private val dialogueUserInterfaceUpdater: DialogueUserInterfaceUpdater by inject()
     private val inputState: InputState by inject()
 
     val currentSentence get() = dialogue.value?.sentences?.get(currentSentenceId.value)
@@ -21,7 +22,7 @@ class DialogueManager : KoinComponent {
             advance()
         }
 
-        updateUserInterface()
+        dialogueUserInterfaceUpdater.updateUserInterface()
 
         inputState.mode.value = InputState.Mode.DIALOGUE
     }
@@ -41,7 +42,7 @@ class DialogueManager : KoinComponent {
             if (currentSentenceId.value == null) endDialogue()
         }
 
-        updateUserInterface()
+        dialogueUserInterfaceUpdater.updateUserInterface()
 
         currentOptionIdx.value = 0
     }
@@ -51,7 +52,7 @@ class DialogueManager : KoinComponent {
         currentSentenceId.value = null
         currentOptionIdx.value = 0
 
-        updateUserInterface()
+        dialogueUserInterfaceUpdater.updateUserInterface()
 
         inputState.mode.value = InputState.Mode.EXPLORATION
     }
@@ -73,7 +74,7 @@ class DialogueManager : KoinComponent {
             currentOptionIdx.value--
         }
 
-        updateUserInterface()
+        dialogueUserInterfaceUpdater.updateUserInterface()
     }
 
     fun selectNextOption() {
@@ -97,47 +98,15 @@ class DialogueManager : KoinComponent {
             )
         }
 
-        updateUserInterface()
+        dialogueUserInterfaceUpdater.updateUserInterface()
     }
 
-    fun <R> ifIsCurrentlyInDialogue(then: (dialogue: Dialogue) -> R) = dialogue.value?.let { then(it) }
+    fun <R> ifIsCurrentlyInDialogue(
+        otherwise: () -> R? = { null },
+        then: (dialogue: Dialogue) -> R,
+    ) = dialogue.value?.let { then(it) } ?: otherwise()
 
-    private fun updateUserInterface() =
-        with(dialogueUserInterface) {
-            dialogueBox.isVisible = dialogue.value != null
-
-            fun updateDialogueOptions() {
-                with(dialogueOptions) {
-                    isVisible = false
-                    ifChoice { sentences ->
-                        isVisible = true
-                        clearItems()
-                        setItems(*sentences.map { it.line }.toTypedArray())
-                        selectedIndex = currentOptionIdx.value
-
-                        val desiredScrollYPosition =
-                            if (dialogueOptions.selectedIndex == 0) {
-                                height + dialogueLabel.prefHeight + with(DialogueUserInterface.dialogueLabelPadding) { top + bottom }
-                            } else {
-                                height - selectedIndex * itemHeight
-                            }
-
-                        dialogueScrollPane.scrollTo(
-                            0f,
-                            desiredScrollYPosition,
-                            width,
-                            itemHeight,
-                        )
-                    }
-                }
-            }
-
-            updateDialogueOptions()
-
-            dialogueLabel.setText(currentSentence?.line)
-        }
-
-    private fun <R> ifIsAlreadyAdvanced(
+    internal fun <R> ifIsAlreadyAdvanced(
         dialogue: Dialogue,
         then: (sentence: Dialogue.Sentence) -> R,
         otherwise: () -> R? = { null },
@@ -145,24 +114,34 @@ class DialogueManager : KoinComponent {
         then(dialogue.sentences[it] ?: sentenceNotFoundError(it))
     } ?: otherwise()
 
-    private fun ifChoice(then: (options: List<Dialogue.Sentence>) -> Unit) {
-        ifIsCurrentlyInDialogue { dialogue ->
-            ifIsAlreadyAdvanced(
-                dialogue,
-                then = { sentence ->
-                    val options = dialogue.sentences.filter { it.key in sentence.childIds }.values
-                    if (options.size > 1) {
-                        then(options.toList())
-                    }
-                },
-                otherwise = {
-                    val options = dialogue.sentences.filter { it.key in dialogue.rootIds }.values
-                    if (options.size > 1) {
-                        then(options.toList())
-                    }
-                },
-            )
-        }
+    internal fun <R> ifChoice(
+        then: (options: List<Dialogue.Sentence>) -> R,
+        otherwise: () -> R? = { null },
+    ) {
+        ifIsCurrentlyInDialogue(
+            then = { dialogue ->
+                ifIsAlreadyAdvanced(
+                    dialogue,
+                    then = { sentence ->
+                        val options = dialogue.sentences.filter { it.key in sentence.childIds }.values
+                        if (options.size > 1) {
+                            then(options.toList())
+                        } else {
+                            otherwise()
+                        }
+                    },
+                    otherwise = {
+                        val options = dialogue.sentences.filter { it.key in dialogue.rootIds }.values
+                        if (options.size > 1) {
+                            then(options.toList())
+                        } else {
+                            otherwise()
+                        }
+                    },
+                )
+            },
+            otherwise = { otherwise() },
+        )
     }
 
     private fun sentenceNotFoundError(string: SentenceId): Nothing {
