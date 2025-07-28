@@ -13,11 +13,13 @@ import pro.piechowski.highschoolstory.physics.movement.input.MovementInput
 @Serializable
 data object PlayerCharacter : EntityTag() {
     context(ecc: EntityCreateContext, assetStorage: AssetStorage, physicsWorld: PhysicsWorld)
-    fun archetype() =
-        Archetype {
-            this += Character.archetype(AssetIdentifiers.Textures.PlayerCharacter)
-            this += Speed.run
-            this += PlayerCharacter
-            this += MovementInput.Controller()
-        }
+    fun archetype(
+        firstName: String,
+        lastName: String,
+    ) = Archetype {
+        this += Character.archetype(firstName, lastName, AssetIdentifiers.Textures.PlayerCharacter)
+        this += Speed.run
+        this += PlayerCharacter
+        this += MovementInput.Controller()
+    }
 }

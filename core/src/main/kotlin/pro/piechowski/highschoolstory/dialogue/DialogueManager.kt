@@ -72,6 +72,8 @@ class DialogueManager : KoinComponent {
         } else {
             currentOptionIdx.value--
         }
+
+        updateUserInterface()
     }
 
     fun selectNextOption() {
@@ -94,6 +96,8 @@ class DialogueManager : KoinComponent {
                 },
             )
         }
+
+        updateUserInterface()
     }
 
     fun <R> ifIsCurrentlyInDialogue(then: (dialogue: Dialogue) -> R) = dialogue.value?.let { then(it) }
@@ -102,12 +106,33 @@ class DialogueManager : KoinComponent {
         with(dialogueUserInterface) {
             dialogueBox.isVisible = dialogue.value != null
 
-            dialogueOptions.isVisible = false
-            ifChoice {
-                dialogueOptions.isVisible = true
-                dialogueOptions.clearItems()
-                dialogueOptions.setItems(*it.toTypedArray())
+            fun updateDialogueOptions() {
+                with(dialogueOptions) {
+                    isVisible = false
+                    ifChoice { sentences ->
+                        isVisible = true
+                        clearItems()
+                        setItems(*sentences.map { it.line }.toTypedArray())
+                        selectedIndex = currentOptionIdx.value
+
+                        val desiredScrollYPosition =
+                            if (dialogueOptions.selectedIndex == 0) {
+                                height + dialogueLabel.prefHeight + with(DialogueUserInterface.dialogueLabelPadding) { top + bottom }
+                            } else {
+                                height - selectedIndex * itemHeight
+                            }
+
+                        dialogueScrollPane.scrollTo(
+                            0f,
+                            desiredScrollYPosition,
+                            width,
+                            itemHeight,
+                        )
+                    }
+                }
             }
+
+            updateDialogueOptions()
 
             dialogueLabel.setText(currentSentence?.line)
         }

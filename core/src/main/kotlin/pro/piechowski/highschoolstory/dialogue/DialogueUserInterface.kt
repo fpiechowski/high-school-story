@@ -1,6 +1,7 @@
 ﻿package pro.piechowski.highschoolstory.dialogue
 
 import com.badlogic.gdx.scenes.scene2d.Stage
+import com.kotcrab.vis.ui.building.utilities.Padding
 import ktx.scene2d.label
 import ktx.scene2d.listWidget
 import ktx.scene2d.scene2d
@@ -8,6 +9,7 @@ import ktx.scene2d.scrollPane
 import ktx.scene2d.table
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
+import pro.piechowski.highschoolstory.ui.ListStyle
 import pro.piechowski.highschoolstory.ui.ScrollPaneStyle
 
 class DialogueUserInterface : KoinComponent {
@@ -15,9 +17,44 @@ class DialogueUserInterface : KoinComponent {
 
     val dialogueLabel = scene2d.label("")
 
+    companion object {
+        val dialogueLabelPadding =
+            Padding(
+                2f,
+                2f,
+                10f,
+                2f,
+            )
+    }
+
     val dialogueOptions =
-        scene2d.listWidget<Dialogue.Sentence> {
+        scene2d.listWidget<String>(ListStyle.DIALOGUE_OPTIONS) {
             isVisible = false
+            this.style.selection.topHeight = 10f
+            this.style.selection.leftWidth = 10f
+            this.style.selection.rightWidth = 10f
+            this.style.selection.bottomHeight = 10f
+        }
+
+    val dialogueScrollPane =
+        scene2d.scrollPane {
+            table {
+                debugTable()
+                add(dialogueLabel)
+                    .top()
+                    .left()
+                    .pad(
+                        dialogueLabelPadding.top,
+                        dialogueLabelPadding.left,
+                        dialogueLabelPadding.bottom,
+                        dialogueLabelPadding.right,
+                    ).expand()
+                row()
+                add(dialogueOptions)
+                    .top()
+                    .left()
+                    .expand()
+            }
         }
 
     val dialogueBox =
@@ -33,20 +70,11 @@ class DialogueUserInterface : KoinComponent {
                 setScrollingDisabled(true, true)
 
                 table {
-                    setFillParent(true)
-
-                    scrollPane {
-                        it
-                            .fill()
-                            .expand()
-                            .pad(20f)
-
-                        table {
-                            addActor(dialogueLabel)
-                            row()
-                            addActor(dialogueOptions)
-                        }
-                    }
+                    debugTable()
+                    add(dialogueScrollPane)
+                        .fill()
+                        .expand()
+                        .pad(20f)
                 }
             }
         }

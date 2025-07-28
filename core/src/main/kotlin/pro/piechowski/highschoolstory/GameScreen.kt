@@ -71,22 +71,34 @@ class GameScreen :
         with(world) {
             with(assetStorage) {
                 with(physicsWorld) {
-                    entity {
-                        it += PlayerCharacter.archetype()
-                    }
+                    val playerCharacter =
+                        entity {
+                            it += PlayerCharacter.archetype("Player", "Character")
+                        }
 
                     entity {
-                        it += Character.archetype(AssetIdentifiers.Textures.Character)
+                        it += Character.archetype("NPC", "", AssetIdentifiers.Textures.Character)
                         it[PhysicsBody].body.setTransform(Vector2(300f, 100f) * px.toMeter(), 0f)
                         it += Dialogue.Actor("NPC")
                         it +=
                             Interactable {
                                 dialogueManager.startDialogue(
                                     dialogue {
-                                        val npc = it[Dialogue.Actor]
+                                        val npcActor = it[Dialogue.Actor]
+                                        val pcActor = playerCharacter[Dialogue.Actor]
 
-                                        npc.says("Hello there!") {
-                                            npc.says("Hello again!")
+                                        npcActor.says("Hey!\nHello there!") {
+                                            pcActor.says("Hello!") {
+                                                npcActor.says("Nice to meet you.")
+                                            }
+                                            pcActor.says("Screw you!") {
+                                                npcActor.says("That's rude!")
+                                            }
+                                            pcActor.says("Placeholder 1")
+                                            pcActor.says("Placeholder 2")
+                                            pcActor.says("Placeholder 3")
+                                            pcActor.says("Placeholder 4")
+                                            pcActor.says("Placeholder 5")
                                         }
                                     },
                                 )
