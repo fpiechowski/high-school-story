@@ -10,12 +10,14 @@ class DialogueUserInterfaceUpdater : KoinComponent {
     fun updateUserInterface() =
         with(dialogueManager) {
             with(dialogueUserInterface) {
-                dialogueBox.isVisible = dialogue != null
+                dialogueBox.isVisible = dialogueState.value != null
 
                 updateDialogueOptions()
 
-                if (currentNode is Dialogue.Node.Sentence) {
-                    dialogueLabel.setText((currentNode as Dialogue.Node.Sentence)?.line)
+                dialogueState.value?.let { state ->
+                    if (state.currentNode is Dialogue.Node.Sentence) {
+                        dialogueLabel.setText(state.currentNode.line)
+                    }
                 }
             }
         }
@@ -25,17 +27,23 @@ class DialogueUserInterfaceUpdater : KoinComponent {
             with(dialogueUserInterface) {
                 dialogueOptionsList.isVisible = false
 
-                if (currentNode is Dialogue.Node.Choice) {
-                    dialogueOptionsList.apply {
-                        isVisible = true
-                        clearItems()
-                        setItems(*(currentNode as Dialogue.Node.Choice).options.map { it.line }.toTypedArray())
-                        selectedIndex = currentOptionIdx.value
-                    }
+                dialogueState.value?.let { state ->
+                    if (state.currentNode is Dialogue.Node.Choice) {
+                        dialogueOptionsList.apply {
+                            isVisible = true
+                            clearItems()
+                            setItems(
+                                *state.currentNode.options
+                                    .map { it.line }
+                                    .toTypedArray(),
+                            )
+                            selectedIndex = state.currentOptionIdx
+                        }
 
-                    scrollOnChoiceSelectionChange()
-                } else {
-                    scrollToBeginningInstantly()
+                        scrollOnChoiceSelectionChange()
+                    } else {
+                        scrollToBeginningInstantly()
+                    }
                 }
             }
         }

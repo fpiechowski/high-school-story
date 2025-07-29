@@ -3,9 +3,8 @@
 import com.github.quillraven.fleks.Component
 import com.github.quillraven.fleks.ComponentType
 
-typealias SentenceId = String
+typealias w = String
 
-// --- Core Model ---
 data class Dialogue(
     val root: Node,
     val allNodes: Map<String, Node>,
@@ -15,7 +14,7 @@ data class Dialogue(
             val id: String? = null,
             val actor: Actor,
             val line: String,
-            val nextNode: Node? = null,
+            val nextNode: Node = End,
         ) : Node
 
         data class Choice(
@@ -25,13 +24,15 @@ data class Dialogue(
         ) : Node {
             data class Option(
                 val line: String,
-                val nextNode: Node? = null,
+                val nextNode: Node = End,
             )
         }
 
         data class GoTo(
             val targetId: String,
         ) : Node
+
+        data object End : Node
     }
 
     data class Actor(
@@ -56,7 +57,7 @@ class DialogueBuilder {
     fun Dialogue.Actor.says(
         line: String,
         id: String? = null,
-        andThen: Dialogue.Node? = null,
+        andThen: Dialogue.Node = Dialogue.Node.End,
     ): Dialogue.Node {
         val node = Dialogue.Node.Sentence(id, this, line, andThen)
         id?.let { nodeMap[it] = node }
@@ -87,7 +88,7 @@ class DialogueChoiceBuilder(
 
     fun option(
         line: String,
-        andThen: Dialogue.Node? = null,
+        andThen: Dialogue.Node = Dialogue.Node.End,
     ) {
         options += Dialogue.Node.Choice.Option(line, andThen)
     }

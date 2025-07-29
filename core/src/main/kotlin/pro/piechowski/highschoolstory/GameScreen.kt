@@ -103,6 +103,7 @@ class GameScreen :
                                                                 andThen = goTo("hello"),
                                                             ),
                                                     )
+                                                    option("Goodbye!")
                                                 },
                                         )
                                     },
