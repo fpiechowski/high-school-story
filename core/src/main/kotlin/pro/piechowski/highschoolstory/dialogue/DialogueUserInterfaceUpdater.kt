@@ -10,11 +10,13 @@ class DialogueUserInterfaceUpdater : KoinComponent {
     fun updateUserInterface() =
         with(dialogueManager) {
             with(dialogueUserInterface) {
-                dialogueBox.isVisible = dialogue.value != null
+                dialogueBox.isVisible = dialogue != null
 
                 updateDialogueOptions()
 
-                dialogueLabel.setText(currentSentence?.line)
+                if (currentNode is Dialogue.Node.Sentence) {
+                    dialogueLabel.setText((currentNode as Dialogue.Node.Sentence)?.line)
+                }
             }
         }
 
@@ -22,21 +24,19 @@ class DialogueUserInterfaceUpdater : KoinComponent {
         with(dialogueManager) {
             with(dialogueUserInterface) {
                 dialogueOptionsList.isVisible = false
-                ifChoice(
-                    then = { sentences ->
-                        dialogueOptionsList.apply {
-                            isVisible = true
-                            clearItems()
-                            setItems(*sentences.map { it.line }.toTypedArray())
-                            selectedIndex = currentOptionIdx.value
-                        }
 
-                        scrollOnChoiceSelectionChange()
-                    },
-                    otherwise = {
-                        scrollToBeginningInstantly()
-                    },
-                )
+                if (currentNode is Dialogue.Node.Choice) {
+                    dialogueOptionsList.apply {
+                        isVisible = true
+                        clearItems()
+                        setItems(*(currentNode as Dialogue.Node.Choice).options.map { it.line }.toTypedArray())
+                        selectedIndex = currentOptionIdx.value
+                    }
+
+                    scrollOnChoiceSelectionChange()
+                } else {
+                    scrollToBeginningInstantly()
+                }
             }
         }
 

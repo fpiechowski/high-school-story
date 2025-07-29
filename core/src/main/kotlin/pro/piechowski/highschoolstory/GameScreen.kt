@@ -82,24 +82,29 @@ class GameScreen :
                         it += Dialogue.Actor("NPC")
                         it +=
                             Interactable {
+                                val npc = it[Dialogue.Actor]
+                                val pc = playerCharacter[Dialogue.Actor]
                                 dialogueManager.startDialogue(
                                     dialogue {
-                                        val npcActor = it[Dialogue.Actor]
-                                        val pcActor = playerCharacter[Dialogue.Actor]
-
-                                        npcActor.says("Hey!\nHello there!") {
-                                            pcActor.says("Hello!") {
-                                                npcActor.says("Nice to meet you.")
-                                            }
-                                            pcActor.says("Screw you!") {
-                                                npcActor.says("That's rude!")
-                                            }
-                                            pcActor.says("Placeholder 1")
-                                            pcActor.says("Placeholder 2")
-                                            pcActor.says("Placeholder 3")
-                                            pcActor.says("Placeholder 4")
-                                            pcActor.says("Placeholder 5")
-                                        }
+                                        npc.says(
+                                            "Hello!",
+                                            id = "hello",
+                                            andThen =
+                                                pc.choice {
+                                                    option(
+                                                        "Hi!",
+                                                        andThen = npc.says("What a nice day!"),
+                                                    )
+                                                    option(
+                                                        "Fuck you!",
+                                                        andThen =
+                                                            npc.says(
+                                                                "Let's try again",
+                                                                andThen = goTo("hello"),
+                                                            ),
+                                                    )
+                                                },
+                                        )
                                     },
                                 )
                             }

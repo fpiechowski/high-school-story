@@ -2,16 +2,38 @@
 
 import com.github.quillraven.fleks.Component
 import com.github.quillraven.fleks.ComponentType
-import pro.piechowski.highschoolstory.dialogue.Dialogue.Sentence
-import java.util.UUID
 
 typealias SentenceId = String
 
 // --- Core Model ---
 data class Dialogue(
-    val sentences: Map<SentenceId, Sentence>,
-    val rootIds: List<SentenceId>,
+    val root: Node,
+    val allNodes: Map<String, Node>,
 ) {
+    sealed interface Node {
+        data class Sentence(
+            val id: String? = null,
+            val actor: Actor,
+            val line: String,
+            val nextNode: Node? = null,
+        ) : Node
+
+        data class Choice(
+            val id: String? = null,
+            val actor: Actor,
+            val options: List<Option>,
+        ) : Node {
+            data class Option(
+                val line: String,
+                val nextNode: Node? = null,
+            )
+        }
+
+        data class GoTo(
+            val targetId: String,
+        ) : Node
+    }
+
     data class Actor(
         val name: String,
     ) : Component<Actor> {
@@ -19,86 +41,56 @@ data class Dialogue(
 
         companion object : ComponentType<Actor>()
     }
-
-    data class Sentence(
-        val id: SentenceId,
-        val actor: Actor,
-        val line: String,
-        val parentId: SentenceId? = null,
-        val childIds: List<SentenceId> = emptyList(),
-    ) {
-        val isChoice: Boolean get() = childIds.size > 1
-
-        override fun toString(): String = "$id: ${actor.name}: $line"
-    }
 }
 
-// --- DSL Builder ---
-typealias LineBlock = DialogueBuilder.SentenceBuilder.(SentenceId) -> Unit
+// --- DSL ---
+fun dialogue(init: DialogueBuilder.() -> Dialogue.Node): Dialogue {
+    val builder = DialogueBuilder()
+    val root = builder.init()
+    return Dialogue(root, builder.nodeMap)
+}
 
 class DialogueBuilder {
-    private val allSentences = mutableMapOf<SentenceId, Sentence>()
-    private val rootIds = mutableListOf<SentenceId>()
-    private val unresolvedLinks =
-        mutableMapOf<SentenceId, MutableList<SentenceId>>() // id -> list of unresolved children ids
-
-    private fun newId(): SentenceId = UUID.randomUUID().toString()
+    internal val nodeMap = mutableMapOf<String, Dialogue.Node>()
 
     fun Dialogue.Actor.says(
         line: String,
-        id: SentenceId = newId(),
-        block: LineBlock? = null,
-    ): SentenceId {
-        val sentence = Sentence(id, this, line)
-        allSentences[id] = sentence
-        rootIds.add(id)
-        block?.let { SentenceBuilder(id).it(id) }
-        return id
+        id: String? = null,
+        andThen: Dialogue.Node? = null,
+    ): Dialogue.Node {
+        val node = Dialogue.Node.Sentence(id, this, line, andThen)
+        id?.let { nodeMap[it] = node }
+        return node
     }
 
-    inner class SentenceBuilder(
-        private val parentId: SentenceId,
-    ) {
-        fun Dialogue.Actor.says(
-            line: String,
-            id: SentenceId = newId(),
-            block: LineBlock? = null,
-        ): SentenceId {
-            val sentence = Sentence(id, this, line, parentId)
-            allSentences[id] = sentence
-            addChild(parentId, id)
-            block?.let { SentenceBuilder(id).it(id) }
-            return id
-        }
-
-        fun goTo(targetId: SentenceId) {
-            addChild(parentId, targetId)
-        }
-
-        private fun addChild(
-            parentId: SentenceId,
-            childId: SentenceId,
-        ) {
-            val sentence = allSentences[parentId]
-            if (sentence != null) {
-                val updated = sentence.copy(childIds = sentence.childIds + childId)
-                allSentences[parentId] = updated
-            } else {
-                unresolvedLinks.computeIfAbsent(parentId) { mutableListOf() }.add(childId)
+    fun Dialogue.Actor.choice(
+        id: String? = null,
+        block: DialogueChoiceBuilder.() -> Unit,
+    ): Dialogue.Node.Choice {
+        val builder = DialogueChoiceBuilder(id, this)
+        builder.block()
+        return builder
+            .build()
+            .also { node ->
+                id?.let { nodeMap[it] = node }
             }
-        }
     }
 
-    fun build(): Dialogue {
-        // Resolve any delayed links
-        for ((parentId, children) in unresolvedLinks) {
-            val sentence =
-                allSentences[parentId]
-                    ?: error("Unresolved parent sentence ID: $parentId")
-            allSentences[parentId] = sentence.copy(childIds = sentence.childIds + children)
-        }
-        return Dialogue(allSentences, rootIds)
-    }
+    fun goTo(id: String): Dialogue.Node = Dialogue.Node.GoTo(id)
 }
 
-fun dialogue(block: DialogueBuilder.() -> Unit): Dialogue = DialogueBuilder().apply(block).build()
+class DialogueChoiceBuilder(
+    private val id: String? = null,
+    private val actor: Dialogue.Actor,
+) {
+    private val options = mutableListOf<Dialogue.Node.Choice.Option>()
+
+    fun option(
+        line: String,
+        andThen: Dialogue.Node? = null,
+    ) {
+        options += Dialogue.Node.Choice.Option(line, andThen)
+    }
+
+    fun build(): Dialogue.Node.Choice = Dialogue.Node.Choice(id, actor, options)
+}
