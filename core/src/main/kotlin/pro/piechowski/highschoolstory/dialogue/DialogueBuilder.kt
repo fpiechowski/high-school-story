@@ -14,6 +14,7 @@ data class Dialogue(
             val id: String? = null,
             val actor: Actor,
             val line: String,
+            val onAdvanced: () -> Unit = {},
             val nextNode: Node = End,
         ) : Node
 
@@ -24,6 +25,7 @@ data class Dialogue(
         ) : Node {
             data class Option(
                 val line: String,
+                val onAdvanced: () -> Unit = {},
                 val nextNode: Node = End,
             )
         }
@@ -57,9 +59,10 @@ class DialogueBuilder {
     fun Dialogue.Actor.says(
         line: String,
         id: String? = null,
-        andThen: Dialogue.Node = Dialogue.Node.End,
+        onAdvanced: () -> Unit = {},
+        nextNode: Dialogue.Node = Dialogue.Node.End,
     ): Dialogue.Node {
-        val node = Dialogue.Node.Sentence(id, this, line, andThen)
+        val node = Dialogue.Node.Sentence(id, this, line, onAdvanced, nextNode)
         id?.let { nodeMap[it] = node }
         return node
     }
@@ -83,14 +86,16 @@ class DialogueBuilder {
 class DialogueChoiceBuilder(
     private val id: String? = null,
     private val actor: Dialogue.Actor,
+    private val onAdvanced: () -> Unit = {},
 ) {
     private val options = mutableListOf<Dialogue.Node.Choice.Option>()
 
     fun option(
         line: String,
-        andThen: Dialogue.Node = Dialogue.Node.End,
+        onAdvanced: () -> Unit = {},
+        nextNode: Dialogue.Node = Dialogue.Node.End,
     ) {
-        options += Dialogue.Node.Choice.Option(line, andThen)
+        options += Dialogue.Node.Choice.Option(line, onAdvanced, nextNode)
     }
 
     fun build(): Dialogue.Node.Choice = Dialogue.Node.Choice(id, actor, options)

@@ -43,7 +43,21 @@ class DialogueManager : KoinComponent {
 
     fun startDialogue(dialogue: Dialogue) = currentDialogueState.update { DialogueState(dialogue) }
 
-    fun advance() = currentDialogueState.update { it?.advanced() }
+    fun advance() =
+        currentDialogueState.update {
+            it
+                ?.also {
+                    when (it.currentNode) {
+                        is Dialogue.Node.Sentence -> it.currentNode.onAdvanced.invoke()
+                        is Dialogue.Node.Choice ->
+                            it.currentNode.options[it.currentOptionIdx]
+                                .onAdvanced
+                                .invoke()
+
+                        else -> Unit
+                    }
+                }?.advanced()
+        }
 
     fun selectNextOption() = currentDialogueState.update { it?.withNextOptionSelected() }
 

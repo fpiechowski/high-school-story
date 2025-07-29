@@ -89,18 +89,20 @@ class GameScreen :
                                         npc.says(
                                             "Hello!",
                                             id = "hello",
-                                            andThen =
+                                            nextNode =
                                                 pc.choice {
                                                     option(
                                                         "Hi!",
-                                                        andThen = npc.says("What a nice day!"),
+                                                        onAdvanced = { println("You're kind") },
+                                                        nextNode = npc.says("What a nice day!"),
                                                     )
                                                     option(
                                                         "Fuck you!",
-                                                        andThen =
+                                                        onAdvanced = { println("You're rude") },
+                                                        nextNode =
                                                             npc.says(
                                                                 "Let's try again",
-                                                                andThen = goTo("hello"),
+                                                                nextNode = goTo("hello"),
                                                             ),
                                                     )
                                                     option("Goodbye!")

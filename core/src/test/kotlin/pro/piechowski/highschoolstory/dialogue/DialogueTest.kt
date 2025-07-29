@@ -13,9 +13,9 @@ class DialogueBuilderTest {
                 actorA.says(
                     line = "line",
                     id = "first",
-                    andThen =
+                    nextNode =
                         actorB.choice(id = "choice") {
-                            option(line = "option 1", andThen = goTo("someId"))
+                            option(line = "option 1", nextNode = goTo("someId"))
                             option(line = "option 2")
                             option(line = "option 3")
                         },
