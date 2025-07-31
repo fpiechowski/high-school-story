@@ -12,6 +12,7 @@
     <logger name="pro.piechowski.highschoolstory.movement.facedirection.FaceDirectionSystem" level="info"/>
     <logger name="pro.piechowski.highschoolstory.interaction.input.InteractionInputProcessor" level="info"/>
     <logger name="pro.piechowski.highschoolstory.input.GameInputMultiplexer" level="info"/>
+    <logger name="pro.piechowski.highschoolstory.camera.CameraMovementSystem" level="debug"/>
     <root level="info">
         <appender-ref ref="STDOUT" />
     </root>

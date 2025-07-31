@@ -1,5 +1,6 @@
 ﻿package pro.piechowski.highschoolstory.interaction
 
+import com.badlogic.gdx.math.Vector2
 import com.github.quillraven.fleks.Component
 import com.github.quillraven.fleks.ComponentType
 import com.github.quillraven.fleks.Entity
@@ -19,7 +20,7 @@ class InteractableEntity private constructor(
     val entity: Entity,
 ) {
     context(ecc: EntityComponentContext)
-    val position get() = with(ecc) { entity[PhysicsBody].body.position }
+    val position: Vector2 get() = with(ecc) { entity[PhysicsBody].body.position }
 
     context(ecc: EntityComponentContext)
     val interactable get() = with(ecc) { entity[Interactable] }

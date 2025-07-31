@@ -6,10 +6,12 @@ import com.github.quillraven.fleks.configureWorld
 import org.koin.core.scope.Scope
 import pro.piechowski.highschoolstory.Config
 import pro.piechowski.highschoolstory.animation.SpriteAnimationSystem
+import pro.piechowski.highschoolstory.camera.CameraMovementSystem
 import pro.piechowski.highschoolstory.debug.DebugTextSystem
 import pro.piechowski.highschoolstory.interaction.InteractableDebugSystem
 import pro.piechowski.highschoolstory.interaction.InteractionSystem
 import pro.piechowski.highschoolstory.interaction.InteractorDebugSystem
+import pro.piechowski.highschoolstory.map.MapRenderingSystem
 import pro.piechowski.highschoolstory.physics.body.PhysicsDebugRenderingSystem
 import pro.piechowski.highschoolstory.physics.body.PhysicsWorldStepSystem
 import pro.piechowski.highschoolstory.physics.movement.animation.MovementAnimationSystem
@@ -70,10 +72,13 @@ private fun renderingSystems(inBatch: () -> Unit = {}) =
     with(sc) {
         with(scope) {
             // add(get<BeginRenderingBatchSystem>())
+            add(get<CameraMovementSystem>())
             add(get<MovementAnimationSystem>())
             add(get<SpriteAnimationSystem>())
             add(get<CurrentSpritePositionSystem>())
+            add(get<MapRenderingSystem.Background>())
             add(get<SpriteRenderingSystem>())
+            add(get<MapRenderingSystem.Foreground>())
             inBatch()
             // add(get<EndRenderingBatchSystem>())
         }

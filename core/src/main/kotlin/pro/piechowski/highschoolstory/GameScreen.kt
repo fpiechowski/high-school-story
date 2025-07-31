@@ -4,7 +4,7 @@ import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.graphics.Camera
 import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
-import com.badlogic.gdx.math.Vector2
+import com.badlogic.gdx.maps.tiled.TiledMap
 import com.badlogic.gdx.scenes.scene2d.Stage
 import com.badlogic.gdx.utils.viewport.Viewport
 import com.github.quillraven.fleks.World
@@ -27,7 +27,10 @@ import pro.piechowski.highschoolstory.gdx.PhysicsWorld
 import pro.piechowski.highschoolstory.input.GameInputMultiplexer
 import pro.piechowski.highschoolstory.input.InputState
 import pro.piechowski.highschoolstory.interaction.Interactable
+import pro.piechowski.highschoolstory.map.MapManager
+import pro.piechowski.highschoolstory.map.Tile
 import pro.piechowski.highschoolstory.physics.body.PhysicsBody
+import pro.piechowski.highschoolstory.physics.meterCameraQualifier
 import pro.piechowski.highschoolstory.physics.meterViewportQualifier
 import pro.piechowski.highschoolstory.physics.px
 import pro.piechowski.highschoolstory.physics.times
@@ -52,12 +55,16 @@ class GameScreen :
     private val assetStorage: AssetStorage by inject()
 
     init {
-        assetStorage.loadSync<Texture>(AssetIdentifiers.Textures.PlayerCharacter)
-        assetStorage.loadSync<Texture>(AssetIdentifiers.Textures.Character)
+        with(assetStorage) {
+            loadSync<Texture>(AssetIdentifiers.Textures.PlayerCharacter)
+            loadSync<Texture>(AssetIdentifiers.Textures.Character)
+            loadSync<TiledMap>(AssetIdentifiers.Maps.Town)
+        }
     }
 
     private val batch: SpriteBatch by inject()
-    private val camera: Camera by inject(pixelCameraQualifier)
+    private val pixelCamera: Camera by inject(pixelCameraQualifier)
+    private val meterCamera: Camera by inject(meterCameraQualifier)
     private val pixelViewport: Viewport by inject(pixelViewportQualifier)
     private val meterViewport: Viewport by inject(meterViewportQualifier)
     private val uiViewport: Viewport by inject(uiViewportQualifier)
@@ -66,19 +73,25 @@ class GameScreen :
     private val stage: Stage by inject()
     private val dialogueManager: DialogueManager by inject()
     private val userInterface: UserInterface by inject()
+    private val mapManager: MapManager by inject()
 
     init {
         with(world) {
             with(assetStorage) {
+                val townMap = get(AssetIdentifiers.Maps.Town)
+                mapManager.openMap(townMap)
+
                 with(physicsWorld) {
                     val playerCharacter =
                         entity {
                             it += PlayerCharacter.archetype("Player", "Character")
+
+                            it[PhysicsBody].body.setTransform(Tile.Position(200, 202).toPixel() * px.toMeter(), 0f)
                         }
 
                     entity {
                         it += Character.archetype("NPC", "", AssetIdentifiers.Textures.Character)
-                        it[PhysicsBody].body.setTransform(Vector2(300f, 100f) * px.toMeter(), 0f)
+                        it[PhysicsBody].body.setTransform(Tile.Position(213, 202).toPixel() * px.toMeter(), 0f)
                         it += Dialogue.Actor("NPC")
                         it +=
                             Interactable {
@@ -120,11 +133,12 @@ class GameScreen :
     }
 
     override fun render(delta: Float) {
-        batch.projectionMatrix = camera.combined
-
-        camera.update()
-
         clearScreen(red = 0.7f, green = 0.7f, blue = 0.7f)
+
+        pixelCamera.update()
+        meterCamera.update()
+
+        batch.projectionMatrix = pixelCamera.combined
 
         world.update(delta)
 

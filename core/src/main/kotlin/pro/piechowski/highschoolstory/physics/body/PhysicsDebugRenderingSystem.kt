@@ -13,10 +13,10 @@ class PhysicsDebugRenderingSystem :
     IntervalSystem(Fixed(PHYSICS_STEP)),
     KoinComponent {
     private val box2DDebugRenderer: Box2DDebugRenderer by inject()
-    private val physicsWorldSystem: PhysicsWorld by inject()
+    private val physicsWorld: PhysicsWorld by inject()
     private val camera: Camera by inject(meterCameraQualifier)
 
     override fun onTick() {
-        box2DDebugRenderer.render(physicsWorldSystem, camera.combined)
+        box2DDebugRenderer.render(physicsWorld, camera.combined)
     }
 }
