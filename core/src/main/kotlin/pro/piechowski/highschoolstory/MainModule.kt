@@ -9,7 +9,7 @@ import org.koin.dsl.module
 import pro.piechowski.highschoolstory.camera.MainCameraModule
 import pro.piechowski.highschoolstory.debug.text.DebugTextSystem
 import pro.piechowski.highschoolstory.input.MainInputModule
-import pro.piechowski.highschoolstory.ui.userInterfaceViewportQualifier
+import pro.piechowski.highschoolstory.ui.UserInterfaceViewport
 
 fun mainModule() =
     module {
@@ -27,5 +27,5 @@ fun mainModule() =
         single { DebugTextSystem() }
         single { Json() }
         single(gameModuleQualifier) { gameModule() }
-        single { Stage(get(userInterfaceViewportQualifier)) }
+        single { Stage(get<UserInterfaceViewport>()) }
     }

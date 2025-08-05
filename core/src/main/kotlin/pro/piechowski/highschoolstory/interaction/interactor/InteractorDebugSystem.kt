@@ -1,7 +1,6 @@
 ﻿package pro.piechowski.highschoolstory.interaction.interactor
 
 import com.badlogic.gdx.Gdx
-import com.badlogic.gdx.graphics.Camera
 import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.GL20
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer
@@ -12,10 +11,10 @@ import ktx.graphics.circle
 import ktx.graphics.use
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
+import pro.piechowski.highschoolstory.camera.PixelCamera
 import pro.piechowski.highschoolstory.interaction.InteractionSystem
 import pro.piechowski.highschoolstory.physics.m
 import pro.piechowski.highschoolstory.physics.times
-import pro.piechowski.highschoolstory.camera.pixelCameraQualifier
 
 class InteractorDebugSystem :
     IteratingSystem(
@@ -23,7 +22,7 @@ class InteractorDebugSystem :
     ),
     KoinComponent {
     val shapeRenderer: ShapeRenderer by inject()
-    val camera: Camera by inject(pixelCameraQualifier)
+    val pixelCamera: PixelCamera by inject()
 
     override fun onTickEntity(entity: Entity) {
         Gdx.gl.glEnable(GL20.GL_BLEND)
@@ -31,7 +30,7 @@ class InteractorDebugSystem :
 
         val interactor = InteractorEntity(entity)
 
-        shapeRenderer.use(ShapeRenderer.ShapeType.Filled, camera) {
+        shapeRenderer.use(ShapeRenderer.ShapeType.Filled, pixelCamera) {
             it.color = Color.BLUE.cpy().also { it.a = 0.1f }
             it.circle(
                 interactor.position * m.toPixels(),

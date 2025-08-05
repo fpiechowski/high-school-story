@@ -10,6 +10,7 @@ import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 import pro.piechowski.highschoolstory.character.player.PlayerCharacter
 import pro.piechowski.highschoolstory.character.player.PlayerCharacterTag
+import pro.piechowski.highschoolstory.physics.m
 import pro.piechowski.highschoolstory.rendering.sprite.CurrentSprite
 
 class CameraMovementSystem :
@@ -17,24 +18,15 @@ class CameraMovementSystem :
     KoinComponent {
     private val logger = KotlinLogging.logger { }
 
-    private val pixelCamera by inject<Camera>(pixelCameraQualifier)
-    private val meterCamera by inject<Camera>(meterCameraQualifier)
+    private val cameraSet by inject<CameraSet>()
 
     override fun onTick() {
-        val playerCharacter =
-            PlayerCharacter(
-                world
-                    .family { all(PlayerCharacterTag, CurrentSprite) }
-                    .single(),
-            )
-
-        pixelCamera.moveTo(
-            Vector2(playerCharacter.sprite.sprite.x, playerCharacter.sprite.sprite.y) +
-                Vector2(playerCharacter.sprite.sprite.originX, playerCharacter.sprite.sprite.originY),
-        )
-
-        meterCamera.moveTo(
-            playerCharacter.body.body.position,
-        )
+        world
+            .family { all(PlayerCharacterTag, CurrentSprite) }
+            .singleOrNull()
+            ?.let { PlayerCharacter(it) }
+            ?.let { playerCharacter ->
+                cameraSet.moveTo(playerCharacter.body.body.position.x.m, playerCharacter.body.body.position.y.m)
+            }
     }
 }

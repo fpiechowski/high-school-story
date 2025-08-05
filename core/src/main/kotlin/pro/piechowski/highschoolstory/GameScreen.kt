@@ -1,16 +1,13 @@
 ﻿package pro.piechowski.highschoolstory
 
 import com.badlogic.gdx.Gdx
-import com.badlogic.gdx.graphics.Camera
 import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.badlogic.gdx.maps.tiled.TiledMap
 import com.badlogic.gdx.scenes.scene2d.Stage
-import com.badlogic.gdx.utils.viewport.Viewport
 import com.github.quillraven.fleks.World
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
 import ktx.app.KtxScreen
 import ktx.app.clearScreen
 import ktx.assets.async.AssetStorage
@@ -21,17 +18,14 @@ import org.koin.core.component.inject
 import org.koin.core.context.unloadKoinModules
 import org.koin.core.module.Module
 import pro.piechowski.highschoolstory.asset.AssetIdentifiers
-import pro.piechowski.highschoolstory.camera.meterCameraQualifier
-import pro.piechowski.highschoolstory.camera.meterViewportQualifier
-import pro.piechowski.highschoolstory.camera.pixelCameraQualifier
-import pro.piechowski.highschoolstory.camera.pixelViewportQualifier
-import pro.piechowski.highschoolstory.dialogue.DialogueManager
-import pro.piechowski.highschoolstory.gdx.PhysicsWorld
+import pro.piechowski.highschoolstory.camera.MeterCamera
+import pro.piechowski.highschoolstory.camera.MeterViewport
+import pro.piechowski.highschoolstory.camera.PixelCamera
+import pro.piechowski.highschoolstory.camera.PixelViewport
 import pro.piechowski.highschoolstory.input.GameInputMultiplexer
 import pro.piechowski.highschoolstory.input.InputState
-import pro.piechowski.highschoolstory.map.PlaceManager
 import pro.piechowski.highschoolstory.ui.UserInterface
-import pro.piechowski.highschoolstory.ui.userInterfaceViewportQualifier
+import pro.piechowski.highschoolstory.ui.UserInterfaceViewport
 
 class GameScreen :
     KtxScreen,
@@ -57,11 +51,11 @@ class GameScreen :
     }
 
     private val batch: SpriteBatch by inject()
-    private val pixelCamera: Camera by inject(pixelCameraQualifier)
-    private val meterCamera: Camera by inject(meterCameraQualifier)
-    private val pixelViewport: Viewport by inject(pixelViewportQualifier)
-    private val meterViewport: Viewport by inject(meterViewportQualifier)
-    private val uiViewport: Viewport by inject(userInterfaceViewportQualifier)
+    private val pixelCamera: PixelCamera by inject()
+    private val meterCamera: MeterCamera by inject()
+    private val pixelViewport: PixelViewport by inject()
+    private val meterViewport: MeterViewport by inject()
+    private val userInterfaceViewport: UserInterfaceViewport by inject()
     private val world: World by inject()
     private val stage: Stage by inject()
     private val userInterface: UserInterface by inject()
@@ -106,6 +100,6 @@ class GameScreen :
 
         pixelViewport.update(width, height)
         meterViewport.update(width, height)
-        uiViewport.update(width, height)
+        userInterfaceViewport.update(width, height)
     }
 }

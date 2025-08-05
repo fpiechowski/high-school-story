@@ -6,11 +6,19 @@ import ktx.assets.async.Identifier
 
 object AssetIdentifiers {
     object Textures {
-        val PlayerCharacter = Identifier("player_character.png", Texture::class.java)
-        val Character = Identifier("character.png", Texture::class.java)
+        fun characterTextureIdentifier(name: String) = Identifier("textures/character/$name.png", Texture::class.java)
+
+        fun textureIdentifier(name: String) = Identifier("textures/$name.png", Texture::class.java)
+
+        val PlayerCharacter = characterTextureIdentifier("player_character")
+        val Character = characterTextureIdentifier("character")
+        val Exteriors = textureIdentifier("exteriors")
     }
 
     object Maps {
-        val Town = Identifier("maps/town.tmx", TiledMap::class.java)
+        fun mapIdentifier(name: String) = Identifier("maps/$name.tmx", TiledMap::class.java)
+
+        val Town = mapIdentifier("town")
+        val Road = mapIdentifier("road")
     }
 }
