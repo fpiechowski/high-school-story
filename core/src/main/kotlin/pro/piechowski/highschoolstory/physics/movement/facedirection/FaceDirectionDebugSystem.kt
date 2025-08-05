@@ -14,7 +14,7 @@ import pro.piechowski.highschoolstory.interaction.InteractionSystem
 import pro.piechowski.highschoolstory.physics.body.PhysicsBody
 import pro.piechowski.highschoolstory.physics.m
 import pro.piechowski.highschoolstory.physics.times
-import pro.piechowski.highschoolstory.rendering.pixelCameraQualifier
+import pro.piechowski.highschoolstory.camera.pixelCameraQualifier
 
 class FaceDirectionDebugSystem :
     IteratingSystem(World.family { all(FaceDirection, PhysicsBody) }),

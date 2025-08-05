@@ -2,6 +2,8 @@
 
 import org.koin.dsl.module
 import pro.piechowski.highschoolstory.interaction.input.InteractionInputProcessor
+import pro.piechowski.highschoolstory.interaction.interactable.InteractableDebugSystem
+import pro.piechowski.highschoolstory.interaction.interactor.InteractorDebugSystem
 
 val InteractionModule =
     module {

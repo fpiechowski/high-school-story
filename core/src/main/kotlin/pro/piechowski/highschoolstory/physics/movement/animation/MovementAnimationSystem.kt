@@ -17,8 +17,8 @@ class MovementAnimationSystem :
                 @ReadOnly FaceDirection,
                 @Write CurrentAnimation,
             ).any(
-                @ReadOnly MovementAnimation.Idle,
-                @ReadOnly MovementAnimation.Walk,
+                @ReadOnly MovementAnimationSet.Idle,
+                @ReadOnly MovementAnimationSet.Walk,
             )
         },
     ) {
@@ -28,7 +28,7 @@ class MovementAnimationSystem :
         val currentAnimation = entity[CurrentAnimation]
 
         if (velocity.len() > 0) {
-            entity[MovementAnimation.Walk]
+            entity[MovementAnimationSet.Walk]
                 .animations[entity[FaceDirection].faceDirection.toDirection4()]
                 .let {
                     if (currentAnimation.animation != it) {
@@ -37,7 +37,7 @@ class MovementAnimationSystem :
                     }
                 }
         } else {
-            entity[MovementAnimation.Idle]
+            entity[MovementAnimationSet.Idle]
                 .animations[entity[FaceDirection].faceDirection.toDirection4()]
                 .let {
                     if (currentAnimation.animation != it) {

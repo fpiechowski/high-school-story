@@ -1,4 +1,4 @@
-﻿package pro.piechowski.highschoolstory.interaction
+﻿package pro.piechowski.highschoolstory.interaction.interactor
 
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.graphics.Camera
@@ -12,9 +12,10 @@ import ktx.graphics.circle
 import ktx.graphics.use
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
+import pro.piechowski.highschoolstory.interaction.InteractionSystem
 import pro.piechowski.highschoolstory.physics.m
 import pro.piechowski.highschoolstory.physics.times
-import pro.piechowski.highschoolstory.rendering.pixelCameraQualifier
+import pro.piechowski.highschoolstory.camera.pixelCameraQualifier
 
 class InteractorDebugSystem :
     IteratingSystem(
@@ -32,7 +33,12 @@ class InteractorDebugSystem :
 
         shapeRenderer.use(ShapeRenderer.ShapeType.Filled, camera) {
             it.color = Color.BLUE.cpy().also { it.a = 0.1f }
-            it.circle(interactor.position * m.toPixels(), InteractionSystem.interactionRange.toPixels().value)
+            it.circle(
+                interactor.position * m.toPixels(),
+                InteractionSystem.Companion.interactionRange
+                    .toPixels()
+                    .value,
+            )
         }
     }
 }

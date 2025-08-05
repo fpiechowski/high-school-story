@@ -1,6 +1,6 @@
 ﻿package pro.piechowski.highschoolstory.ecs
 
-import com.github.quillraven.fleks.SystemConfiguration
+import com.github.quillraven.fleks.IntervalSystem
 import com.github.quillraven.fleks.World
 import com.github.quillraven.fleks.configureWorld
 import org.koin.core.scope.Scope
@@ -8,9 +8,9 @@ import pro.piechowski.highschoolstory.Config
 import pro.piechowski.highschoolstory.animation.SpriteAnimationSystem
 import pro.piechowski.highschoolstory.camera.CameraMovementSystem
 import pro.piechowski.highschoolstory.debug.DebugTextSystem
-import pro.piechowski.highschoolstory.interaction.InteractableDebugSystem
 import pro.piechowski.highschoolstory.interaction.InteractionSystem
-import pro.piechowski.highschoolstory.interaction.InteractorDebugSystem
+import pro.piechowski.highschoolstory.interaction.interactable.InteractableDebugSystem
+import pro.piechowski.highschoolstory.interaction.interactor.InteractorDebugSystem
 import pro.piechowski.highschoolstory.map.MapRenderingSystem
 import pro.piechowski.highschoolstory.physics.body.PhysicsDebugRenderingSystem
 import pro.piechowski.highschoolstory.physics.body.PhysicsWorldStepSystem
@@ -28,70 +28,72 @@ operator fun World.Companion.invoke() =
     with(scope) {
         configureWorld {
             systems {
-                inputSystems()
-                gameSystems()
-                physicsSystems()
-                renderingSystems {
-                    if (get<Config>().debug) {
-                        debugSystems()
-                    }
-                }
+                inputSystems.forEach { add(it) }
+                gameSystems.forEach { add(it) }
+                physicsSystems.forEach { add(it) }
+                renderingSystems.forEach { add(it) }
             }
         }
     }
 
-context(sc: SystemConfiguration, scope: Scope)
-private fun inputSystems() =
-    with(sc) {
+context(scope: Scope)
+private val inputSystems
+    get() =
         with(scope) {
-            add(get<MovementControllerInputSystem>())
-            add(get<MovementMultiplexInputSystem>())
+            listOf(
+                get<MovementControllerInputSystem>(),
+                get<MovementMultiplexInputSystem>(),
+            )
         }
-    }
 
-context(sc: SystemConfiguration, scope: Scope)
-private fun gameSystems() =
-    with(sc) {
+context(scope: Scope)
+private val gameSystems
+    get() =
         with(scope) {
-            add(get<FaceDirectionSystem>())
-            add(get<VelocitySystem>())
-            add(get<InteractionSystem>())
+            listOf(
+                get<FaceDirectionSystem>(),
+                get<VelocitySystem>(),
+                get<InteractionSystem>(),
+            )
         }
-    }
 
-context(sc: SystemConfiguration, scope: Scope)
-private fun physicsSystems() =
-    with(sc) {
+context(scope: Scope)
+private val physicsSystems
+    get() =
         with(scope) {
-            add(get<PhysicsWorldStepSystem>())
+            listOf(get<PhysicsWorldStepSystem>())
         }
-    }
 
-context(sc: SystemConfiguration, scope: Scope)
-private fun renderingSystems(inBatch: () -> Unit = {}) =
-    with(sc) {
+context(scope: Scope)
+private val renderingSystems
+    get() =
         with(scope) {
-            // add(get<BeginRenderingBatchSystem>())
-            add(get<MovementAnimationSystem>())
-            add(get<SpriteAnimationSystem>())
-            add(get<CurrentSpritePositionSystem>())
-            add(get<MapRenderingSystem.Background>())
-            add(get<SpriteRenderingSystem>())
-            add(get<MapRenderingSystem.Foreground>())
-            add(get<CameraMovementSystem>())
-            inBatch()
-            // add(get<EndRenderingBatchSystem>())
+            listOf(
+                get<MovementAnimationSystem>(),
+                get<SpriteAnimationSystem>(),
+                get<CurrentSpritePositionSystem>(),
+                get<MapRenderingSystem.Background>(),
+                get<SpriteRenderingSystem>(),
+                get<MapRenderingSystem.Foreground>(),
+                get<CameraMovementSystem>(),
+            ).let {
+                if (get<Config>().debug) {
+                    it + debugSystems
+                } else {
+                    it
+                }
+            }
         }
-    }
 
-context(sc: SystemConfiguration, scope: Scope)
-private fun debugSystems() =
-    with(sc) {
+context(scope: Scope)
+private val debugSystems: List<IntervalSystem>
+    get() =
         with(scope) {
-            add(get<FaceDirectionDebugSystem>())
-            add(get<InteractorDebugSystem>())
-            add(get<InteractableDebugSystem>())
-            add(get<DebugTextSystem>())
-            add(get<PhysicsDebugRenderingSystem>())
+            listOf(
+                get<FaceDirectionDebugSystem>(),
+                get<InteractorDebugSystem>(),
+                get<InteractableDebugSystem>(),
+                get<DebugTextSystem>(),
+                get<PhysicsDebugRenderingSystem>(),
+            )
         }
-    }

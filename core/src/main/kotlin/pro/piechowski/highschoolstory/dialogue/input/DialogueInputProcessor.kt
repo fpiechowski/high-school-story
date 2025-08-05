@@ -1,9 +1,10 @@
-﻿package pro.piechowski.highschoolstory.dialogue
+﻿package pro.piechowski.highschoolstory.dialogue.input
 
 import com.badlogic.gdx.Input
 import ktx.app.KtxInputAdapter
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
+import pro.piechowski.highschoolstory.dialogue.DialogueManager
 import pro.piechowski.highschoolstory.input.InputState
 
 class DialogueInputProcessor :

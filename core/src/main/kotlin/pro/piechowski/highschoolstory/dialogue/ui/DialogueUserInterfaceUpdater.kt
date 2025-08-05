@@ -1,7 +1,9 @@
-﻿package pro.piechowski.highschoolstory.dialogue
+﻿package pro.piechowski.highschoolstory.dialogue.ui
 
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
+import pro.piechowski.highschoolstory.dialogue.Dialogue
+import pro.piechowski.highschoolstory.dialogue.DialogueManager
 
 class DialogueUserInterfaceUpdater : KoinComponent {
     private val dialogueUserInterface: DialogueUserInterface by inject()

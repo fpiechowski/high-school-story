@@ -7,6 +7,11 @@ import com.github.quillraven.fleks.World
 import ktx.math.minus
 import pro.piechowski.highschoolstory.interaction.InteractionSystem.Companion.interactionRange
 import pro.piechowski.highschoolstory.interaction.input.InteractionInput
+import pro.piechowski.highschoolstory.interaction.interactable.Interactable
+import pro.piechowski.highschoolstory.interaction.interactable.InteractableEntity
+import pro.piechowski.highschoolstory.interaction.interactable.Interactables
+import pro.piechowski.highschoolstory.interaction.interactor.InteractorEntity
+import pro.piechowski.highschoolstory.interaction.interactor.Interactors
 import pro.piechowski.highschoolstory.physics.m
 
 class InteractionSystem :

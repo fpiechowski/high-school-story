@@ -18,7 +18,7 @@ import org.koin.core.context.unloadKoinModules
 import org.koin.core.module.Module
 import pro.piechowski.highschoolstory.asset.AssetIdentifiers
 import pro.piechowski.highschoolstory.character.Character
-import pro.piechowski.highschoolstory.character.PlayerCharacter
+import pro.piechowski.highschoolstory.character.player.PlayerCharacter
 import pro.piechowski.highschoolstory.dialogue.Dialogue
 import pro.piechowski.highschoolstory.dialogue.DialogueManager
 import pro.piechowski.highschoolstory.dialogue.dialogue
@@ -26,18 +26,18 @@ import pro.piechowski.highschoolstory.ecs.plusAssign
 import pro.piechowski.highschoolstory.gdx.PhysicsWorld
 import pro.piechowski.highschoolstory.input.GameInputMultiplexer
 import pro.piechowski.highschoolstory.input.InputState
-import pro.piechowski.highschoolstory.interaction.Interactable
+import pro.piechowski.highschoolstory.interaction.interactable.Interactable
 import pro.piechowski.highschoolstory.map.MapManager
 import pro.piechowski.highschoolstory.map.Tile
 import pro.piechowski.highschoolstory.physics.body.PhysicsBody
-import pro.piechowski.highschoolstory.physics.meterCameraQualifier
-import pro.piechowski.highschoolstory.physics.meterViewportQualifier
+import pro.piechowski.highschoolstory.camera.meterCameraQualifier
+import pro.piechowski.highschoolstory.camera.meterViewportQualifier
 import pro.piechowski.highschoolstory.physics.px
 import pro.piechowski.highschoolstory.physics.times
-import pro.piechowski.highschoolstory.rendering.pixelCameraQualifier
-import pro.piechowski.highschoolstory.rendering.pixelViewportQualifier
+import pro.piechowski.highschoolstory.camera.pixelCameraQualifier
+import pro.piechowski.highschoolstory.camera.pixelViewportQualifier
 import pro.piechowski.highschoolstory.ui.UserInterface
-import pro.piechowski.highschoolstory.ui.uiViewportQualifier
+import pro.piechowski.highschoolstory.ui.userInterfaceViewportQualifier
 
 class GameScreen :
     KtxScreen,
@@ -67,7 +67,7 @@ class GameScreen :
     private val meterCamera: Camera by inject(meterCameraQualifier)
     private val pixelViewport: Viewport by inject(pixelViewportQualifier)
     private val meterViewport: Viewport by inject(meterViewportQualifier)
-    private val uiViewport: Viewport by inject(uiViewportQualifier)
+    private val uiViewport: Viewport by inject(userInterfaceViewportQualifier)
     private val world: World by inject()
     private val physicsWorld: PhysicsWorld by inject()
     private val stage: Stage by inject()

@@ -10,6 +10,7 @@ import ktx.async.newSingleThreadAsyncContext
 import ktx.async.onRenderingThread
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
+import pro.piechowski.highschoolstory.dialogue.ui.DialogueUserInterfaceUpdater
 import pro.piechowski.highschoolstory.input.InputState
 import kotlin.reflect.jvm.jvmName
 

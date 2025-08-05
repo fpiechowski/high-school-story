@@ -1,4 +1,4 @@
-﻿package pro.piechowski.highschoolstory.dialogue
+﻿package pro.piechowski.highschoolstory.dialogue.ui
 
 import com.badlogic.gdx.scenes.scene2d.Stage
 import com.kotcrab.vis.ui.building.utilities.Padding

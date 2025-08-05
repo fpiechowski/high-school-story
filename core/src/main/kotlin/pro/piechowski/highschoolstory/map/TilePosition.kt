@@ -3,8 +3,11 @@
 import com.badlogic.gdx.math.Vector2
 import ktx.math.times
 
-object Tile {
-    const val SIZE = 48
+class Tile {
+
+    companion object {
+        const val SIZE = 48
+    }
 
     class Position(
         x: Int,

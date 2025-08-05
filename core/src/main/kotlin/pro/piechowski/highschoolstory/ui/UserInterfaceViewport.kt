@@ -2,4 +2,4 @@
 
 import org.koin.core.qualifier.StringQualifier
 
-val uiViewportQualifier = StringQualifier("uiViewport")
+val userInterfaceViewportQualifier = StringQualifier("uiViewport")

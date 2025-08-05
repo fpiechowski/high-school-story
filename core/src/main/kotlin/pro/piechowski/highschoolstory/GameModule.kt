@@ -3,10 +3,13 @@
 import com.github.quillraven.fleks.World
 import org.koin.core.qualifier.StringQualifier
 import org.koin.dsl.module
-import pro.piechowski.highschoolstory.camera.CameraModule
+import pro.piechowski.highschoolstory.camera.GameCameraModule
+import pro.piechowski.highschoolstory.camera.MainCameraModule
 import pro.piechowski.highschoolstory.dialogue.DialogueModule
 import pro.piechowski.highschoolstory.ecs.invoke
+import pro.piechowski.highschoolstory.input.GameInputModule
 import pro.piechowski.highschoolstory.input.GameInputMultiplexer
+import pro.piechowski.highschoolstory.input.MainInputModule
 import pro.piechowski.highschoolstory.interaction.InteractionModule
 import pro.piechowski.highschoolstory.map.MapModule
 import pro.piechowski.highschoolstory.physics.PhysicsModule
@@ -18,6 +21,7 @@ val gameModuleQualifier = StringQualifier("gameModule")
 
 fun gameModule() =
     module {
+        includes(GameInputModule)
         includes(PhysicsModule)
         includes(InteractionModule)
         includes(MovementModule)
@@ -25,7 +29,7 @@ fun gameModule() =
         includes(UserInterfaceModule)
         includes(RenderingModule)
         includes(MapModule)
-        includes(CameraModule)
+        includes(GameCameraModule)
 
         single { GameScreen() }
 

@@ -3,7 +3,7 @@
 import pro.piechowski.highschoolstory.character.animation.CharacterAnimation
 import pro.piechowski.highschoolstory.direction.Direction4
 
-object CharacterTexture {
+object CharacterTextureUtils {
     fun getLocomotionAnimationRegionsColumnRange(direction: Direction4) =
         when (direction) {
             Direction4.Down -> 18..23
@@ -12,9 +12,9 @@ object CharacterTexture {
             Direction4.Up -> 6..11
         }
 
-    fun getAnimationRegionsRow(animation: CharacterAnimation) =
-        when (animation) {
-            CharacterAnimation.IDLE -> 1
-            CharacterAnimation.WALK -> 2
+    fun getAnimationRegionsRow(animationKind: CharacterAnimation.Kind) =
+        when (animationKind) {
+            CharacterAnimation.Kind.IDLE -> 1
+            CharacterAnimation.Kind.WALK -> 2
         }
 }

@@ -7,7 +7,7 @@ import com.github.quillraven.fleks.IntervalSystem
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 import pro.piechowski.highschoolstory.gdx.PhysicsWorld
-import pro.piechowski.highschoolstory.physics.meterCameraQualifier
+import pro.piechowski.highschoolstory.camera.meterCameraQualifier
 
 class PhysicsDebugRenderingSystem :
     IntervalSystem(Fixed(PHYSICS_STEP)),

@@ -6,7 +6,7 @@ import kotlinx.serialization.json.Json
 import kotlinx.serialization.modules.SerializersModule
 import kotlinx.serialization.modules.contextual
 import kotlinx.serialization.modules.polymorphic
-import pro.piechowski.highschoolstory.character.PlayerCharacter
+import pro.piechowski.highschoolstory.character.player.PlayerCharacterTag
 import pro.piechowski.highschoolstory.physics.movement.facedirection.FaceDirection
 
 fun Json() =
@@ -20,7 +20,7 @@ fun Json() =
                 }
 
                 polymorphic(UniqueId::class) {
-                    subclass(PlayerCharacter::class, PlayerCharacter.serializer())
+                    subclass(PlayerCharacterTag::class, PlayerCharacterTag.serializer())
                 }
             }
 

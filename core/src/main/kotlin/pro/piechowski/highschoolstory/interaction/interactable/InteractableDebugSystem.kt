@@ -1,4 +1,4 @@
-﻿package pro.piechowski.highschoolstory.interaction
+﻿package pro.piechowski.highschoolstory.interaction.interactable
 
 import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer
@@ -8,6 +8,9 @@ import com.github.quillraven.fleks.World
 import ktx.graphics.use
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
+import pro.piechowski.highschoolstory.interaction.interactor.InteractorEntity
+import pro.piechowski.highschoolstory.interaction.interactor.Interactors
+import pro.piechowski.highschoolstory.interaction.isInInteractionRangeOf
 import pro.piechowski.highschoolstory.physics.m
 import pro.piechowski.highschoolstory.rendering.sprite.CurrentSprite
 

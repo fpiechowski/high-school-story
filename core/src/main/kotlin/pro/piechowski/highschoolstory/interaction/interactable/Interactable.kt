@@ -1,4 +1,4 @@
-﻿package pro.piechowski.highschoolstory.interaction
+﻿package pro.piechowski.highschoolstory.interaction.interactable
 
 import com.badlogic.gdx.math.Vector2
 import com.github.quillraven.fleks.Component

@@ -8,10 +8,8 @@ import ktx.graphics.moveTo
 import ktx.math.plus
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
-import pro.piechowski.highschoolstory.character.PlayerCharacter
-import pro.piechowski.highschoolstory.character.PlayerCharacterEntity
-import pro.piechowski.highschoolstory.physics.meterCameraQualifier
-import pro.piechowski.highschoolstory.rendering.pixelCameraQualifier
+import pro.piechowski.highschoolstory.character.player.PlayerCharacter
+import pro.piechowski.highschoolstory.character.player.PlayerCharacterTag
 import pro.piechowski.highschoolstory.rendering.sprite.CurrentSprite
 
 class CameraMovementSystem :
@@ -24,9 +22,9 @@ class CameraMovementSystem :
 
     override fun onTick() {
         val playerCharacter =
-            PlayerCharacterEntity(
+            PlayerCharacter(
                 world
-                    .family { all(PlayerCharacter, CurrentSprite) }
+                    .family { all(PlayerCharacterTag, CurrentSprite) }
                     .single(),
             )
 

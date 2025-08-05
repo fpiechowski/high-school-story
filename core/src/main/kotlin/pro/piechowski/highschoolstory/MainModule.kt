@@ -6,13 +6,15 @@ import com.badlogic.gdx.maps.tiled.TmxMapLoader
 import com.badlogic.gdx.scenes.scene2d.Stage
 import ktx.assets.async.AssetStorage
 import org.koin.dsl.module
+import pro.piechowski.highschoolstory.camera.MainCameraModule
 import pro.piechowski.highschoolstory.debug.DebugTextSystem
-import pro.piechowski.highschoolstory.input.InputModule
-import pro.piechowski.highschoolstory.ui.uiViewportQualifier
+import pro.piechowski.highschoolstory.input.MainInputModule
+import pro.piechowski.highschoolstory.ui.userInterfaceViewportQualifier
 
 fun mainModule() =
     module {
-        includes(InputModule)
+        includes(MainInputModule)
+        includes(MainCameraModule)
 
         single { Config.load() }
         single {
@@ -25,5 +27,5 @@ fun mainModule() =
         single { DebugTextSystem() }
         single { Json() }
         single(gameModuleQualifier) { gameModule() }
-        single { Stage(get(uiViewportQualifier)) }
+        single { Stage(get(userInterfaceViewportQualifier)) }
     }

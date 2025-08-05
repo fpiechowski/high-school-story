@@ -1,4 +1,4 @@
-﻿package pro.piechowski.highschoolstory.interaction
+﻿package pro.piechowski.highschoolstory.interaction.interactor
 
 import com.github.quillraven.fleks.Entity
 import com.github.quillraven.fleks.EntityComponentContext
@@ -7,7 +7,6 @@ import com.github.quillraven.fleks.World
 import pro.piechowski.highschoolstory.interaction.input.InteractionInput
 import pro.piechowski.highschoolstory.physics.body.PhysicsBody
 import pro.piechowski.highschoolstory.physics.movement.facedirection.FaceDirection
-import pro.piechowski.highschoolstory.physics.times
 
 data object Interactor : EntityTag()
 

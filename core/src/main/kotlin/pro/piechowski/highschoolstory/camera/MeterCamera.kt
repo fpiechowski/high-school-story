@@ -1,4 +1,4 @@
-﻿package pro.piechowski.highschoolstory.physics
+﻿package pro.piechowski.highschoolstory.camera
 
 import org.koin.core.qualifier.StringQualifier
 
