@@ -8,34 +8,28 @@ import com.badlogic.gdx.maps.tiled.TiledMap
 import com.badlogic.gdx.scenes.scene2d.Stage
 import com.badlogic.gdx.utils.viewport.Viewport
 import com.github.quillraven.fleks.World
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import ktx.app.KtxScreen
 import ktx.app.clearScreen
 import ktx.assets.async.AssetStorage
 import ktx.assets.disposeSafely
+import ktx.async.KtxAsync
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 import org.koin.core.context.unloadKoinModules
 import org.koin.core.module.Module
 import pro.piechowski.highschoolstory.asset.AssetIdentifiers
-import pro.piechowski.highschoolstory.character.Character
-import pro.piechowski.highschoolstory.character.player.PlayerCharacter
-import pro.piechowski.highschoolstory.dialogue.Dialogue
+import pro.piechowski.highschoolstory.camera.meterCameraQualifier
+import pro.piechowski.highschoolstory.camera.meterViewportQualifier
+import pro.piechowski.highschoolstory.camera.pixelCameraQualifier
+import pro.piechowski.highschoolstory.camera.pixelViewportQualifier
 import pro.piechowski.highschoolstory.dialogue.DialogueManager
-import pro.piechowski.highschoolstory.dialogue.dialogue
-import pro.piechowski.highschoolstory.ecs.plusAssign
 import pro.piechowski.highschoolstory.gdx.PhysicsWorld
 import pro.piechowski.highschoolstory.input.GameInputMultiplexer
 import pro.piechowski.highschoolstory.input.InputState
-import pro.piechowski.highschoolstory.interaction.interactable.Interactable
-import pro.piechowski.highschoolstory.map.MapManager
-import pro.piechowski.highschoolstory.map.Tile
-import pro.piechowski.highschoolstory.physics.body.PhysicsBody
-import pro.piechowski.highschoolstory.camera.meterCameraQualifier
-import pro.piechowski.highschoolstory.camera.meterViewportQualifier
-import pro.piechowski.highschoolstory.physics.px
-import pro.piechowski.highschoolstory.physics.times
-import pro.piechowski.highschoolstory.camera.pixelCameraQualifier
-import pro.piechowski.highschoolstory.camera.pixelViewportQualifier
+import pro.piechowski.highschoolstory.map.PlaceManager
 import pro.piechowski.highschoolstory.ui.UserInterface
 import pro.piechowski.highschoolstory.ui.userInterfaceViewportQualifier
 
@@ -69,70 +63,23 @@ class GameScreen :
     private val meterViewport: Viewport by inject(meterViewportQualifier)
     private val uiViewport: Viewport by inject(userInterfaceViewportQualifier)
     private val world: World by inject()
-    private val physicsWorld: PhysicsWorld by inject()
     private val stage: Stage by inject()
-    private val dialogueManager: DialogueManager by inject()
     private val userInterface: UserInterface by inject()
-    private val mapManager: MapManager by inject()
+    private val gameInitializer: GameInitializer by inject()
+
+    private var gameInitializationJob: Job =
+        KtxAsync
+            .launch {
+                gameInitializer.initializeTestGame()
+            }
 
     init {
-        with(world) {
-            with(assetStorage) {
-                val townMap = get(AssetIdentifiers.Maps.Town)
-                mapManager.openMap(townMap)
-
-                with(physicsWorld) {
-                    val playerCharacter =
-                        entity {
-                            it += PlayerCharacter.archetype("Player", "Character")
-
-                            it[PhysicsBody].body.setTransform(Tile.Position(200, 202).toPixel() * px.toMeter(), 0f)
-                        }
-
-                    entity {
-                        it += Character.archetype("NPC", "", AssetIdentifiers.Textures.Character)
-                        it[PhysicsBody].body.setTransform(Tile.Position(213, 202).toPixel() * px.toMeter(), 0f)
-                        it += Dialogue.Actor("NPC")
-                        it +=
-                            Interactable {
-                                val npc = it[Dialogue.Actor]
-                                val pc = playerCharacter[Dialogue.Actor]
-                                dialogueManager.startDialogue(
-                                    dialogue {
-                                        npc.says(
-                                            "Hello!",
-                                            id = "hello",
-                                            nextNode =
-                                                pc.choice {
-                                                    option(
-                                                        "Hi!",
-                                                        onAdvanced = { println("You're kind") },
-                                                        nextNode = npc.says("What a nice day!"),
-                                                    )
-                                                    option(
-                                                        "Fuck you!",
-                                                        onAdvanced = { println("You're rude") },
-                                                        nextNode =
-                                                            npc.says(
-                                                                "Let's try again",
-                                                                nextNode = goTo("hello"),
-                                                            ),
-                                                    )
-                                                    option("Goodbye!")
-                                                },
-                                        )
-                                    },
-                                )
-                            }
-                    }
-                }
-            }
-        }
-
         userInterface.addActors()
     }
 
     override fun render(delta: Float) {
+        if (!gameInitializationJob.isCompleted) return
+
         clearScreen(red = 0.7f, green = 0.7f, blue = 0.7f)
 
         pixelCamera.update()
@@ -155,6 +102,8 @@ class GameScreen :
         width: Int,
         height: Int,
     ) {
+        if (!gameInitializationJob.isCompleted) return
+
         pixelViewport.update(width, height)
         meterViewport.update(width, height)
         uiViewport.update(width, height)

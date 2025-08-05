@@ -2,6 +2,9 @@
 
 import com.badlogic.gdx.graphics.OrthographicCamera
 import com.github.quillraven.fleks.IntervalSystem
+import kotlinx.coroutines.flow.lastOrNull
+import kotlinx.coroutines.launch
+import ktx.async.KtxAsync
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 
@@ -9,13 +12,13 @@ sealed class MapRenderingSystem(
     val layers: List<MapLayer> = emptyList(),
 ) : IntervalSystem(),
     KoinComponent {
-    private val mapManager by inject<MapManager>()
+    private val placeManager by inject<PlaceManager>()
     private val camera by inject<OrthographicCamera>()
 
     override fun onTick() {
-        mapManager.mapRenderer?.let { renderer ->
+        placeManager.mapRenderer.value?.let { renderer ->
             renderer.setView(camera)
-            mapManager.currentMap.value?.let { map ->
+            placeManager.currentMap.value?.let { map ->
                 val layerIndices =
                     map.layers
                         .mapIndexed { idx, layer -> idx to layer }

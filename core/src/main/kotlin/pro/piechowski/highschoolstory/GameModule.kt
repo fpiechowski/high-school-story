@@ -35,5 +35,7 @@ fun gameModule() =
 
         single { GameInputMultiplexer() }
 
+        single { GameInitializer() }
+
         single<World> { World() }
     }

@@ -4,7 +4,7 @@ import org.koin.dsl.module
 
 val MapModule =
     module {
-        single { MapManager() }
+        single { PlaceManager() }
         single { MapRenderingSystem.Background() }
         single { MapRenderingSystem.Foreground() }
     }
