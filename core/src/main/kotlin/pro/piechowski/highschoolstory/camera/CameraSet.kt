@@ -25,4 +25,9 @@ data class CameraSet(
         pixelCamera.moveTo(Vector2(x.toPixels().value, y.toPixels().value))
         meterCamera.moveTo(Vector2(x.value, y.value))
     }
+
+    fun zoom(amount: Float) {
+        pixelCamera.zoom += amount
+        meterCamera.zoom += amount
+    }
 }

@@ -7,6 +7,7 @@ import org.koin.core.scope.Scope
 import pro.piechowski.highschoolstory.Config
 import pro.piechowski.highschoolstory.animation.SpriteAnimationSystem
 import pro.piechowski.highschoolstory.camera.CameraMovementSystem
+import pro.piechowski.highschoolstory.debug.highlight.DebugEntityHighlightRenderingSystem
 import pro.piechowski.highschoolstory.debug.selection.DebugSelectionIndicatorRenderingSystem
 import pro.piechowski.highschoolstory.debug.text.DebugTextSystem
 import pro.piechowski.highschoolstory.interaction.InteractionSystem
@@ -97,5 +98,6 @@ private val debugSystems: List<IntervalSystem>
                 get<DebugTextSystem>(),
                 get<PhysicsDebugRenderingSystem>(),
                 get<DebugSelectionIndicatorRenderingSystem>(),
+                // get<DebugEntityHighlightRenderingSystem>(),
             )
         }

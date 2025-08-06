@@ -1,5 +1,6 @@
 ﻿package pro.piechowski.highschoolstory.debug.selection
 
+import com.badlogic.gdx.Input
 import com.badlogic.gdx.math.Vector2
 import com.badlogic.gdx.math.Vector3
 import com.github.quillraven.fleks.World
@@ -22,20 +23,24 @@ class DebugSelectionInputProcessor :
         pointer: Int,
         button: Int,
     ): Boolean {
-        val worldPoint =
-            camera
-                .unproject(Vector3(screenX.toFloat(), screenY.toFloat(), 0f))
-                .let { Vector2(it.x, it.y) }
+        if (button == Input.Buttons.LEFT) {
+            val worldPoint =
+                camera
+                    .unproject(Vector3(screenX.toFloat(), screenY.toFloat(), 0f))
+                    .let { Vector2(it.x, it.y) }
 
-        debugEntitySelectionManager.currentSelectedEntity =
-            with(world) {
-                family { all(CurrentSprite.Companion) }
-                    .map { it to it[CurrentSprite.Companion] }
-                    .filter { (_, currentSprite) -> currentSprite.sprite.boundingRectangle.contains(worldPoint) }
-                    .minByOrNull { (_, currentSprite) -> currentSprite.sprite.y }
-                    ?.first
-            }
+            debugEntitySelectionManager.currentSelectedEntity =
+                with(world) {
+                    family { all(CurrentSprite.Companion) }
+                        .map { it to it[CurrentSprite.Companion] }
+                        .filter { (_, currentSprite) -> currentSprite.sprite.boundingRectangle.contains(worldPoint) }
+                        .minByOrNull { (_, currentSprite) -> currentSprite.sprite.y }
+                        ?.first
+                }
 
-        return true
+            return true
+        }
+
+        return false
     }
 }

@@ -11,6 +11,7 @@ import pro.piechowski.highschoolstory.gdx.PhysicsWorld
 import pro.piechowski.highschoolstory.physics.px
 import pro.piechowski.highschoolstory.place.PlaceManager
 import pro.piechowski.highschoolstory.place.Road
+import pro.piechowski.highschoolstory.scene.IntroScene
 
 class GameInitializer : KoinComponent {
     private val world: World by inject()
@@ -29,16 +30,9 @@ class GameInitializer : KoinComponent {
         }
     }
 
+    private val introScene by inject<IntroScene>()
+
     suspend fun initializeTestGame() {
-        placeManager.openPlace(Road)
-
-        cameraSet.moveTo(720f.px, 480f.px)
-
-        with(world) {
-            with(physicsWorld) {
-                with(assetStorage) {
-                }
-            }
-        }
+        introScene.play()
     }
 }

@@ -8,14 +8,16 @@ import com.badlogic.gdx.maps.tiled.TiledMap
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer
 import com.badlogic.gdx.math.Vector2
 import com.badlogic.gdx.physics.box2d.Body
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.mapNotNull
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.runningFold
-import kotlinx.coroutines.flow.runningReduce
 import kotlinx.coroutines.flow.stateIn
 import ktx.assets.async.AssetStorage
+import ktx.async.RenderingScope
 import ktx.async.onRenderingThread
 import ktx.box2d.body
 import ktx.box2d.box
@@ -33,11 +35,11 @@ class MapManager : KoinComponent {
     private val placeManager by inject<PlaceManager>()
     private val assetStorage by inject<AssetStorage>()
     private val physicsWorld by inject<PhysicsWorld>()
-    private val coroutineScope = CoroutineScope(CoroutineContexts.Logic)
+    private val coroutineScope = RenderingScope()
 
     val currentMap =
         placeManager.currentPlace
-            .runningReduce(::replaceLoadedMapAsset)
+            .runningFold(null, ::replaceLoadedMapAsset)
             .map { it?.let { assetStorage[it.mapAssetIdentifier] } }
             .flowOn(CoroutineContexts.IO)
             .stateIn(coroutineScope, SharingStarted.Companion.Eagerly, null)
@@ -51,6 +53,7 @@ class MapManager : KoinComponent {
 
     val mapRenderer =
         currentMap
+            .filterNotNull()
             .map(::OrthogonalTiledMapRenderer)
             .stateIn(coroutineScope, SharingStarted.Companion.Eagerly, null)
 
@@ -66,7 +69,9 @@ class MapManager : KoinComponent {
         previousBodies: List<Body>,
         newMap: TiledMap?,
     ): List<Body> {
-        previousBodies.forEach { physicsWorld.destroyBody(it) }
+        onRenderingThread {
+            previousBodies.forEach { physicsWorld.destroyBody(it) }
+        }
 
         return newMap
             ?.layers
