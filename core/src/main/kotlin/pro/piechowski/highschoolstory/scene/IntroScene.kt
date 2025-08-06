@@ -11,8 +11,10 @@ import org.koin.core.component.inject
 import pro.piechowski.highschoolstory.camera.CameraSet
 import pro.piechowski.highschoolstory.exterior.ExteriorTexture
 import pro.piechowski.highschoolstory.gdx.PhysicsWorld
+import pro.piechowski.highschoolstory.map.Tile
 import pro.piechowski.highschoolstory.physics.body.PhysicsBody
 import pro.piechowski.highschoolstory.physics.px
+import pro.piechowski.highschoolstory.physics.times
 import pro.piechowski.highschoolstory.place.PlaceManager
 import pro.piechowski.highschoolstory.place.Road
 import pro.piechowski.highschoolstory.rendering.sprite.CurrentSprite
@@ -38,9 +40,10 @@ class IntroScene :
                 onRenderingThread {
                     it +=
                         PhysicsBody(
-                            physicsWorld.body {
-                                box(336f.px.toMeter().value, 192f.px.toMeter().value)
-                            },
+                            physicsWorld
+                                .body {
+                                    box(336f.px.toMeter().value, 192f.px.toMeter().value)
+                                }.apply { setTransform(Tile.Position(15, 8).toPixel() * px.toMeter(), angle) },
                         )
                 }
             }

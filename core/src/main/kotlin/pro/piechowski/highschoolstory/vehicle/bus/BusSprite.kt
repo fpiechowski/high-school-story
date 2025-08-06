@@ -18,7 +18,7 @@ sealed class BusSprite(
                     Left(
                         exteriorTexture.region(
                             624,
-                            18144,
+                            3408,
                             336,
                             192,
                         ),
@@ -30,11 +30,11 @@ sealed class BusSprite(
             textureRegion: TextureRegion,
         ) : Brown(textureRegion) {
             companion object {
-                suspend operator fun invoke(exteriorTexture: ExteriorTexture): Left =
-                    Left(
+                suspend operator fun invoke(exteriorTexture: ExteriorTexture): Right =
+                    Right(
                         exteriorTexture.region(
                             624,
-                            17952,
+                            3600,
                             336,
                             192,
                         ),
@@ -46,11 +46,11 @@ sealed class BusSprite(
             textureRegion: TextureRegion,
         ) : Brown(textureRegion) {
             companion object {
-                suspend operator fun invoke(exteriorTexture: ExteriorTexture): Left =
-                    Left(
+                suspend operator fun invoke(exteriorTexture: ExteriorTexture): Down =
+                    Down(
                         exteriorTexture.region(
                             960,
-                            18000,
+                            3408,
                             144,
                             336,
                         ),
@@ -62,11 +62,11 @@ sealed class BusSprite(
             textureRegion: TextureRegion,
         ) : Brown(textureRegion) {
             companion object {
-                suspend operator fun invoke(exteriorTexture: ExteriorTexture): Left =
-                    Left(
+                suspend operator fun invoke(exteriorTexture: ExteriorTexture): Up =
+                    Up(
                         exteriorTexture.region(
                             1104,
-                            18000,
+                            3408,
                             144,
                             336,
                         ),
