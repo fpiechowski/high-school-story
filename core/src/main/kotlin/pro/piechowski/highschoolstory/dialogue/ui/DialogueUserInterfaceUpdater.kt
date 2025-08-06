@@ -12,11 +12,11 @@ class DialogueUserInterfaceUpdater : KoinComponent {
     fun updateUserInterface() =
         with(dialogueManager) {
             with(dialogueUserInterface) {
-                dialogueBox.isVisible = dialogueState.value != null
+                dialogueBox.isVisible = currentDialogueState.value != null
 
                 updateDialogueOptions()
 
-                dialogueState.value?.let { state ->
+                currentDialogueState.value?.let { state ->
                     if (state.currentNode is Dialogue.Node.Sentence) {
                         dialogueLabel.setText(state.currentNode.line)
                     }
@@ -29,7 +29,7 @@ class DialogueUserInterfaceUpdater : KoinComponent {
             with(dialogueUserInterface) {
                 dialogueOptionsList.isVisible = false
 
-                dialogueState.value?.let { state ->
+                currentDialogueState.value?.let { state ->
                     if (state.currentNode is Dialogue.Node.Choice) {
                         dialogueOptionsList.apply {
                             isVisible = true

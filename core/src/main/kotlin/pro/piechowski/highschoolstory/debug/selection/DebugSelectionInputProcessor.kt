@@ -14,7 +14,7 @@ class DebugSelectionInputProcessor :
     KoinComponent {
     private val camera: PixelCamera by inject()
     private val world by inject<World>()
-    private val debugSelectionManager by inject<DebugSelectionManager>()
+    private val debugEntitySelectionManager by inject<DebugEntitySelectionManager>()
 
     override fun touchDown(
         screenX: Int,
@@ -27,7 +27,7 @@ class DebugSelectionInputProcessor :
                 .unproject(Vector3(screenX.toFloat(), screenY.toFloat(), 0f))
                 .let { Vector2(it.x, it.y) }
 
-        debugSelectionManager.selectedEntity.value =
+        debugEntitySelectionManager.currentSelectedEntity =
             with(world) {
                 family { all(CurrentSprite.Companion) }
                     .map { it to it[CurrentSprite.Companion] }

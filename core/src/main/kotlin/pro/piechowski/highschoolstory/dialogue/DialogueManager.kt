@@ -6,32 +6,30 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import ktx.async.KtxAsync
-import ktx.async.newSingleThreadAsyncContext
 import ktx.async.onRenderingThread
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
+import pro.piechowski.highschoolstory.CoroutineContexts
 import pro.piechowski.highschoolstory.dialogue.ui.DialogueUserInterfaceUpdater
 import pro.piechowski.highschoolstory.input.InputState
-import kotlin.reflect.jvm.jvmName
 
 class DialogueManager : KoinComponent {
-    private val currentDialogueState = MutableStateFlow<DialogueState?>(null)
-
-    private val asyncContext = newSingleThreadAsyncContext(DialogueManager::class.jvmName)
+    private val _currentDialogueState = MutableStateFlow<DialogueState?>(null)
+    val currentDialogueState: StateFlow<DialogueState?> get() = _currentDialogueState.asStateFlow()
 
     private val inputState: InputState by inject()
     private val dialogueUserInterfaceUpdater: DialogueUserInterfaceUpdater by inject()
 
     init {
-        KtxAsync.launch(asyncContext) {
-            currentDialogueState.collect {
+        KtxAsync.launch(CoroutineContexts.Logic) {
+            _currentDialogueState.collect {
                 if (it == null) {
                     inputState.mode.value = InputState.Mode.EXPLORATION
                 } else {
                     inputState.mode.value = InputState.Mode.DIALOGUE
 
                     if (it.currentNode is Dialogue.Node.End) {
-                        currentDialogueState.update { null }
+                        _currentDialogueState.value = null
                     }
                 }
 
@@ -42,10 +40,12 @@ class DialogueManager : KoinComponent {
         }
     }
 
-    fun startDialogue(dialogue: Dialogue) = currentDialogueState.update { DialogueState(dialogue) }
+    fun startDialogue(dialogue: Dialogue) {
+        _currentDialogueState.value = DialogueState(dialogue)
+    }
 
     fun advance() =
-        currentDialogueState.update {
+        _currentDialogueState.update {
             it
                 ?.also {
                     when (it.currentNode) {
@@ -60,9 +60,7 @@ class DialogueManager : KoinComponent {
                 }?.advanced()
         }
 
-    fun selectNextOption() = currentDialogueState.update { it?.withNextOptionSelected() }
+    fun selectNextOption() = _currentDialogueState.update { it?.withNextOptionSelected() }
 
-    fun selectPreviousOption() = currentDialogueState.update { it?.withPreviousOptionSelected() }
-
-    val dialogueState: StateFlow<DialogueState?> get() = currentDialogueState.asStateFlow()
+    fun selectPreviousOption() = _currentDialogueState.update { it?.withPreviousOptionSelected() }
 }

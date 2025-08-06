@@ -8,8 +8,8 @@ import pro.piechowski.highschoolstory.camera.CameraSet
 import pro.piechowski.highschoolstory.camera.PixelCamera
 import pro.piechowski.highschoolstory.dialogue.DialogueManager
 import pro.piechowski.highschoolstory.gdx.PhysicsWorld
-import pro.piechowski.highschoolstory.map.PlaceManager
 import pro.piechowski.highschoolstory.physics.px
+import pro.piechowski.highschoolstory.place.PlaceManager
 import pro.piechowski.highschoolstory.place.Road
 
 class GameInitializer : KoinComponent {

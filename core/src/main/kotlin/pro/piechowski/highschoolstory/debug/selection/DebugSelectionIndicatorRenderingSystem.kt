@@ -11,12 +11,12 @@ import pro.piechowski.highschoolstory.rendering.sprite.CurrentSprite
 class DebugSelectionIndicatorRenderingSystem :
     IntervalSystem(),
     KoinComponent {
-    private val debugSelectionManager by inject<DebugSelectionManager>()
+    private val debugEntitySelectionManager by inject<DebugEntitySelectionManager>()
     private val shapeRenderer by inject<ShapeRenderer>()
 
     override fun onTick() {
         with(world) {
-            debugSelectionManager.selectedEntity.value?.get(CurrentSprite)?.let { sprite ->
+            debugEntitySelectionManager.selectedEntity.value?.get(CurrentSprite)?.let { sprite ->
                 shapeRenderer.use(ShapeRenderer.ShapeType.Line) {
                     it.color = Color.GREEN.cpy()
                     it.rect(sprite.sprite.x, sprite.sprite.y, sprite.sprite.width, sprite.sprite.height)

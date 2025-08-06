@@ -15,6 +15,7 @@ import pro.piechowski.highschoolstory.interaction.InteractionModule
 import pro.piechowski.highschoolstory.map.MapModule
 import pro.piechowski.highschoolstory.physics.PhysicsModule
 import pro.piechowski.highschoolstory.physics.movement.MovementModule
+import pro.piechowski.highschoolstory.place.PlaceModule
 import pro.piechowski.highschoolstory.rendering.RenderingModule
 import pro.piechowski.highschoolstory.ui.UserInterfaceModule
 
@@ -32,6 +33,7 @@ fun gameModule() =
         includes(MapModule)
         includes(GameCameraModule)
         includes(DebugModule)
+        includes(PlaceModule)
 
         single { GameScreen() }
 

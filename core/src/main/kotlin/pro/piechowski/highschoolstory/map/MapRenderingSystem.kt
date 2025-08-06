@@ -4,18 +4,19 @@ import com.github.quillraven.fleks.IntervalSystem
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 import pro.piechowski.highschoolstory.camera.PixelCamera
+import pro.piechowski.highschoolstory.place.PlaceManager
 
 sealed class MapRenderingSystem(
     val layers: List<MapLayer> = emptyList(),
 ) : IntervalSystem(),
     KoinComponent {
-    private val placeManager by inject<PlaceManager>()
+    private val mapManager by inject<MapManager>()
     private val pixelCamera by inject<PixelCamera>()
 
     override fun onTick() {
-        placeManager.mapRenderer.value?.let { renderer ->
+        mapManager.mapRenderer.value?.let { renderer ->
             renderer.setView(pixelCamera)
-            placeManager.currentMap.value?.let { map ->
+            mapManager.currentMap.value?.let { map ->
                 val layerIndices =
                     map.layers
                         .mapIndexed { idx, layer -> idx to layer }
