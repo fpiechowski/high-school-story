@@ -4,7 +4,6 @@ import com.github.quillraven.fleks.IntervalSystem
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 import pro.piechowski.highschoolstory.camera.PixelCamera
-import pro.piechowski.highschoolstory.place.PlaceManager
 
 sealed class MapRenderingSystem(
     val layers: List<MapLayer> = emptyList(),
@@ -16,7 +15,7 @@ sealed class MapRenderingSystem(
     override fun onTick() {
         mapManager.mapRenderer.value?.let { renderer ->
             renderer.setView(pixelCamera)
-            mapManager.currentMap.value?.let { map ->
+            mapManager.currentTiledMap.value?.let { map ->
                 val layerIndices =
                     map.layers
                         .mapIndexed { idx, layer -> idx to layer }
@@ -24,7 +23,13 @@ sealed class MapRenderingSystem(
                         .filterValues { layer -> layer.name in layers.map { it.name } }
                         .map { it.key }
 
-                renderer.render(layerIndices.toIntArray())
+                when (renderer) {
+                    is ScrollingMapRenderer ->
+                        renderer
+                            .renderLooped(pixelCamera, layerIndices.toIntArray())
+                            .also { renderer.update(deltaTime) }
+                    else -> renderer.render(layerIndices.toIntArray())
+                }
             }
         }
     }

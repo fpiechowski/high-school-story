@@ -12,8 +12,6 @@ import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.flow.mapNotNull
-import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.runningFold
 import kotlinx.coroutines.flow.stateIn
 import ktx.assets.async.AssetStorage
@@ -28,7 +26,6 @@ import org.koin.core.component.inject
 import pro.piechowski.highschoolstory.CoroutineContexts
 import pro.piechowski.highschoolstory.gdx.PhysicsWorld
 import pro.piechowski.highschoolstory.physics.px
-import pro.piechowski.highschoolstory.place.Place
 import pro.piechowski.highschoolstory.place.PlaceManager
 
 class MapManager : KoinComponent {
@@ -39,13 +36,19 @@ class MapManager : KoinComponent {
 
     val currentMap =
         placeManager.currentPlace
+            .map { it?.map }
             .runningFold(null, ::replaceLoadedMapAsset)
-            .map { it?.let { assetStorage[it.mapAssetIdentifier] } }
+            .map { it?.apply { tiledMap.complete(assetStorage[it.assetIdentifier]) } }
             .flowOn(CoroutineContexts.IO)
             .stateIn(coroutineScope, SharingStarted.Companion.Eagerly, null)
 
-    val currentMapBodies =
+    val currentTiledMap =
         currentMap
+            .map { it?.tiledMap?.await() }
+            .stateIn(coroutineScope, SharingStarted.Companion.Eagerly, null)
+
+    val currentMapBodies =
+        currentTiledMap
             .runningFold(
                 emptyList(),
                 ::replaceBodies,
@@ -54,15 +57,18 @@ class MapManager : KoinComponent {
     val mapRenderer =
         currentMap
             .filterNotNull()
-            .map(::OrthogonalTiledMapRenderer)
-            .stateIn(coroutineScope, SharingStarted.Companion.Eagerly, null)
+            .map { map ->
+                map.scrolling?.let { scroll ->
+                    ScrollingMapRenderer(map.tiledMap.await(), scroll)
+                } ?: OrthogonalTiledMapRenderer(map.tiledMap.await())
+            }.stateIn(coroutineScope, SharingStarted.Companion.Eagerly, null)
 
     private suspend fun replaceLoadedMapAsset(
-        previousPlace: Place?,
-        nextPlace: Place?,
-    ): Place? {
-        previousPlace?.also { assetStorage.unload(it.mapAssetIdentifier) }
-        return nextPlace?.also { assetStorage.load(it.mapAssetIdentifier) }
+        previousMap: Map?,
+        nextMap: Map?,
+    ): Map? {
+        previousMap?.also { assetStorage.unload(it.assetIdentifier) }
+        return nextMap?.also { assetStorage.load(it.assetIdentifier) }
     }
 
     private suspend fun replaceBodies(
