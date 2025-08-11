@@ -16,7 +16,7 @@ import pro.piechowski.highschoolstory.physics.m
 import pro.piechowski.highschoolstory.physics.times
 
 class FaceDirectionDebugSystem :
-    IteratingSystem(World.family { all(FaceDirection, PhysicsBody) }),
+    IteratingSystem(World.family { all(PhysicsBody).any(FaceDirection4, FaceDirection8) }),
     KoinComponent {
     private val shapeRenderer: ShapeRenderer by inject()
     private val pixelCamera: PixelCamera by inject()

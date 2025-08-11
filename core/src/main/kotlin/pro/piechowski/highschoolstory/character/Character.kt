@@ -22,6 +22,7 @@ import pro.piechowski.highschoolstory.physics.body.PhysicsBody
 import pro.piechowski.highschoolstory.physics.movement.Speed
 import pro.piechowski.highschoolstory.physics.movement.animation.MovementAnimationSet
 import pro.piechowski.highschoolstory.physics.movement.facedirection.FaceDirection
+import pro.piechowski.highschoolstory.physics.movement.facedirection.FaceDirection8
 import pro.piechowski.highschoolstory.physics.movement.input.MovementInput
 import pro.piechowski.highschoolstory.spatial.Spatial
 import pro.piechowski.highschoolstory.sprite.CurrentSprite
@@ -74,7 +75,7 @@ open class Character(
                     this += CurrentAnimation(downIdleAnimation)
                     this += MovementInput.Multiplex()
                     this += Speed.walk
-                    this += FaceDirection(Direction8.Down)
+                    this += FaceDirection8(Direction8.Down)
                     this += Interactor
                     this += InteractionInput()
                     this += Name(firstName, lastName)

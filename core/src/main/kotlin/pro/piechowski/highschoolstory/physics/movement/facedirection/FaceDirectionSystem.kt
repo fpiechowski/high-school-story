@@ -6,6 +6,7 @@ import com.github.quillraven.fleks.IteratingSystem
 import com.github.quillraven.fleks.World
 import io.github.oshai.kotlinlogging.KotlinLogging
 import pro.piechowski.highschoolstory.debug
+import pro.piechowski.highschoolstory.direction.Direction4
 import pro.piechowski.highschoolstory.direction.Direction8
 import pro.piechowski.highschoolstory.ecs.ReadOnly
 import pro.piechowski.highschoolstory.ecs.Write
@@ -16,7 +17,9 @@ class FaceDirectionSystem :
         World.family {
             all(
                 @ReadOnly MovementInput.Multiplex,
-                @Write FaceDirection,
+            ).any(
+                @Write FaceDirection4,
+                @Write FaceDirection8,
             )
         },
     ) {
@@ -27,7 +30,10 @@ class FaceDirectionSystem :
         val faceDirection = entity[FaceDirection]
 
         if (movementInput.movementInput != Vector2.Zero) {
-            faceDirection.faceDirection = Direction8.from(movementInput.movementInput)
+            when (faceDirection) {
+                is FaceDirection4 -> faceDirection.faceDirection = Direction4.from(movementInput.movementInput)
+                is FaceDirection8 -> faceDirection.faceDirection = Direction8.from(movementInput.movementInput)
+            }
 
             logger.debug(faceDirection, entity)
         }

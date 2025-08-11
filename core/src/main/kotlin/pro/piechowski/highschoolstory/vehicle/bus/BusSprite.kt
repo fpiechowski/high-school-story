@@ -7,12 +7,12 @@ import pro.piechowski.highschoolstory.exterior.ExteriorTexture
 sealed class BusSprite(
     textureRegion: TextureRegion,
 ) : Sprite(textureRegion) {
-    sealed class Brown(
+    sealed class Yellow(
         textureRegion: TextureRegion,
     ) : BusSprite(textureRegion) {
         class Left(
             textureRegion: TextureRegion,
-        ) : Brown(textureRegion) {
+        ) : Yellow(textureRegion) {
             companion object {
                 suspend operator fun invoke(exteriorTexture: ExteriorTexture): Left =
                     Left(
@@ -28,7 +28,7 @@ sealed class BusSprite(
 
         class Right(
             textureRegion: TextureRegion,
-        ) : Brown(textureRegion) {
+        ) : Yellow(textureRegion) {
             companion object {
                 suspend operator fun invoke(exteriorTexture: ExteriorTexture): Right =
                     Right(
@@ -44,7 +44,7 @@ sealed class BusSprite(
 
         class Down(
             textureRegion: TextureRegion,
-        ) : Brown(textureRegion) {
+        ) : Yellow(textureRegion) {
             companion object {
                 suspend operator fun invoke(exteriorTexture: ExteriorTexture): Down =
                     Down(
@@ -60,7 +60,7 @@ sealed class BusSprite(
 
         class Up(
             textureRegion: TextureRegion,
-        ) : Brown(textureRegion) {
+        ) : Yellow(textureRegion) {
             companion object {
                 suspend operator fun invoke(exteriorTexture: ExteriorTexture): Up =
                     Up(

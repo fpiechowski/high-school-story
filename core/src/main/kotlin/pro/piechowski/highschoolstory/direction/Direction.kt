@@ -2,7 +2,14 @@
 
 import com.badlogic.gdx.math.Vector2
 import kotlinx.serialization.Contextual
+import kotlinx.serialization.KSerializer
 import kotlinx.serialization.Serializable
+import kotlinx.serialization.descriptors.PrimitiveKind
+import kotlinx.serialization.descriptors.PrimitiveSerialDescriptor
+import kotlinx.serialization.descriptors.SerialDescriptor
+import kotlinx.serialization.encoding.Decoder
+import kotlinx.serialization.encoding.Encoder
+import kotlin.reflect.jvm.jvmName
 
 @Serializable
 sealed class Direction(
@@ -10,7 +17,7 @@ sealed class Direction(
 ) : Vector2(vector.x, vector.y)
 
 sealed class Direction4(
-    vector: Vector2,
+    override val vector: Vector2,
 ) : Direction(vector) {
     data object Up : Direction4(Vector2(0f, 1f)) {
         private fun readResolve(): Any = Up
@@ -38,10 +45,30 @@ sealed class Direction4(
                 else -> if (vector.y > 0) Up else Down
             }
     }
+
+    object Serializer : KSerializer<Direction4> {
+        override val descriptor: SerialDescriptor = PrimitiveSerialDescriptor(Direction4::class.jvmName, PrimitiveKind.STRING)
+
+        override fun serialize(
+            encoder: Encoder,
+            value: Direction4,
+        ) {
+            encoder.encodeString(value::class.jvmName)
+        }
+
+        override fun deserialize(decoder: Decoder): Direction4 =
+            when (decoder.decodeString()) {
+                Up::class.jvmName -> Up
+                Down::class.jvmName -> Down
+                Left::class.jvmName -> Left
+                Right::class.jvmName -> Right
+                else -> throw IllegalArgumentException("Unknown direction")
+            }
+    }
 }
 
 sealed class Direction8(
-    vector: Vector2,
+    override val vector: Vector2,
 ) : Direction(vector) {
     data object Up : Direction8(Vector2(0f, 1f)) {
         private fun readResolve(): Any = Up
@@ -101,5 +128,29 @@ sealed class Direction8(
                 else -> throw IllegalArgumentException("Invalid direction")
             }
         }
+    }
+
+    object Serializer : KSerializer<Direction8> {
+        override val descriptor: SerialDescriptor = PrimitiveSerialDescriptor(Direction8::class.jvmName, PrimitiveKind.STRING)
+
+        override fun serialize(
+            encoder: Encoder,
+            value: Direction8,
+        ) {
+            encoder.encodeString(value::class.jvmName)
+        }
+
+        override fun deserialize(decoder: Decoder): Direction8 =
+            when (decoder.decodeString()) {
+                Up::class.jvmName -> Up
+                UpLeft::class.jvmName -> UpLeft
+                UpRight::class.jvmName -> UpRight
+                Down::class.jvmName -> Down
+                DownLeft::class.jvmName -> DownLeft
+                DownRight::class.jvmName -> DownRight
+                Left::class.jvmName -> Left
+                Right::class.jvmName -> Right
+                else -> throw IllegalArgumentException("Unknown direction")
+            }
     }
 }

@@ -8,17 +8,22 @@ import pro.piechowski.highschoolstory.ecs.ReadOnly
 import pro.piechowski.highschoolstory.ecs.Write
 import pro.piechowski.highschoolstory.physics.body.PhysicsBody
 import pro.piechowski.highschoolstory.physics.movement.facedirection.FaceDirection
+import pro.piechowski.highschoolstory.physics.movement.facedirection.FaceDirection4
+import pro.piechowski.highschoolstory.physics.movement.facedirection.FaceDirection8
+import pro.piechowski.highschoolstory.physics.movement.facedirection.get
 
 class MovementAnimationSystem :
     IteratingSystem(
         World.Companion.family {
             all(
                 @ReadOnly PhysicsBody,
-                @ReadOnly FaceDirection,
                 @Write CurrentAnimation,
             ).any(
                 @ReadOnly MovementAnimationSet.Idle,
                 @ReadOnly MovementAnimationSet.Walk,
+            ).any(
+                @ReadOnly FaceDirection4,
+                @ReadOnly FaceDirection8,
             )
         },
     ) {
@@ -27,9 +32,15 @@ class MovementAnimationSystem :
 
         val currentAnimation = entity[CurrentAnimation]
 
+        val direction4 =
+            when (entity[FaceDirection]) {
+                is FaceDirection4 -> entity[FaceDirection4].faceDirection
+                is FaceDirection8 -> entity[FaceDirection8].faceDirection.toDirection4()
+            }
+
         if (velocity.len() > 0) {
             entity[MovementAnimationSet.Walk]
-                .animations[entity[FaceDirection].faceDirection.toDirection4()]
+                .animations[direction4]
                 .let {
                     if (currentAnimation.animation != it) {
                         currentAnimation.animation = it
@@ -38,7 +49,7 @@ class MovementAnimationSystem :
                 }
         } else {
             entity[MovementAnimationSet.Idle]
-                .animations[entity[FaceDirection].faceDirection.toDirection4()]
+                .animations[direction4]
                 .let {
                     if (currentAnimation.animation != it) {
                         currentAnimation.animation = it

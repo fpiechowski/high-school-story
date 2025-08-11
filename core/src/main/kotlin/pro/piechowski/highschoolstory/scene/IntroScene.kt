@@ -14,6 +14,7 @@ import pro.piechowski.highschoolstory.character.says
 import pro.piechowski.highschoolstory.dialogue.DialogueManager
 import pro.piechowski.highschoolstory.dialogue.await
 import pro.piechowski.highschoolstory.dialogue.dialogue
+import pro.piechowski.highschoolstory.direction.Direction4
 import pro.piechowski.highschoolstory.map.Tile
 import pro.piechowski.highschoolstory.physics.px
 import pro.piechowski.highschoolstory.physics.times
@@ -26,6 +27,7 @@ import pro.piechowski.highschoolstory.transition.Transition
 import pro.piechowski.highschoolstory.transition.TransitionManager
 import pro.piechowski.highschoolstory.transition.await
 import pro.piechowski.highschoolstory.vehicle.bus.Bus
+import pro.piechowski.highschoolstory.vehicle.bus.BusColor
 import kotlin.time.Duration
 import kotlin.time.Duration.Companion.seconds
 
@@ -52,7 +54,7 @@ class IntroScene :
 
                     transitionManager.play(Transition.FadeBlack.In(Duration.ZERO, 1f))
 
-                    Bus().apply {
+                    Bus(Direction4.Right, BusColor.YELLOW).apply {
                         position = Tile.Position(15, 8).toPixel() * px.toMeter()
                     }
 
