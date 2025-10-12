@@ -90,7 +90,9 @@ class Bus(
                                 },
                                 physicsBody.body.angle * MathUtils.radiansToDegrees,
                                 20f,
-                            ),
+                            ).apply {
+                                attachToBody(physicsBody.body)
+                            },
                         ),
                     )
             }

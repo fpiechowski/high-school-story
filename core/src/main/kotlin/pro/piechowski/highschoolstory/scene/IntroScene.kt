@@ -1,5 +1,8 @@
 ﻿package pro.piechowski.highschoolstory.scene
 
+import box2dLight.PointLight
+import box2dLight.RayHandler
+import com.badlogic.gdx.graphics.Color
 import com.github.quillraven.fleks.World
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -60,6 +63,10 @@ class IntroScene :
 
                     cameraManager.stopFollowingPlayerCharacter()
                     cameraSet.moveTo(720f.px, 480f.px)
+
+                    val rayHandler = get<RayHandler>()
+                    val lightPosition = Tile.Position(15, 8).toPixel() * px.toMeter()
+                    PointLight(rayHandler, 32, Color.RED, 20f, lightPosition.x, lightPosition.y)
 
                     placeManager.travelTo(Road)
 

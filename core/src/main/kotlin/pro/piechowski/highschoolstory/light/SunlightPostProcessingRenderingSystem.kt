@@ -43,6 +43,17 @@ class SunlightPostProcessingRenderingSystem :
     private val shaderManager by inject<ShaderManager>()
 
     override fun onTick() {
+        spriteBatch.shader = null
+        spriteBatch.begin()
+        spriteBatch.draw(
+            TextureRegion(lightFrameBufferManager.frameBuffer.value.colorBufferTexture).apply { flip(false, true) },
+            0f,
+            0f,
+            Gdx.graphics.width.toFloat(),
+            Gdx.graphics.height.toFloat(),
+        )
+        spriteBatch.end()
+
         val spriteRegion =
             TextureRegion(spriteFrameBufferManager.frameBuffer.value.colorBufferTexture).apply { flip(false, true) }
         val lightRegion =
@@ -57,7 +68,7 @@ class SunlightPostProcessingRenderingSystem :
         val ambientB = tint.b * factor
 
         with(shaderManager) {
-            spriteBatch.shader = lightingCompositeShader
+            // spriteBatch.shader = lightingCompositeShader
             spriteBatch.use {
                 lightingCompositeShader.setUniformi("u_scene", 0)
                 lightingCompositeShader.setUniformi("u_light", 1)
@@ -75,6 +86,14 @@ class SunlightPostProcessingRenderingSystem :
                 pixelViewportManager.pixelViewportValue.let { pixelViewport ->
                     spriteBatch.draw(
                         spriteRegion,
+                        pixelCamera.position.x - (pixelCamera.viewportWidth / 2),
+                        pixelCamera.position.y - (pixelCamera.viewportHeight / 2),
+                        pixelCamera.viewportWidth,
+                        pixelCamera.viewportHeight,
+                    )
+
+                    spriteBatch.draw(
+                        lightRegion,
                         pixelCamera.position.x - (pixelCamera.viewportWidth / 2),
                         pixelCamera.position.y - (pixelCamera.viewportHeight / 2),
                         pixelCamera.viewportWidth,
