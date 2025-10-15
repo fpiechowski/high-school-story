@@ -2,18 +2,30 @@
 
 import javafx.beans.property.SimpleObjectProperty
 import javafx.beans.property.SimpleStringProperty
+import javafx.scene.Scene
 import javafx.scene.control.TableColumn
 import javafx.scene.control.TableView
 import javafx.scene.control.TableView.CONSTRAINED_RESIZE_POLICY_ALL_COLUMNS
 import javafx.scene.control.TextField
 import javafx.scene.layout.Priority
+import javafx.scene.layout.Region.USE_COMPUTED_SIZE
 import javafx.scene.layout.VBox
 import javafx.util.Callback
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.SupervisorJob
+import org.koin.core.annotation.KoinInternalApi
 import org.koin.core.instance.SingleInstanceFactory
+import pro.piechowski.highschoolstory.inspector.asObservableValue
 import pro.piechowski.highschoolstory.inspector.`object`.ObjectTableCell
 
-class KoinInspectorView : VBox() {
-    val typeColumn =
+@KoinInternalApi
+class KoinInspectorView(
+    private val viewModel: KoinInspectorViewModel,
+) {
+    private val coroutineScope = CoroutineScope(SupervisorJob() + Dispatchers.Main)
+
+    private val typeColumn =
         TableColumn<Pair<SingleInstanceFactory<*>, Any?>, String>().apply {
             minWidth = 100.0
             prefWidth = USE_COMPUTED_SIZE
@@ -25,7 +37,7 @@ class KoinInspectorView : VBox() {
                 }
         }
 
-    val valueColumn =
+    private val valueColumn =
         TableColumn<Pair<SingleInstanceFactory<*>, Any?>, Any?>().apply {
             minWidth = 100.0
             prefWidth = USE_COMPUTED_SIZE
@@ -39,23 +51,29 @@ class KoinInspectorView : VBox() {
                 }
         }
 
-    val instancesTable =
+    private val instancesTable =
         TableView<Pair<SingleInstanceFactory<*>, Any?>>().apply {
             columnResizePolicy = CONSTRAINED_RESIZE_POLICY_ALL_COLUMNS
             maxHeight = Double.MAX_VALUE
-            setVgrow(this, Priority.ALWAYS)
+            VBox.setVgrow(this, Priority.ALWAYS)
+
             columns += listOf(typeColumn, valueColumn)
+
+            itemsProperty().bind(viewModel.instances.asObservableValue(coroutineScope))
         }
 
-    val searchTextField =
+    private val searchTextField =
         TextField().apply {
             promptText = "Search..."
         }
 
-    init {
-        prefWidth = 250.0
-        prefHeight = 400.0
+    val root =
+        VBox().apply {
+            prefWidth = 250.0
+            prefHeight = 400.0
 
-        children += listOf(searchTextField, instancesTable)
-    }
+            children += listOf(searchTextField, instancesTable)
+        }
+
+    val scene = Scene(root)
 }

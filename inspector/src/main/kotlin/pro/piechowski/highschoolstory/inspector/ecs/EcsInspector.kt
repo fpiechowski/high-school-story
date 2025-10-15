@@ -19,25 +19,15 @@ class EcsInspector(
 ) {
     private val coroutineScope = CoroutineScope(SupervisorJob() + Dispatchers.Default)
 
-    private val view = EcsInspectorView()
-    private val scene = Scene(view)
+    private val model = EcsInspectorModel()
+    private val viewModel = EcsInspectorViewModel(model)
+    private val view = EcsInspectorView(viewModel)
+
     private val stage =
         Stage().apply {
-            scene = this@EcsInspector.scene
+            scene = view.scene
             show()
         }
-
-    private val families
-        get() =
-            GlobalContext
-                .getOrNull()
-                ?.get<World>()
-                ?.let { world ->
-                    val allFamiliesProperty =
-                        world::class.memberProperties.find { it.name == "allFamilies" } as? KProperty1<Any, *>
-                    val families = allFamiliesProperty?.get(world) as Array<*>
-                    families.map { it as Family }.toTypedArray()
-                }
 
     init {
 

@@ -16,44 +16,18 @@ import kotlin.reflect.full.memberProperties
 import kotlin.reflect.jvm.isAccessible
 
 @KoinInternalApi
-class KoinInspector(
-    private val gameScope: CoroutineScope,
-) : KoinComponent {
-    private val coroutineScope: CoroutineScope = CoroutineScope(SupervisorJob() + Dispatchers.Default)
+class KoinInspector : KoinComponent {
+    private val model = KoinInspectorModel()
+    private val viewModel = KoinInspectorViewModel(model)
+    private val view = KoinInspectorView(viewModel)
 
-    private val view = KoinInspectorView()
-    private val scene = Scene(view)
-    private val controller = KoinInspectorController(view)
     private val stage =
         Stage().apply {
-            scene = this@KoinInspector.scene
+            scene = view.scene
             title = "Koin"
             x = 0.0
             y = 0.0
         }
 
-    private val instances
-        get() =
-            GlobalContext
-                .getOrNull()
-                ?.instanceRegistry
-                ?.instances
-                ?.values
-                ?.filterIsInstance<SingleInstanceFactory<*>>()
-                ?.map { factory ->
-                    val valueProp = factory::class.memberProperties.find { it.name == "value" }
-                    valueProp?.isAccessible = true
-                    factory to (valueProp as? KProperty1<Any, *>)?.get(factory)
-                }?.sortedBy { it.first.beanDefinition.primaryType.simpleName } ?: emptyList()
-
     fun show() = stage.show()
-
-    init {
-        coroutineScope.launch {
-            while (true) {
-                controller.updateInstancesTable(instances)
-                delay(2000)
-            }
-        }
-    }
 }

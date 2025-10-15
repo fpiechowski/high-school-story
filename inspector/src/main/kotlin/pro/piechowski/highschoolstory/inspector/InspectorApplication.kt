@@ -23,7 +23,7 @@ class InspectorApplication : Application() {
     private val gameScope = CoroutineScope(newSingleThreadContext("GameScope"))
 
     private val gameInspector = GameInspector(gameScope)
-    private val koinInspector = KoinInspector(gameScope)
+    private val koinInspector = KoinInspector()
     private val ecsInspector = EcsInspector(gameScope)
 
     override fun start(primaryStage: Stage?) {
