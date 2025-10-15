@@ -42,7 +42,6 @@ dependencies {
         implementation("io.github.berstanio:gdx-svmhelper-backend-lwjgl3:$graalHelperVersion")
         implementation("io.github.berstanio:gdx-svmhelper-extension-box2d:$graalHelperVersion")
         implementation("io.github.berstanio:gdx-svmhelper-extension-freetype:$graalHelperVersion")
-
     }
 }
 
@@ -51,7 +50,7 @@ val os = System.getProperty("os.name").lowercase(Locale.getDefault())
 tasks.named<JavaExec>("run") {
     workingDir = rootProject.file("assets")
     // You can uncomment the next line if your IDE claims a build failure even when the app closed properly.
-    //setIgnoreExitValue(true)
+    // setIgnoreExitValue(true)
 
     if (os.contains("mac")) jvmArgs("-XstartOnFirstThread")
 }
@@ -60,7 +59,7 @@ val projectVersion: String by project
 
 tasks.jar {
     // sets the name of the .jar file this produces to the name of the game or app, with the version after.
-    archiveFileName.set("${appName}-${projectVersion}.jar")
+    archiveFileName.set("$appName-$projectVersion.jar")
     // the duplicatesStrategy matters starting in Gradle 7.0; this setting works.
     duplicatesStrategy = DuplicatesStrategy.EXCLUDE
 
@@ -87,16 +86,29 @@ tasks.register<Jar>("jarMac") {
     dependsOn(tasks.named("jar"))
     group = "build"
 
-
-    archiveFileName.set("${appName}-${projectVersion}-mac.jar")
+    archiveFileName.set("$appName-$projectVersion-mac.jar")
     exclude(
-        "windows/x86/**", "windows/x64/**", "linux/arm32/**", "linux/arm64/**", "linux/x64/**", "**/*.dll", "**/*.so",
-        "META-INF/INDEX.LIST", "META-INF/*.SF", "META-INF/*.DSA", "META-INF/*.RSA"
+        "windows/x86/**",
+        "windows/x64/**",
+        "linux/arm32/**",
+        "linux/arm64/**",
+        "linux/x64/**",
+        "**/*.dll",
+        "**/*.so",
+        "META-INF/INDEX.LIST",
+        "META-INF/*.SF",
+        "META-INF/*.DSA",
+        "META-INF/*.RSA",
     )
     dependencies {
         exclude(
-            "windows/x86/**", "windows/x64/**", "linux/arm32/**", "linux/arm64/**", "linux/x64/**",
-            "META-INF/INDEX.LIST", "META-INF/maven/**"
+            "windows/x86/**",
+            "windows/x64/**",
+            "linux/arm32/**",
+            "linux/arm64/**",
+            "linux/x64/**",
+            "META-INF/INDEX.LIST",
+            "META-INF/maven/**",
         )
     }
 }
@@ -106,15 +118,27 @@ tasks.register<Jar>("jarMac") {
 tasks.register<Jar>("jarLinux") {
     dependsOn("jar")
     group = "build"
-    archiveFileName.set("${appName}-${projectVersion}-linux.jar")
+    archiveFileName.set("$appName-$projectVersion-linux.jar")
     exclude(
-        "windows/x86/**", "windows/x64/**", "macos/arm64/**", "macos/x64/**", "**/*.dll", "**/*.dylib",
-        "META-INF/INDEX.LIST", "META-INF/*.SF", "META-INF/*.DSA", "META-INF/*.RSA"
+        "windows/x86/**",
+        "windows/x64/**",
+        "macos/arm64/**",
+        "macos/x64/**",
+        "**/*.dll",
+        "**/*.dylib",
+        "META-INF/INDEX.LIST",
+        "META-INF/*.SF",
+        "META-INF/*.DSA",
+        "META-INF/*.RSA",
     )
     dependencies {
         exclude(
-            "windows/x86/**", "windows/x64/**", "macos/arm64/**", "macos/x64/**",
-            "META-INF/INDEX.LIST", "META-INF/maven/**"
+            "windows/x86/**",
+            "windows/x64/**",
+            "macos/arm64/**",
+            "macos/x64/**",
+            "META-INF/INDEX.LIST",
+            "META-INF/maven/**",
         )
     }
 }
@@ -124,15 +148,29 @@ tasks.register<Jar>("jarLinux") {
 tasks.register<Jar>("jarWin") {
     dependsOn("jar")
     group = "build"
-    archiveFileName.set("${appName}-${projectVersion}-win.jar")
+    archiveFileName.set("$appName-$projectVersion-win.jar")
     exclude(
-        "macos/arm64/**", "macos/x64/**", "linux/arm32/**", "linux/arm64/**", "linux/x64/**", "**/*.dylib", "**/*.so",
-        "META-INF/INDEX.LIST", "META-INF/*.SF", "META-INF/*.DSA", "META-INF/*.RSA"
+        "macos/arm64/**",
+        "macos/x64/**",
+        "linux/arm32/**",
+        "linux/arm64/**",
+        "linux/x64/**",
+        "**/*.dylib",
+        "**/*.so",
+        "META-INF/INDEX.LIST",
+        "META-INF/*.SF",
+        "META-INF/*.DSA",
+        "META-INF/*.RSA",
     )
     dependencies {
         exclude(
-            "macos/arm64/**", "macos/x64/**", "linux/arm32/**", "linux/arm64/**", "linux/x64/**",
-            "META-INF/INDEX.LIST", "META-INF/maven/**"
+            "macos/arm64/**",
+            "macos/x64/**",
+            "linux/arm32/**",
+            "linux/arm64/**",
+            "linux/x64/**",
+            "META-INF/INDEX.LIST",
+            "META-INF/maven/**",
         )
     }
 }
@@ -148,12 +186,16 @@ construo {
     targets {
         register<Target.Linux>("linuxX64") {
             architecture.set(Target.Architecture.X86_64)
-            jdkUrl.set("https://github.com/adoptium/temurin17-binaries/releases/download/jdk-17.0.15%2B6/OpenJDK17U-jdk_x64_linux_hotspot_17.0.15_6.tar.gz")
+            jdkUrl.set(
+                "https://github.com/adoptium/temurin17-binaries/releases/download/jdk-17.0.15%2B6/OpenJDK17U-jdk_x64_linux_hotspot_17.0.15_6.tar.gz",
+            )
             // Linux does not currently have a way to set the icon on the executable
         }
         register<Target.MacOs>("macM1") {
             architecture.set(Target.Architecture.AARCH64)
-            jdkUrl.set("https://github.com/adoptium/temurin17-binaries/releases/download/jdk-17.0.15%2B6/OpenJDK17U-jdk_aarch64_mac_hotspot_17.0.15_6.tar.gz")
+            jdkUrl.set(
+                "https://github.com/adoptium/temurin17-binaries/releases/download/jdk-17.0.15%2B6/OpenJDK17U-jdk_aarch64_mac_hotspot_17.0.15_6.tar.gz",
+            )
             // macOS needs an identifier
             identifier.set("pro.piechowski.highschoolstory." + appName)
             // Optional: icon for macOS, as an ICNS file
@@ -161,7 +203,9 @@ construo {
         }
         register<Target.MacOs>("macX64") {
             architecture.set(Target.Architecture.X86_64)
-            jdkUrl.set("https://github.com/adoptium/temurin17-binaries/releases/download/jdk-17.0.15%2B6/OpenJDK17U-jdk_x64_mac_hotspot_17.0.15_6.tar.gz")
+            jdkUrl.set(
+                "https://github.com/adoptium/temurin17-binaries/releases/download/jdk-17.0.15%2B6/OpenJDK17U-jdk_x64_mac_hotspot_17.0.15_6.tar.gz",
+            )
             // macOS needs an identifier
             identifier.set("pro.piechowski.highschoolstory." + appName)
             // Optional: icon for macOS, as an ICNS file
@@ -171,13 +215,14 @@ construo {
             architecture.set(Target.Architecture.X86_64)
             // Optional: icon for Windows, as a PNG
             icon.set(project.file("icons/logo.png"))
-            jdkUrl.set("https://github.com/adoptium/temurin17-binaries/releases/download/jdk-17.0.15%2B6/OpenJDK17U-jdk_x64_windows_hotspot_17.0.15_6.zip")
+            jdkUrl.set(
+                "https://github.com/adoptium/temurin17-binaries/releases/download/jdk-17.0.15%2B6/OpenJDK17U-jdk_x64_windows_hotspot_17.0.15_6.zip",
+            )
             // Uncomment the next line to show a console when the game runs, to print messages.
-            //useConsole.set(true)
+            // useConsole.set(true)
         }
     }
 }
-
 
 // Equivalent to the jar task; here for compatibility with gdx-setup.
 tasks.register("dist") {
@@ -188,11 +233,17 @@ distributions {
     main {
         contents {
             into("libs") {
-                project.configurations.runtimeClasspath.get().files.filter { file ->
-                    file.getName() != project.tasks.jar.get().outputs.files.singleFile.name
-                }.forEach { file ->
-                    exclude(file.name)
-                }
+                project.configurations.runtimeClasspath
+                    .get()
+                    .files
+                    .filter { file ->
+                        file.getName() !=
+                            project.tasks.jar
+                                .get()
+                                .outputs.files.singleFile.name
+                    }.forEach { file ->
+                        exclude(file.name)
+                    }
             }
         }
     }
@@ -200,5 +251,11 @@ distributions {
 
 tasks.named<CreateStartScripts>("startScripts") {
     dependsOn(":lwjgl3:jar")
-    classpath = files(project.tasks.named("jar").get().outputs.files)
+    classpath =
+        files(
+            project.tasks
+                .named("jar")
+                .get()
+                .outputs.files,
+        )
 }

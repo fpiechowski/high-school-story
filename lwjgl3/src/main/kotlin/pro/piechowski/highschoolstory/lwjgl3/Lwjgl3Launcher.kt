@@ -4,14 +4,22 @@ package pro.piechowski.highschoolstory.lwjgl3
 
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3Application
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3ApplicationConfiguration
+import org.koin.core.annotation.KoinInternalApi
+import org.koin.core.context.stopKoin
 import pro.piechowski.highschoolstory.Main
 
 /** Launches the desktop (LWJGL3) application. */
+@KoinInternalApi
 fun main() {
+    launchLwjgl3()
+}
+
+fun launchLwjgl3() {
     // This handles macOS support and helps on Windows.
     if (StartupHelper.startNewJvmIfRequired()) {
         return
     }
+
     Lwjgl3Application(
         Main(),
         Lwjgl3ApplicationConfiguration().apply {

@@ -16,9 +16,9 @@
     <logger name="pro.piechowski.highschoolstory.framebuffer.BeginFrameBufferSystem" level="info"/>
     <logger name="pro.piechowski.highschoolstory.framebuffer.EndFrameBufferSystem" level="info"/>
     <logger name="pro.piechowski.highschoolstory.map.MapRenderingSystem" level="info"/>
-    <logger name="pro.piechowski.highschoolstory.light.framebuffer.BeginLightFrameBufferSystem" level="debug"/>
-    <logger name="pro.piechowski.highschoolstory.light.framebuffer.EndLightFrameBufferSystem" level="debug"/>
-    <logger name="pro.piechowski.highschoolstory.light.LightRenderingSystem" level="debug"/>
+    <logger name="pro.piechowski.highschoolstory.light.framebuffer.BeginLightFrameBufferSystem" level="info"/>
+    <logger name="pro.piechowski.highschoolstory.light.framebuffer.EndLightFrameBufferSystem" level="info"/>
+    <logger name="pro.piechowski.highschoolstory.light.LightRenderingSystem" level="info"/>
     <root level="info">
         <appender-ref ref="STDOUT" />
     </root>
