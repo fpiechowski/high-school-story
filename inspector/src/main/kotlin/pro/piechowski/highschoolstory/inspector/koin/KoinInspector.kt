@@ -14,15 +14,16 @@ import org.koin.core.annotation.KoinInternalApi
 import org.koin.core.component.KoinComponent
 import org.koin.core.context.GlobalContext
 import org.koin.core.instance.SingleInstanceFactory
+import pro.piechowski.highschoolstory.inspector.SharedInspectorViewModel
 import kotlin.reflect.KProperty1
 import kotlin.reflect.full.memberProperties
 import kotlin.reflect.jvm.isAccessible
 
 @KoinInternalApi
-class KoinInspector : KoinComponent {
-    private val coroutineScope = CoroutineScope(SupervisorJob() + Dispatchers.Default)
-
+class KoinInspector(
+    sharedInspectorViewModel: SharedInspectorViewModel
+) : KoinComponent {
     val model = KoinInspectorModel()
     val viewModel = KoinInspectorViewModel(model)
-    private val view = KoinInspectorView(viewModel)
+    private val view = KoinInspectorView(viewModel, sharedInspectorViewModel)
 }

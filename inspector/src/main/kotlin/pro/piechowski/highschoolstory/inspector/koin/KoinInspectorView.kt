@@ -2,7 +2,6 @@
 
 import javafx.beans.property.SimpleObjectProperty
 import javafx.beans.property.SimpleStringProperty
-import javafx.scene.Scene
 import javafx.scene.control.TableColumn
 import javafx.scene.control.TableView
 import javafx.scene.control.TableView.CONSTRAINED_RESIZE_POLICY_ALL_COLUMNS
@@ -18,14 +17,23 @@ import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.launch
 import org.koin.core.annotation.KoinInternalApi
 import org.koin.core.instance.SingleInstanceFactory
+import pro.piechowski.highschoolstory.inspector.InspectorView
+import pro.piechowski.highschoolstory.inspector.SharedInspectorViewModel
 import pro.piechowski.highschoolstory.inspector.asObservableValue
 import pro.piechowski.highschoolstory.inspector.`object`.ObjectTableCell
 
 @KoinInternalApi
 class KoinInspectorView(
-    private val viewModel: KoinInspectorViewModel,
-) {
-    private val coroutineScope = CoroutineScope(SupervisorJob() + Dispatchers.Main)
+    override val viewModel: KoinInspectorViewModel,
+    override val sharedInspectorViewModel: SharedInspectorViewModel
+) : InspectorView<KoinInspectorViewModel>() {
+
+    override val title: String = "Koin"
+
+    override fun Stage.stageSetup() {
+        x = 0.0
+        y = 0.0
+    }
 
     private val typeColumn =
         TableColumn<Pair<SingleInstanceFactory<*>, Any?>, String>().apply {
@@ -69,25 +77,11 @@ class KoinInspectorView(
             promptText = "Search..."
         }
 
-    val root =
+    override val root =
         VBox().apply {
             prefWidth = 250.0
             prefHeight = 400.0
 
             children += listOf(searchTextField, instancesTable)
-        }
-
-    val scene = Scene(root)
-
-    private val stage =
-        Stage().apply {
-            scene = this@KoinInspectorView.scene
-            title = "Koin"
-            x = 0.0
-            y = 0.0
-
-            focusedProperty().addListener { _, _, newValue ->
-                coroutineScope.launch { if (newValue) viewModel.focus() else viewModel.clearFocus() }
-            }
         }
 }

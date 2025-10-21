@@ -10,14 +10,9 @@ import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.combine
-import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.stateIn
-import kotlinx.coroutines.javafx.JavaFx
-import kotlinx.coroutines.launch
 import kotlinx.coroutines.newSingleThreadContext
-import kotlinx.coroutines.withContext
 import org.koin.core.Koin
 import org.koin.core.annotation.KoinInternalApi
 import org.koin.core.context.GlobalContext
@@ -43,40 +38,16 @@ class InspectorApplication : Application() {
             }
         }.stateIn(coroutineScope, SharingStarted.Eagerly, null)
 
-    private val gameInspector = GameInspector(gameScope)
+    private val sharedInspectorViewModel = SharedInspectorViewModel()
+
+    private val gameInspector = GameInspector(gameScope, sharedInspectorViewModel)
     private val koinInspector = KoinInspector()
     private val ecsInspector = EcsInspector(koin)
 
-    private val inspectorViewModel = InspectorViewModel()
-
     override fun start(primaryStage: Stage?) {
-        coroutineScope.launch {
-            gameInspector.model.show()
-            koinInspector.model.show()
-            ecsInspector.show()
-        }
-
-        bringAllStagesToFrontWhenAnyOfThemIsFocused()
-    }
-
-    private fun bringAllStagesToFrontWhenAnyOfThemIsFocused() {
-        coroutineScope.launch {
-            combine(
-                gameInspector.viewModel.focused,
-                koinInspector.viewModel.focused,
-                ecsInspector.focused,
-            ) { gameInspectorFocused, koinInspectorFocused, ecsInspectorFocused ->
-                gameInspectorFocused || koinInspectorFocused || ecsInspectorFocused
-            }.stateIn(coroutineScope)
-                .filter { it }
-                .collect {
-                    withContext(Dispatchers.JavaFx) {
-                        gameInspector.viewModel.toFront()
-                        koinInspector.toFront()
-                        ecsInspector.toFront()
-                    }
-                }
-        }
+        gameInspector.viewModel.open()
+        koinInspector.viewModel.open()
+        ecsInspector.viewModel.open()
     }
 
     companion object {

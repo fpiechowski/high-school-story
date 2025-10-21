@@ -5,15 +5,21 @@ import javafx.collections.FXCollections
 import javafx.collections.ObservableList
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharedFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
+import pro.piechowski.highschoolstory.inspector.InspectorViewModel
 
+@ExperimentalCoroutinesApi
 class EcsInspectorViewModel(
     private val model: EcsInspectorModel,
-) {
+): InspectorViewModel() {
     private val coroutineScope = CoroutineScope(SupervisorJob() + Dispatchers.Default)
 
     val componentTypes =

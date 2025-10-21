@@ -1,5 +1,7 @@
 package pro.piechowski.highschoolstory.inspector.koin
 
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import org.koin.core.annotation.KoinInternalApi
 import org.koin.core.context.GlobalContext
 import org.koin.core.instance.SingleInstanceFactory
@@ -23,5 +25,10 @@ class KoinInspectorModel {
                     factory to (valueProp as? KProperty1<Any, *>)?.get(factory)
                 }?.sortedBy { it.first.beanDefinition.primaryType.simpleName } ?: emptyList()
 
-    fun show() = stage.show()
+    private val _opened = MutableStateFlow(false)
+     val opened: StateFlow<Boolean> = _opened
+
+    fun open() {
+        _opened.value = true
+    }
 }
