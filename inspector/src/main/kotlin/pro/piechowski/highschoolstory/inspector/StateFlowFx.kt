@@ -12,11 +12,16 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.javafx.JavaFx
 import kotlinx.coroutines.launch
 
-fun <T> StateFlow<T>.asObservableValue(scope: CoroutineScope): ReadOnlyObjectProperty<T> {
-    val prop = SimpleObjectProperty(this.value)
+fun <T> StateFlow<T>.asObservableValue(scope: CoroutineScope): ReadOnlyObjectProperty<T> = this.asObservableValue(scope, value)
+
+fun <T> Flow<T>.asObservableValue(
+    scope: CoroutineScope,
+    initialValue: T,
+): ReadOnlyObjectProperty<T> {
+    val prop = SimpleObjectProperty(initialValue)
 
     scope.launch(Dispatchers.JavaFx) {
-        this@asObservableValue.collect { newValue ->
+        collect { newValue ->
             if (Platform.isFxApplicationThread()) {
                 prop.set(newValue)
             } else {
@@ -49,22 +54,5 @@ fun <T> MutableStateFlow<T>.asBidirectionalObservableValue(scope: CoroutineScope
         }
     }
 
-    return prop
-}
-
-fun <T> Flow<T>.asObservableValue(
-    scope: CoroutineScope,
-    initialValue: T,
-): ReadOnlyObjectProperty<T> {
-    val prop = SimpleObjectProperty(initialValue)
-    scope.launch(Dispatchers.JavaFx) {
-        collect { newValue ->
-            if (Platform.isFxApplicationThread()) {
-                prop.set(newValue)
-            } else {
-                Platform.runLater { prop.set(newValue) }
-            }
-        }
-    }
     return prop
 }

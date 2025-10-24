@@ -8,7 +8,6 @@ import ktx.app.KtxScreen
 import ktx.async.KtxAsync
 import ktx.scene2d.Scene2DSkin
 import org.koin.core.Koin
-import org.koin.core.context.GlobalContext
 import org.koin.core.context.loadKoinModules
 import org.koin.core.context.startKoin
 import org.koin.core.context.stopKoin
@@ -16,9 +15,13 @@ import org.koin.core.module.Module
 
 class Main : KtxGame<KtxScreen>() {
     override fun create() {
-        val koin = startKoin {}.koin
+        val koin =
+            startKoin {}
+                .koin
+                .also { _koinModulesInitialized.value = true }
 
         koin.loadModules(listOf(mainModule()))
+        _koinModulesInitialized.value = true
 
         KtxAsync.initiate()
 
@@ -34,7 +37,7 @@ class Main : KtxGame<KtxScreen>() {
     override fun dispose() {
         super.dispose()
 
-        stopKoin()
+        stopKoin().also { _koinModulesInitialized.value = false }
     }
 
     context(koin: Koin)

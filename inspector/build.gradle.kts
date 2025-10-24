@@ -4,6 +4,7 @@ plugins {
     id("org.jetbrains.kotlin.jvm") version "2.2.20"
     id("org.openjfx.javafxplugin") version "0.0.13"
     id("org.beryx.jlink") version "2.25.0"
+    id("io.github.fpiechowski.hex") version "1.0.3"
 }
 
 group = "pro.piechowski.highschoolstory"
@@ -33,6 +34,8 @@ javafx {
 }
 
 dependencies {
+    domainImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.10.2")
+
     implementation(project(":core"))
     implementation(project(":lwjgl3"))
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-javafx:1.10.2")

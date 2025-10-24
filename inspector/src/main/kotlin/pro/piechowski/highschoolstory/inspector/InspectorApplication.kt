@@ -2,52 +2,53 @@
 
 import io.github.oshai.kotlinlogging.KotlinLogging
 import javafx.application.Application
+import javafx.scene.Scene
 import javafx.stage.Stage
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.SupervisorJob
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.SharingStarted
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.flow.stateIn
-import kotlinx.coroutines.newSingleThreadContext
-import org.koin.core.Koin
 import org.koin.core.annotation.KoinInternalApi
-import org.koin.core.context.GlobalContext
-import pro.piechowski.highschoolstory.inspector.ecs.EcsInspector
-import pro.piechowski.highschoolstory.inspector.game.GameInspector
-import pro.piechowski.highschoolstory.inspector.koin.KoinInspector
+import pro.piechowski.highschoolstory.inspector.ecs.EcsView
+import pro.piechowski.highschoolstory.inspector.ecs.EcsViewModel
+import pro.piechowski.highschoolstory.inspector.koin.GlobalInstancesView
+import pro.piechowski.highschoolstory.inspector.koin.GlobalInstancesViewModel
+import pro.piechowski.highschoolstory.inspector.`object`.ObjectInspectorView
+import pro.piechowski.highschoolstory.inspector.`object`.ObjectInspectorViewModel
+import pro.piechowski.highschoolstory.inspector.runtime.RuntimeView
+import pro.piechowski.highschoolstory.inspector.runtime.RuntimeViewModel
 
+@DelicateCoroutinesApi
 @ExperimentalCoroutinesApi
 @KoinInternalApi
 class InspectorApplication : Application() {
     private val logger = KotlinLogging.logger { }
 
-    private val coroutineScope = CoroutineScope(SupervisorJob() + Dispatchers.Default)
-    private val gameScope = CoroutineScope(newSingleThreadContext("GameScope"))
+    private val adapters = Adapters()
 
-    private val koin: StateFlow<Koin?> =
-        flow {
-            while (true) {
-                GlobalContext.getOrNull()?.let {
-                    emit(it)
-                }
-                delay(2000)
-            }
-        }.stateIn(coroutineScope, SharingStarted.Eagerly, null)
+    private val objectInspectorViewModel by lazy { ObjectInspectorViewModel(null) }
+    private val objectInspectorView by lazy { ObjectInspectorView(objectInspectorViewModel) }
 
-    private val sharedInspectorViewModel = SharedInspectorViewModel()
+    private val globalInstancesViewModel by lazy { GlobalInstancesViewModel(adapters.globalInstances) }
+    private val globalInstancesView by lazy { GlobalInstancesView(globalInstancesViewModel, objectInspectorViewModel) }
 
-    private val gameInspector = GameInspector(gameScope, sharedInspectorViewModel)
-    private val koinInspector = KoinInspector()
-    private val ecsInspector = EcsInspector(koin)
+    private val ecsViewModel by lazy { EcsViewModel(adapters.ecs) }
+    private val ecsView by lazy { EcsView(ecsViewModel, objectInspectorViewModel) }
 
-    override fun start(primaryStage: Stage?) {
-        gameInspector.viewModel.open()
-        koinInspector.viewModel.open()
-        ecsInspector.viewModel.open()
+    private val runtimeViewModel by lazy { RuntimeViewModel(adapters.runtime) }
+    private val runtimeView by lazy { RuntimeView(runtimeViewModel) }
+
+    private val inspectorApplicationView =
+        InspectorApplicationView(
+            InspectorApplicationViewModel(),
+            globalInstancesView,
+            ecsView,
+            runtimeView,
+            objectInspectorView,
+        )
+
+    override fun start(primaryStage: Stage) {
+        primaryStage.scene = Scene(inspectorApplicationView.root)
+        primaryStage.isMaximized = true
+        primaryStage.show()
     }
 
     companion object {
