@@ -19,6 +19,7 @@ import pro.piechowski.highschoolstory.dialogue.await
 import pro.piechowski.highschoolstory.dialogue.dialogue
 import pro.piechowski.highschoolstory.direction.Direction4
 import pro.piechowski.highschoolstory.map.Tile
+import pro.piechowski.highschoolstory.physics.m
 import pro.piechowski.highschoolstory.physics.px
 import pro.piechowski.highschoolstory.physics.times
 import pro.piechowski.highschoolstory.place.PlaceManager
@@ -55,26 +56,16 @@ class IntroScene :
                     calendar.currentDate = LocalDate(2020, 8, 29)
                     clock.currentTime = LocalTime(17, 0, 0)
 
-                    transitionManager.play(Transition.FadeBlack.In(Duration.ZERO, 1f))
-
                     Bus(Direction4.Right, BusColor.YELLOW).apply {
                         position = Tile.Position(15, 8).toPixel() * px.toMeter()
                     }
 
                     cameraManager.stopFollowingPlayerCharacter()
-                    cameraSet.moveTo(720f.px, 480f.px)
-
-                    val rayHandler = get<RayHandler>()
-                    val lightPosition = Tile.Position(15, 8).toPixel() * px.toMeter()
-                    PointLight(rayHandler, 32, Color.RED, 20f, lightPosition.x, lightPosition.y)
+                    cameraSet.moveTo((cameraSet.meterCamera.viewportWidth / 2).m, (cameraSet.meterCamera.viewportHeight / 2).m)
 
                     placeManager.travelTo(Road)
 
                     delay(1000)
-
-                    transitionManager
-                        .play(Transition.FadeBlack.Out(3.seconds))
-                        .await()
 
                     delay(1000)
 

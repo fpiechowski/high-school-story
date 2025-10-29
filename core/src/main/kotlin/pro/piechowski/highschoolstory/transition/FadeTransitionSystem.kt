@@ -25,10 +25,10 @@ class FadeTransitionSystem :
             if (currentTransition is Transition.FadeBlack) {
                 transitionManager.update(deltaTime)
 
-                val rectX = cameraSet.pixelCamera.position.x - cameraSet.pixelCamera.viewportWidth / 2
-                val rectY = cameraSet.pixelCamera.position.y - cameraSet.pixelCamera.viewportHeight / 2
+                val rectX = cameraSet.meterCamera.position.x - cameraSet.meterCamera.viewportWidth / 2
+                val rectY = cameraSet.meterCamera.position.y - cameraSet.meterCamera.viewportHeight / 2
 
-                shapeRenderer.use(ShapeRenderer.ShapeType.Filled, cameraSet.pixelCamera) {
+                shapeRenderer.use(ShapeRenderer.ShapeType.Filled, cameraSet.meterCamera) {
                     it.color =
                         Color.BLACK.cpy().apply {
                             a =
@@ -38,7 +38,7 @@ class FadeTransitionSystem :
                                 }
                         }
 
-                    it.rect(rectX, rectY, cameraSet.pixelCamera.viewportWidth, cameraSet.pixelCamera.viewportHeight)
+                    it.rect(rectX, rectY, cameraSet.meterCamera.viewportWidth, cameraSet.meterCamera.viewportHeight)
                 }
             }
         }

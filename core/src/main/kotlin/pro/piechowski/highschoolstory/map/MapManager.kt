@@ -25,6 +25,7 @@ import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 import pro.piechowski.highschoolstory.CoroutineContexts
 import pro.piechowski.highschoolstory.gdx.PhysicsWorld
+import pro.piechowski.highschoolstory.physics.METERS_PER_PIXEL
 import pro.piechowski.highschoolstory.physics.px
 import pro.piechowski.highschoolstory.place.PlaceManager
 
@@ -59,8 +60,8 @@ class MapManager : KoinComponent {
             .filterNotNull()
             .map { map ->
                 map.scrolling?.let { scroll ->
-                    ScrollingMapRenderer(map.tiledMap.await(), scroll)
-                } ?: OrthogonalTiledMapRenderer(map.tiledMap.await())
+                    ScrollingMapRenderer(map.tiledMap.await(), scroll, METERS_PER_PIXEL)
+                } ?: OrthogonalTiledMapRenderer(map.tiledMap.await(), METERS_PER_PIXEL)
             }.stateIn(coroutineScope, SharingStarted.Companion.Eagerly, null)
 
     private suspend fun replaceLoadedMapAsset(

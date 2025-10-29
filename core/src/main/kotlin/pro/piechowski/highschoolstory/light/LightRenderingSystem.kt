@@ -18,7 +18,7 @@ class LightRenderingSystem :
     private val logger = KotlinLogging.logger { }
 
     override fun onTick() {
-        Gdx.gl.glClearColor(0f, 0f, 0f, 0f)
+        /*Gdx.gl.glClearColor(0f, 0f, 0f, 0f)
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT)
         Gdx.gl.glEnable(GL20.GL_BLEND)
         Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE)
@@ -27,6 +27,6 @@ class LightRenderingSystem :
         rayHandler.setAmbientLight(0f, 0f, 0f, 1f)
         rayHandler.updateAndRender()
 
-        logger.debug { "Light rendering system rendered" }
+        logger.debug { "Light rendering system rendered" }*/
     }
 }

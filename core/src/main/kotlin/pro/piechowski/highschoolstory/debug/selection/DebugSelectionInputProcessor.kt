@@ -7,13 +7,13 @@ import com.github.quillraven.fleks.World
 import ktx.app.KtxInputAdapter
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
-import pro.piechowski.highschoolstory.camera.PixelCamera
+import pro.piechowski.highschoolstory.camera.MeterCamera
 import pro.piechowski.highschoolstory.sprite.CurrentSprite
 
 class DebugSelectionInputProcessor :
     KtxInputAdapter,
     KoinComponent {
-    private val camera: PixelCamera by inject()
+    private val camera: MeterCamera by inject()
     private val world by inject<World>()
     private val debugEntitySelectionManager by inject<DebugEntitySelectionManager>()
 

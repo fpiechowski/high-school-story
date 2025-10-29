@@ -44,6 +44,6 @@ fun <T> T.tryGetPropertyValue(property: KProperty1<T, Any?>): Any? =
             }
         }
     } catch (e: Throwable) {
-        logger.error(e) { "Error while getting value for property $property" }
+        logger.error(e) { "Error while getting value for property $property of object $this" }
         throw e
     }

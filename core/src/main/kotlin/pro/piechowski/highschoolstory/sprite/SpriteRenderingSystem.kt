@@ -8,6 +8,7 @@ import com.github.quillraven.fleks.collection.compareEntity
 import ktx.graphics.use
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
+import pro.piechowski.highschoolstory.camera.MeterCamera
 import pro.piechowski.highschoolstory.ecs.ReadOnly
 
 class SpriteRenderingSystem :
@@ -27,8 +28,10 @@ class SpriteRenderingSystem :
     ),
     KoinComponent {
     private val spriteBatch: SpriteBatch by inject()
+    private val meterCamera: MeterCamera by inject()
 
     override fun onTickEntity(entity: Entity) {
+        spriteBatch.projectionMatrix = meterCamera.combined
         spriteBatch.use {
             entity[CurrentSprite].sprite.draw(spriteBatch)
         }

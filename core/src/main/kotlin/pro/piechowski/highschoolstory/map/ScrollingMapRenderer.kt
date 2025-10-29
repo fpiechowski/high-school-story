@@ -3,20 +3,25 @@
 import com.badlogic.gdx.graphics.OrthographicCamera
 import com.badlogic.gdx.maps.tiled.TiledMap
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer
+import pro.piechowski.highschoolstory.physics.Meter
+import pro.piechowski.highschoolstory.physics.m
+import pro.piechowski.highschoolstory.physics.mps
+import pro.piechowski.highschoolstory.physics.px
+import pro.piechowski.highschoolstory.physics.s
 
 class ScrollingMapRenderer(
     map: TiledMap,
     val scrolling: Map.Scrolling,
     unitScale: Float = 1f,
 ) : OrthogonalTiledMapRenderer(map, unitScale) {
-    private var scrollX = 0f
-    private var scrollY = 0f
+    private var scrollX = 0f.m
+    private var scrollY = 0f.m
 
-    val speedX = if (scrolling is Map.Scrolling.Horizontal) scrolling.speed else 0f
-    val speedY = if (scrolling is Map.Scrolling.Vertical) scrolling.speed else 0f
+    val speedX = if (scrolling is Map.Scrolling.Horizontal) scrolling.speed else 0f.mps
+    val speedY = if (scrolling is Map.Scrolling.Vertical) scrolling.speed else 0f.mps
 
-    private val mapWidthPx: Float
-    private val mapHeightPx: Float
+    private val mapWidth: Meter
+    private val mapHeight: Meter
 
     init {
         val widthInTiles = map.properties.get("width", Int::class.java)
@@ -24,21 +29,21 @@ class ScrollingMapRenderer(
         val tileWidth = map.properties.get("tilewidth", Int::class.java)
         val tileHeight = map.properties.get("tileheight", Int::class.java)
 
-        mapWidthPx = widthInTiles * tileWidth * unitScale
-        mapHeightPx = heightInTiles * tileHeight * unitScale
+        mapWidth = (widthInTiles * tileWidth).px.toMeter()
+        mapHeight = (heightInTiles * tileHeight).px.toMeter()
     }
 
     fun update(delta: Float) {
-        scrollX += speedX * delta
-        scrollY += speedY * delta
+        scrollX += speedX * delta.s
+        scrollY += speedY * delta.s
 
         // Wrap horizontally
-        if (scrollX >= mapWidthPx) scrollX -= mapWidthPx
-        if (scrollX <= -mapWidthPx) scrollX += mapWidthPx
+        if (scrollX >= mapWidth) scrollX -= mapWidth
+        if (scrollX <= -mapWidth) scrollX += mapWidth
 
         // Wrap vertically
-        if (scrollY >= mapHeightPx) scrollY -= mapHeightPx
-        if (scrollY <= -mapHeightPx) scrollY += mapHeightPx
+        if (scrollY >= mapHeight) scrollY -= mapHeight
+        if (scrollY <= -mapHeight) scrollY += mapHeight
     }
 
     /**
@@ -82,14 +87,14 @@ class ScrollingMapRenderer(
         layers: IntArray?,
     ) {
         // First tile
-        camera.position.y = originalY + scrollY
+        camera.position.y = (originalY.m + scrollY).value
         camera.update()
         setView(camera)
         if (layers == null) render() else render(layers)
 
         // Second tile (above/below)
-        val offsetY = if (speedY > 0) scrollY - mapHeightPx else scrollY + mapHeightPx
-        camera.position.y = originalY + offsetY
+        val offsetY = if (speedY > 0f.mps) scrollY - mapHeight else scrollY + mapHeight
+        camera.position.y = (originalY.m + offsetY).value
         camera.update()
         setView(camera)
         if (layers == null) render() else render(layers)
@@ -103,14 +108,14 @@ class ScrollingMapRenderer(
         layers: IntArray?,
     ) {
         // First tile
-        camera.position.x = originalX + scrollX
+        camera.position.x = (originalX.m + scrollX).value
         camera.update()
         setView(camera)
         if (layers == null) render() else render(layers)
 
         // Second tile (to the left/right)
-        val offsetX = if (speedX > 0) scrollX - mapWidthPx else scrollX + mapWidthPx
-        camera.position.x = originalX + offsetX
+        val offsetX = if (speedX > 0f.mps) scrollX - mapWidth else scrollX + mapWidth
+        camera.position.x = (originalX.m + offsetX).value
         camera.update()
         setView(camera)
         if (layers == null) render() else render(layers)

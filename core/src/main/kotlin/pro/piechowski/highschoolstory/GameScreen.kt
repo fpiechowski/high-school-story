@@ -22,13 +22,10 @@ import org.koin.core.context.unloadKoinModules
 import org.koin.core.module.Module
 import pro.piechowski.highschoolstory.asset.AssetIdentifiers
 import pro.piechowski.highschoolstory.camera.CameraSet
-import pro.piechowski.highschoolstory.camera.MeterCamera
 import pro.piechowski.highschoolstory.camera.MeterViewport
-import pro.piechowski.highschoolstory.camera.PixelCamera
-import pro.piechowski.highschoolstory.camera.PixelViewport
-import pro.piechowski.highschoolstory.camera.PixelViewportManager
 import pro.piechowski.highschoolstory.input.GameInputMultiplexer
 import pro.piechowski.highschoolstory.input.InputState
+import pro.piechowski.highschoolstory.physics.PIXELS_PER_METER
 import pro.piechowski.highschoolstory.ui.UserInterface
 import pro.piechowski.highschoolstory.ui.UserInterfaceViewport
 
@@ -57,7 +54,6 @@ class GameScreen :
 
     private val batch: SpriteBatch by inject()
     private val cameraSet by inject<CameraSet>()
-    private val pixelViewportManager: PixelViewportManager by inject()
     private val meterViewport: MeterViewport by inject()
     private val userInterfaceViewport: UserInterfaceViewport by inject()
     private val world: World by inject()
@@ -82,7 +78,7 @@ class GameScreen :
 
         cameraSet.update()
 
-        batch.projectionMatrix = cameraSet.pixelCamera.combined
+        batch.projectionMatrix = cameraSet.meterCamera.combined
 
         world.update(delta)
 
@@ -101,7 +97,6 @@ class GameScreen :
     ) {
         if (!gameInitializationJob.isCompleted) return
 
-        pixelViewportManager.update(width, height)
         meterViewport.update(width, height)
         userInterfaceViewport.update(width, height)
     }

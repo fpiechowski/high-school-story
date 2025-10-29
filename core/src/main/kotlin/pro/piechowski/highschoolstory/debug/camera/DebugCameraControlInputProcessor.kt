@@ -6,7 +6,9 @@ import ktx.app.KtxInputAdapter
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 import pro.piechowski.highschoolstory.camera.CameraSet
+import pro.piechowski.highschoolstory.physics.m
 import pro.piechowski.highschoolstory.physics.px
+import pro.piechowski.highschoolstory.physics.times
 
 class DebugCameraControlInputProcessor :
     KtxInputAdapter,
@@ -56,14 +58,14 @@ class DebugCameraControlInputProcessor :
                 val current = Vector2(screenX.toFloat(), screenY.toFloat())
 
                 // Calculate delta from last frame
-                val delta = current.cpy().sub(prev).scl(SPEED)
+                val delta = current.cpy().sub(prev).scl(SPEED) * px.toMeter()
 
                 // Invert Y because screen coords are flipped vs world coords
                 delta.y = -delta.y
 
                 // Move camera by delta
-                val camPos = cameraSet.pixelCamera.position
-                cameraSet.moveTo((camPos.x - delta.x).px, (camPos.y - delta.y).px)
+                val camPos = cameraSet.meterCamera.position
+                cameraSet.moveTo((camPos.x - delta.x) * m, (camPos.y - delta.y) * m)
 
                 // Update previous position for next frame
                 previousDragPosition = current
@@ -77,13 +79,13 @@ class DebugCameraControlInputProcessor :
         amountX: Float,
         amountY: Float,
     ): Boolean {
-        cameraSet.zoom(amountY * ZOOM_AMOUNT_MODIFIER)
+        cameraSet.zoom(1f + amountY * ZOOM_AMOUNT_MODIFIER)
 
         return true
     }
 
     companion object {
-        const val ZOOM_AMOUNT_MODIFIER = 0.2f
+        const val ZOOM_AMOUNT_MODIFIER = 0.1f
         const val SPEED = 1f
     }
 }

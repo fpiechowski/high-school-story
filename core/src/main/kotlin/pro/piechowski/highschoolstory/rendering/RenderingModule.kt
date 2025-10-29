@@ -6,9 +6,6 @@ import pro.piechowski.highschoolstory.animation.SpriteAnimationSystem
 import pro.piechowski.highschoolstory.shader.ShaderManager
 import pro.piechowski.highschoolstory.sprite.CurrentSpritePositionSystem
 import pro.piechowski.highschoolstory.sprite.SpriteRenderingSystem
-import pro.piechowski.highschoolstory.sprite.framebuffer.BeginSpriteFrameBufferSystem
-import pro.piechowski.highschoolstory.sprite.framebuffer.EndSpriteFrameBufferSystem
-import pro.piechowski.highschoolstory.sprite.framebuffer.SpriteFrameBufferManager
 
 val RenderingModule =
     module {
@@ -16,8 +13,5 @@ val RenderingModule =
         single { CurrentSpritePositionSystem() }
         single { SpriteAnimationSystem() }
         single { ShapeRenderer() }
-        single { SpriteFrameBufferManager() }
-        single { BeginSpriteFrameBufferSystem(get()) }
-        single { EndSpriteFrameBufferSystem(get()) }
         single { ShaderManager() }
     }

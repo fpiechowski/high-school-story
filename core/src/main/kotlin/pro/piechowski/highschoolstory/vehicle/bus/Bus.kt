@@ -3,11 +3,14 @@
 import box2dLight.ConeLight
 import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.math.MathUtils
+import com.badlogic.gdx.math.Vector2
 import com.github.quillraven.fleks.Entity
 import com.github.quillraven.fleks.World
 import ktx.box2d.body
 import ktx.box2d.box
 import org.koin.core.Koin
+import pro.piechowski.highschoolstory.character.Character.Companion.HEIGHT_TO_DEPTH_RATIO
+import pro.piechowski.highschoolstory.character.rendering.CharacterSprite
 import pro.piechowski.highschoolstory.direction.Direction4
 import pro.piechowski.highschoolstory.ecs.Archetype
 import pro.piechowski.highschoolstory.ecs.plusAssign
@@ -67,7 +70,10 @@ class Bus(
                     PhysicsBody(
                         get<PhysicsWorld>()
                             .body {
-                                box(336f.px.toMeter().value, 192f.px.toMeter().value)
+                                box(
+                                    336f.px.toMeter().value,
+                                    192f.px.toMeter().value / 2,
+                                )
                             },
                     )
                 this += physicsBody

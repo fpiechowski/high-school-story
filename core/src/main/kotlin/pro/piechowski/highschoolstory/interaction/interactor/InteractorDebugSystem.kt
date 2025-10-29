@@ -11,10 +11,8 @@ import ktx.graphics.circle
 import ktx.graphics.use
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
-import pro.piechowski.highschoolstory.camera.PixelCamera
+import pro.piechowski.highschoolstory.camera.MeterCamera
 import pro.piechowski.highschoolstory.interaction.InteractionSystem
-import pro.piechowski.highschoolstory.physics.m
-import pro.piechowski.highschoolstory.physics.times
 
 class InteractorDebugSystem :
     IteratingSystem(
@@ -22,7 +20,7 @@ class InteractorDebugSystem :
     ),
     KoinComponent {
     val shapeRenderer: ShapeRenderer by inject()
-    val pixelCamera: PixelCamera by inject()
+    val meterCamera: MeterCamera by inject()
 
     override fun onTickEntity(entity: Entity) {
         Gdx.gl.glEnable(GL20.GL_BLEND)
@@ -30,13 +28,12 @@ class InteractorDebugSystem :
 
         val interactor = InteractorEntity(entity)
 
-        shapeRenderer.use(ShapeRenderer.ShapeType.Filled, pixelCamera) {
+        shapeRenderer.use(ShapeRenderer.ShapeType.Filled, meterCamera) {
             it.color = Color.BLUE.cpy().also { it.a = 0.1f }
             it.circle(
-                interactor.position * m.toPixels(),
-                InteractionSystem.Companion.interactionRange
-                    .toPixels()
-                    .value,
+                interactor.position,
+                InteractionSystem.interactionRange.value,
+                64,
             )
         }
     }

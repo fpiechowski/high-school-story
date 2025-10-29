@@ -1,4 +1,4 @@
-﻿package pro.piechowski.highschoolstory.physics.body
+﻿package pro.piechowski.highschoolstory.debug.physics
 
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer
 import com.github.quillraven.fleks.Fixed
@@ -7,6 +7,7 @@ import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 import pro.piechowski.highschoolstory.camera.MeterCamera
 import pro.piechowski.highschoolstory.gdx.PhysicsWorld
+import pro.piechowski.highschoolstory.physics.body.PHYSICS_STEP
 
 class PhysicsDebugRenderingSystem :
     IntervalSystem(Fixed(PHYSICS_STEP)),

@@ -1,6 +1,7 @@
 ﻿package pro.piechowski.highschoolstory.physics
 
 import com.badlogic.gdx.math.Vector2
+import kotlinx.serialization.Serializable
 
 const val PIXELS_PER_METER = 64
 const val METERS_PER_PIXEL = 1 / PIXELS_PER_METER.toFloat()
@@ -34,6 +35,10 @@ value class Meter(
 
     operator fun div(seconds: Second): MetersPerSeconds = MetersPerSeconds(value / seconds.value)
 
+    operator fun compareTo(other: Meter): Int = (value - other.value).toInt()
+
+    operator fun unaryMinus(): Meter = Meter(-value)
+
     override fun toString() = "$value m"
 }
 
@@ -45,6 +50,7 @@ value class Second(
 }
 
 @JvmInline
+@Serializable
 value class MetersPerSeconds(
     val value: Float,
 ) {
@@ -52,12 +58,18 @@ value class MetersPerSeconds(
 
     operator fun times(float: Float) = MetersPerSeconds(value * float)
 
+    operator fun plus(mps: MetersPerSeconds) = MetersPerSeconds(value + mps.value)
+
+    operator fun compareTo(other: MetersPerSeconds): Int = (value - other.value).toInt()
+
     override fun toString(): String = "$value m/s"
 }
 
 val Float.m get() = Meter(this)
 
 val Float.px get() = Pixel(this)
+
+val Int.px get() = Pixel(this.toFloat())
 
 val Float.s get() = Second(this)
 

@@ -93,7 +93,7 @@ class ObjectInspectorViewModel(
                     ObjectProperty(
                         it.name,
                         try {
-                            this.tryGetPropertyValue<Any>(it as KProperty1<Any, Any?>)
+                            this.instance?.tryGetPropertyValue<Any>(it as KProperty1<Any, Any?>)
                         } catch (_: Throwable) {
                             "error"
                         },

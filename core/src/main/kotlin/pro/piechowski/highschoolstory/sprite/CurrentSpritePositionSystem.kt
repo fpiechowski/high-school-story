@@ -25,7 +25,7 @@ class CurrentSpritePositionSystem :
 
     override fun onTickEntity(entity: Entity) {
         val currentSprite = entity[CurrentSprite]
-        val position = entity[PhysicsBody].body.position * m.toPixels()
+        val position = entity[PhysicsBody].body.position
 
         currentSprite.sprite.setOriginBasedPosition(position.x, position.y)
 

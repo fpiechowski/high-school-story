@@ -5,9 +5,6 @@ import pro.piechowski.highschoolstory.ui.UserInterfaceViewport
 
 val MainCameraModule =
     module {
-        single<PixelCamera> { PixelCamera() }
-        single<PixelViewportManager> { PixelViewportManager() }
-
         single { CameraManager() }
 
         single<UserInterfaceViewport> { UserInterfaceViewport() }
@@ -18,7 +15,7 @@ val GameCameraModule =
         single<MeterCamera> { MeterCamera() }
         single<MeterViewport> { MeterViewport(get()) }
 
-        single<CameraSet> { CameraSet(get(), get()) }
+        single<CameraSet> { CameraSet(get()) }
 
         single { CameraFollowingPlayerCharacterSystem() }
     }

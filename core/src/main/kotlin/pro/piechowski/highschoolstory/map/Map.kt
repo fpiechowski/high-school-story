@@ -6,6 +6,7 @@ import kotlinx.serialization.Serializable
 import kotlinx.serialization.Transient
 import ktx.assets.async.Identifier
 import pro.piechowski.highschoolstory.asset.TiledMapIdentifierSerializer
+import pro.piechowski.highschoolstory.physics.MetersPerSeconds
 
 @Serializable
 class Map(
@@ -18,14 +19,14 @@ class Map(
 
     @Serializable
     sealed class Scrolling(
-        val speed: Float,
+        val speed: MetersPerSeconds,
     ) {
         class Horizontal(
-            speed: Float,
+            speed: MetersPerSeconds,
         ) : Scrolling(speed)
 
         class Vertical(
-            speed: Float,
+            speed: MetersPerSeconds,
         ) : Scrolling(speed)
     }
 }

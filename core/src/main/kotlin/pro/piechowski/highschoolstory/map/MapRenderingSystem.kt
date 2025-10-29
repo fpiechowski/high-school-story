@@ -4,20 +4,20 @@ import com.github.quillraven.fleks.IntervalSystem
 import io.github.oshai.kotlinlogging.KotlinLogging
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
-import pro.piechowski.highschoolstory.camera.PixelCamera
+import pro.piechowski.highschoolstory.camera.MeterCamera
 
 sealed class MapRenderingSystem(
     val layers: List<MapLayer> = emptyList(),
 ) : IntervalSystem(),
     KoinComponent {
     private val mapManager by inject<MapManager>()
-    private val pixelCamera by inject<PixelCamera>()
+    private val meterCamera by inject<MeterCamera>()
 
     private val logger = KotlinLogging.logger { }
 
     override fun onTick() {
         mapManager.mapRenderer.value?.let { renderer ->
-            renderer.setView(pixelCamera)
+            renderer.setView(meterCamera)
             mapManager.currentTiledMap.value?.let { map ->
                 val layerIndices =
                     map.layers
@@ -29,7 +29,7 @@ sealed class MapRenderingSystem(
                 when (renderer) {
                     is ScrollingMapRenderer ->
                         renderer
-                            .renderLooped(pixelCamera, layerIndices.toIntArray())
+                            .renderLooped(meterCamera, layerIndices.toIntArray())
                             .also { renderer.update(deltaTime) }
                     else -> renderer.render(layerIndices.toIntArray())
                 }

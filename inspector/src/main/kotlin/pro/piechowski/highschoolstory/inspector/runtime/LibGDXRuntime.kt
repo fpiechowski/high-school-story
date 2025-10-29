@@ -26,7 +26,7 @@ class LibGDXRuntime : Runtime {
             classGraph
                 .scan()
                 .use { scan ->
-                    fun launchRuntimeFunction(): KFunction<*> =
+                    val launchRuntimeFunction: KFunction<*> =
                         scan
                             .getClassesWithMethodAnnotation(RuntimeLauncher::class.java)
                             .first()
@@ -36,7 +36,7 @@ class LibGDXRuntime : Runtime {
                             ?.kotlinFunction ?: throw RuntimeLauncherNotFoundException()
 
                     Runtime.Launcher {
-                        launchRuntimeFunction().call()
+                        launchRuntimeFunction.call()
                     }
                 }
 
