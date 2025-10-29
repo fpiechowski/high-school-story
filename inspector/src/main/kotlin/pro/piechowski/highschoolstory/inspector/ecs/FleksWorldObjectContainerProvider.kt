@@ -7,8 +7,10 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.stateIn
 import org.koin.core.annotation.KoinInternalApi
 import pro.piechowski.highschoolstory.inspector.container.ObjectContainer
@@ -34,6 +36,7 @@ class FleksWorldObjectContainerProvider(
                             .filterIsInstance<World>()
                             .firstOrNull()
                     }
-            }.stateIn(coroutineScope, SharingStarted.Eagerly, initialValue = null)
-            .also { logger.info { "World = ${it.value}" } }
+            }.distinctUntilChanged()
+            .onEach { logger.info { "World = $it" } }
+            .stateIn(coroutineScope, SharingStarted.Eagerly, initialValue = null)
 }

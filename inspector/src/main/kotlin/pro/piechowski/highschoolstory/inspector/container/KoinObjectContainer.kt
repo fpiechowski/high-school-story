@@ -7,8 +7,10 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.stateIn
 import org.koin.core.Koin
 import org.koin.core.annotation.KoinInternalApi
@@ -29,8 +31,9 @@ class KoinObjectContainer : ObjectContainer {
     val koin: Flow<Koin?> =
         tickerFlow(2.seconds)
             .map { GlobalContext.getOrNull() }
+            .distinctUntilChanged()
+            .onEach { logger.info { "Koin = $it" } }
             .stateIn(coroutineScope, SharingStarted.Eagerly, null)
-            .also { logger.info { "Koin = ${it.value}" } }
 
     override val objects =
         koin.flatMapLatest { koin ->
