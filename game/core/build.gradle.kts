@@ -1,31 +1,6 @@
-import org.jetbrains.kotlin.gradle.dsl.JvmTarget
-
 plugins {
     kotlin("plugin.serialization")
     id("com.google.devtools.ksp")
-}
-
-kotlin {
-    compilerOptions {
-        freeCompilerArgs.add("-Xcontext-parameters")
-        jvmTarget.set(JvmTarget.JVM_17)
-    }
-
-    jvmToolchain(17)
-}
-
-java {
-    sourceCompatibility = JavaVersion.VERSION_17
-    targetCompatibility = JavaVersion.VERSION_17
-}
-
-tasks {
-    compileJava {
-        options.encoding = "UTF-8"
-    }
-    compileTestJava {
-        options.encoding = "UTF-8"
-    }
 }
 
 val appName: String by project
@@ -49,6 +24,8 @@ val koinVersion: String by project
 val koinAnnotationsVersion: String by project
 
 dependencies {
+    implementation(project(":engine:core"))
+
     api("com.badlogicgames.ashley:ashley:$ashleyVersion")
     api("com.badlogicgames.box2dlights:box2dlights:$box2dlightsVersion")
     api("com.badlogicgames.gdx-controllers:gdx-controllers-core:$gdxControllersVersion")
@@ -95,10 +72,6 @@ dependencies {
 
     implementation("com.sksamuel.hoplite:hoplite-core:2.9.0")
     implementation("com.sksamuel.hoplite:hoplite-yaml:2.9.0")
-
-    if (enableGraalNative == "true") {
-        implementation("io.github.berstanio:gdx-svmhelper-annotations:$graalHelperVersion")
-    }
 
     testImplementation(kotlin("test"))
     testImplementation("org.junit.jupiter:junit-jupiter:5.13.4")

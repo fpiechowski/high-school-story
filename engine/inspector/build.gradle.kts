@@ -42,14 +42,14 @@ dependencies {
     domainImplementation("org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion")
     domainImplementation("org.jetbrains.kotlin:kotlin-reflect:$kotlinVersion")
     domainImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.10.2")
-    domainImplementation(project(":inspector:runtime"))
+    domainImplementation(project(":engine:inspector:runtime"))
 
     implementation("org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion")
     implementation("org.jetbrains.kotlin:kotlin-reflect:$kotlinVersion")
 
-    implementation(project(":core"))
-    implementation(project(":lwjgl3"))
-    implementation(project(":inspector:runtime"))
+    implementation(project(":game:core"))
+    implementation(project(":game:lwjgl3"))
+    implementation(project(":engine:inspector:runtime"))
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-javafx:1.10.2")
     implementation("org.jetbrains.kotlinx:atomicfu:0.29.0")
     implementation("io.github.classgraph:classgraph:4.8.165")
