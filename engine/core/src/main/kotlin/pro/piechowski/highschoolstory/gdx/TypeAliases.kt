@@ -14,4 +14,3 @@ typealias GdxRectangle = Rectangle
 typealias GdxCircle = Circle
 typealias GdxEllipse = Ellipse
 typealias GdxPolygon = Polygon
-typealias PhysicsWorld = World

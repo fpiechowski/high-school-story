@@ -8,6 +8,47 @@ import com.github.quillraven.fleks.EntityTag
 import com.github.quillraven.fleks.EntityTags
 import com.github.quillraven.fleks.UniqueId
 
+/**
+ * Represents an archetype in the Entity Component System (ECS) architecture.
+ *
+ * <p>An archetype defines a reusable template that specifies a set of components and entity tags
+ * that entities should possess. This allows for efficient entity creation by pre-defining common
+ * entity configurations.</p>
+ *
+ * <p>In ECS terminology, an archetype serves as a blueprint that groups together:</p>
+ * <ul>
+ *   <li>Components - data containers that define entity behavior and properties</li>
+ *   <li>Entity Tags - labels for categorizing and filtering entities</li>
+ * </ul>
+ *
+ * <p>Archetypes can be composed together using the {@code +} operator to create more complex
+ * entity templates from simpler ones.</p>
+ *
+ * <h3>Usage Example:</h3>
+ * <pre>{@code
+ * // Create an archetype with components and tags
+ * val playerArchetype = Archetype {
+ *     this += PositionComponent(x = 0f, y = 0f)
+ *     this += HealthComponent(maxHealth = 100)
+ *     this += PlayerTag
+ * }
+ *
+ * // Compose archetypes
+ * val armedPlayerArchetype = playerArchetype + weaponArchetype
+ *
+ * // Apply archetype to an entity
+ * world.entity { entity ->
+ *     entity += playerArchetype
+ * }
+ * }</pre>
+ *
+ * @property components A map of component types to their instances that define this archetype
+ * @property entityTags A set of tags that entities of this archetype should possess
+ *
+ * @see Builder for constructing archetype instances
+ * @see Component
+ * @see EntityTag
+ */
 class Archetype(
     val components: Map<ComponentType<*>, Component<*>>,
     val entityTags: Set<EntityTags>,

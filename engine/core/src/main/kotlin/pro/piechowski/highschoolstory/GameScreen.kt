@@ -3,11 +3,13 @@
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.github.quillraven.fleks.World
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.launch
 import ktx.app.KtxScreen
 import ktx.app.clearScreen
 import ktx.assets.disposeSafely
 import ktx.async.KtxAsync
+import org.koin.core.annotation.KoinInternalApi
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 import org.koin.core.context.unloadKoinModules
@@ -18,10 +20,12 @@ import pro.piechowski.highschoolstory.input.GameInputMultiplexer
 import pro.piechowski.highschoolstory.input.InputManager
 import pro.piechowski.highschoolstory.ui.UserInterfaceViewport
 
+@ExperimentalCoroutinesApi
+@ExperimentalContextParameters
+@KoinInternalApi
 class GameScreen :
     KtxScreen,
     KoinComponent {
-    private val gameModule: Module by inject(gameModuleQualifier)
     private val gameInputMultiplexer: GameInputMultiplexer by inject()
 
     init {
@@ -54,7 +58,7 @@ class GameScreen :
 
     override fun dispose() {
         batch.disposeSafely()
-        unloadKoinModules(gameModule)
+        unloadKoinModules(coreModule())
     }
 
     override fun resize(

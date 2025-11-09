@@ -14,8 +14,8 @@ import org.koin.dsl.module
 import pro.piechowski.highschoolstory.Config
 import pro.piechowski.highschoolstory.Entrypoint
 import pro.piechowski.highschoolstory.Main
+import pro.piechowski.highschoolstory.coreModule
 import pro.piechowski.highschoolstory.entrypointOverride
-import pro.piechowski.highschoolstory.mainModule
 
 @ExperimentalCoroutinesApi
 @ExperimentalContextParameters
@@ -29,10 +29,12 @@ object Launcher : KoinComponent {
     ) {
         val koin =
             startKoin {
-                modules(modules + mainModule())
+                modules(modules + coreModule())
             }.koin
 
-        entrypointOverride = entrypoint
+        if (entrypointOverride == null) {
+            entrypointOverride = entrypoint
+        }
 
         entrypointOverride?.let { entrypoint ->
             koin.loadModules(listOf(module { single<Entrypoint> { entrypoint } }), allowOverride = true)

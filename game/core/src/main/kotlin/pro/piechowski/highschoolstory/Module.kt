@@ -3,12 +3,10 @@ package pro.piechowski.highschoolstory
 import com.sksamuel.hoplite.PropertySource
 import org.koin.dsl.module
 import pro.piechowski.highschoolstory.exterior.ExteriorTexture
-import pro.piechowski.highschoolstory.scene.IntroScene
-import pro.piechowski.highschoolstory.state.GameState
-import pro.piechowski.highschoolstory.state.GameStateManager
 import pro.piechowski.highschoolstory.ui.UserInterface
+import pro.piechowski.kge.scene.IntroScene
 
-val gameModule =
+val highSchoolStoryModule =
     module {
         single<PropertySource> { PropertySource.resource("/config.yml") }
         single { IntroScene() }
@@ -16,5 +14,4 @@ val gameModule =
         single { systemComposer }
         single { ExteriorTexture() }
         single { UserInterface() }
-        single { GameStateManager<GameState>() }
     }

@@ -4,16 +4,21 @@ import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.scenes.scene2d.ui.Skin
 import com.github.quillraven.fleks.IntervalSystem
 import com.kotcrab.vis.ui.VisUI
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import ktx.app.KtxGame
 import ktx.app.KtxScreen
 import ktx.async.KtxAsync
 import ktx.scene2d.Scene2DSkin
 import org.koin.core.Koin
+import org.koin.core.annotation.KoinInternalApi
 import org.koin.core.context.loadKoinModules
 import org.koin.core.context.startKoin
 import org.koin.core.context.stopKoin
 import org.koin.core.module.Module
 
+@ExperimentalCoroutinesApi
+@KoinInternalApi
+@ExperimentalContextParameters
 class Main(
     private val koin: Koin,
 ) : KtxGame<KtxScreen>() {
@@ -37,7 +42,6 @@ class Main(
 
     context(koin: Koin)
     private fun startGame() {
-        loadKoinModules(get<Module>(gameModuleQualifier))
         addScreen(get<GameScreen>())
         setScreen<GameScreen>()
     }

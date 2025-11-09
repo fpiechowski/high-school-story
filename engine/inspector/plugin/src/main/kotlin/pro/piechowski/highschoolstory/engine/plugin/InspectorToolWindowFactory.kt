@@ -17,8 +17,11 @@ class InspectorToolWindowFactory : ToolWindowFactory {
         project: Project,
         toolWindow: ToolWindow,
     ) {
-        val panel = InspectorToolWindowPanel(project)
-        val content = ContentFactory.getInstance().createContent(panel, "", false)
+        val panel = ConnectionsPanel(project)
+
+        val contentFactory = ContentFactory.getInstance()
+        val content = contentFactory.createContent(panel.component, "", false)
+
         toolWindow.contentManager.addContent(content)
     }
 }

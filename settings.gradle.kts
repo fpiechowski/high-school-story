@@ -3,4 +3,15 @@ plugins {
 }
 
 include(":game:core", ":game:lwjgl3")
-include(":engine:inspector", ":engine:inspector:runtime", ":engine:core", ":engine:inspector:plugin")
+
+include(":engine:core")
+include(":engine:inspector", ":engine:inspector:runtime", ":engine:inspector:plugin")
+include(
+    ":engine:gameplay:story",
+    ":engine:gameplay:character",
+    ":engine:gameplay:dialogue",
+    ":engine:gameplay:interaction",
+    ":engine:gameplay:scene",
+    ":engine:gameplay:time",
+    ":engine:gameplay:weather",
+)
