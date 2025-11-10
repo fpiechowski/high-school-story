@@ -28,6 +28,7 @@ dependencies {
     api("pro.piechowski.kge:character")
     api("pro.piechowski.kge:story")
     api("pro.piechowski.kge:dialogue")
+    api("pro.piechowski.kge:interaction")
     api("pro.piechowski.kge:time")
     api("pro.piechowski.kge:scene")
 

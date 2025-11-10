@@ -19,6 +19,7 @@ class CharacterSprite(
         const val ORIGIN_Y = 24f
         private const val WIDTH = 48f
         private const val HEIGHT = 96f
+        val sizePixels = Vector2(WIDTH, HEIGHT)
         val size = Vector2(WIDTH.px.toMeter().value, HEIGHT.px.toMeter().value)
     }
 }

@@ -7,6 +7,12 @@ import pro.piechowski.highschoolstory.scene.intro.IntroScene
 import pro.piechowski.highschoolstory.sprite.character.player.PlayerCharacterSpriteSheet
 import pro.piechowski.highschoolstory.ui.UserInterface
 import pro.piechowski.kge.Entrypoint
+import pro.piechowski.kge.character.CharacterModule
+import pro.piechowski.kge.dialogue.DialogueModule
+import pro.piechowski.kge.interaction.InteractionModule
+import pro.piechowski.kge.scene.SceneModule
+import pro.piechowski.kge.story.StoryModule
+import pro.piechowski.kge.time.TimeModule
 
 val highSchoolStoryModule =
     module {
@@ -17,4 +23,11 @@ val highSchoolStoryModule =
         single { ExteriorTexture() }
         single { UserInterface() }
         single { PlayerCharacterSpriteSheet() }
+
+        includes(CharacterModule)
+        includes(DialogueModule)
+        includes(TimeModule)
+        includes(InteractionModule)
+        includes(StoryModule)
+        includes(SceneModule)
     }

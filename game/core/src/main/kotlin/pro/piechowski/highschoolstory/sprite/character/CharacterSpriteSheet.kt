@@ -10,8 +10,8 @@ open class CharacterSpriteSheet(
 ) : SpriteSheet<CharacterSprite>(
         split(
             texture,
-            CharacterSprite.size.x.toInt(),
-            CharacterSprite.size.y.toInt(),
+            CharacterSprite.sizePixels.x.toInt(),
+            CharacterSprite.sizePixels.y.toInt(),
         ) { CharacterSprite(it) },
     ) {
     fun getAnimationFrames(

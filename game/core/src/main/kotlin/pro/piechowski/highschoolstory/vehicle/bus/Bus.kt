@@ -8,7 +8,9 @@ import pro.piechowski.kge.ecs.Archetype
 import pro.piechowski.kge.ecs.plusAssign
 import pro.piechowski.kge.facedirection.FaceDirection4
 import pro.piechowski.kge.input.movement.MovementInput
+import pro.piechowski.kge.koin
 import pro.piechowski.kge.movement.Speed
+import pro.piechowski.kge.`object`.Kinetic
 import pro.piechowski.kge.`object`.Spatial
 import pro.piechowski.kge.`object`.Visual
 import pro.piechowski.kge.physics.MetersPerSeconds
@@ -17,9 +19,9 @@ import pro.piechowski.kge.power.Powered
 class Bus(
     override val entity: Entity,
 ) : Visual,
-    Spatial {
+    Spatial,
+    Kinetic {
     companion object {
-        context(koin: Koin)
         suspend operator fun invoke(
             direction4: Direction4,
             color: BusColor,
@@ -30,7 +32,6 @@ class Bus(
             },
         )
 
-        context(koin: Koin)
         suspend fun archetype(
             direction4: Direction4,
             color: BusColor,

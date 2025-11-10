@@ -1,4 +1,4 @@
-@file:JvmName("Lwjgl3Launcher")
+@file:JvmName("MainLauncher")
 
 package pro.piechowski.highschoolstory.game.lwjgl3
 
