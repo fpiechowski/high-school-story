@@ -1,10 +1,5 @@
-# Kotlin Game Engine 2D
+# High School Story
 
-Code-centric game engine for Kotlin programming language based on LibGDX backend.
+Social simulation game where you create a high school student character and go through 3 years of high school life.
 
-## Features
-
-* Fleks ECS
-* Koin
-* IntelliJ Plugin
-* Gameplay genre specific modules
+## Roadmap:
