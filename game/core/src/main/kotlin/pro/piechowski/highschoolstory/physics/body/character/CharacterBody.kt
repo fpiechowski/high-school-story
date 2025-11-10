@@ -1,13 +1,10 @@
 package pro.piechowski.highschoolstory.physics.body.character
 
 import com.badlogic.gdx.math.Vector2
-import com.badlogic.gdx.physics.box2d.Body
 import com.badlogic.gdx.physics.box2d.BodyDef
 import ktx.box2d.body
 import ktx.box2d.box
 import pro.piechowski.highschoolstory.sprite.character.CharacterSprite
-import pro.piechowski.kge.character.CharacterBase
-import pro.piechowski.kge.character.sprite.CharacterSpriteBase
 import pro.piechowski.kge.koin
 import pro.piechowski.kge.physics.PhysicsWorld
 import pro.piechowski.kge.physics.body.PhysicsBody

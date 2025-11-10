@@ -1,268 +1,268 @@
 {
-  com.badlogic.gdx.graphics.g2d.BitmapFont: {
-    born2bsporty: {
-      file: born2bsporty.fnt
-      scaledSize: -1
-      markupEnabled: false
-      flip: false
+  "com.badlogic.gdx.graphics.g2d.BitmapFont": {
+    "born2bsporty": {
+      "file": "born2bsporty.fnt",
+      "scaledSize": -1,
+      "markupEnabled": false,
+      "flip": false
+    },
+    "karma_future": {
+      "file": "karma_future.fnt",
+      "scaledSize": -1,
+      "markupEnabled": false,
+      "flip": false
+    },
+    "nihonium": {
+      "file": "nihonium.fnt",
+      "scaledSize": -1,
+      "markupEnabled": false,
+      "flip": false
     }
-    karma_future: {
-      file: karma_future.fnt
-      scaledSize: -1
-      markupEnabled: false
-      flip: false
+  },
+  "com.badlogic.gdx.graphics.Color": {
+    "black": {
+      "r": 0,
+      "g": 0,
+      "b": 0,
+      "a": 1
+    },
+    "disabled": {
+      "r": 0.5882353,
+      "g": 0.5882353,
+      "b": 0.5882353,
+      "a": 0.5882353
     }
-    nihonium: {
-      file: nihonium.fnt
-      scaledSize: -1
-      markupEnabled: false
-      flip: false
+  },
+  "com.badlogic.gdx.scenes.scene2d.ui.Skin$TintedDrawable": {
+    "button_1_disabled": {
+      "name": "button_1",
+      "color": "disabled"
+    },
+    "checkbox_on_disabled": {
+      "name": "checkbox_on",
+      "color": "disabled"
+    },
+    "checkbox_off_disabled": {
+      "name": "checkbox_off",
+      "color": "disabled"
+    },
+    "progress_background_disabled": {
+      "name": "progress_background",
+      "color": "disabled"
+    },
+    "progress_knob_disabled": {
+      "name": "progress_knob",
+      "color": "disabled"
+    },
+    "progress_knob_before_brown_disabled": {
+      "name": "progress_knob_before_brown",
+      "color": "disabled"
+    },
+    "progress_knob_after_disabled": {
+      "name": "progress_knob_after",
+      "color": "disabled"
+    },
+    "progress_knob_before_red_disabled": {
+      "name": "progress_knob_before_red",
+      "color": "disabled"
+    },
+    "progress_knob_before_yellow_disabled": {
+      "name": "progress_knob_before_yellow",
+      "color": "disabled"
+    },
+    "progress_knob_before_green_disabled": {
+      "name": "progress_knob_before_green",
+      "color": "disabled"
+    },
+    "progress_knob_before_blue_disabled": {
+      "name": "progress_knob_before_blue",
+      "color": "disabled"
+    },
+    "text_field_disabled": {
+      "name": "text_field",
+      "color": "disabled"
     }
-  }
-  com.badlogic.gdx.graphics.Color: {
-    black: {
-      r: 0
-      g: 0
-      b: 0
-      a: 1
+  },
+  "com.badlogic.gdx.scenes.scene2d.ui.Button$ButtonStyle": {
+    "default": {
+      "up": "button_1",
+      "disabled": "button_1_disabled"
     }
-    disabled: {
-      r: 0.5882353
-      g: 0.5882353
-      b: 0.5882353
-      a: 0.5882353
+  },
+  "com.badlogic.gdx.scenes.scene2d.ui.CheckBox$CheckBoxStyle": {
+    "default": {
+      "checkboxOn": "checkbox_on",
+      "checkboxOff": "checkbox_off",
+      "checkboxOnDisabled": "checkbox_on_disabled",
+      "checkboxOffDisabled": "checkbox_off_disabled",
+      "font": "born2bsporty"
     }
-  }
-  com.badlogic.gdx.scenes.scene2d.ui.Skin$TintedDrawable: {
-    button_1_disabled: {
-      name: button_1
-      color: disabled
+  },
+  "com.badlogic.gdx.scenes.scene2d.ui.ImageButton$ImageButtonStyle": {
+    "default": {
+      "up": "button_1",
+      "disabled": "button_1_disabled"
     }
-    checkbox_on_disabled: {
-      name: checkbox_on
-      color: disabled
+  },
+  "com.badlogic.gdx.scenes.scene2d.ui.ImageTextButton$ImageTextButtonStyle": {
+    "default": {
+      "font": "born2bsporty",
+      "up": "button_1",
+      "disabled": "button_1_disabled"
     }
-    checkbox_off_disabled: {
-      name: checkbox_off
-      color: disabled
+  },
+  "com.badlogic.gdx.scenes.scene2d.ui.Label$LabelStyle": {
+    "default": {
+      "font": "born2bsporty"
     }
-    progress_background_disabled: {
-      name: progress_background
-      color: disabled
+  },
+  "com.badlogic.gdx.scenes.scene2d.ui.List$ListStyle": {
+    "default": {
+      "font": "born2bsporty",
+      "fontColorSelected": "black",
+      "fontColorUnselected": "black",
+      "selection": "list_selected",
+      "background": "list_background"
+    },
+    "dialogueOptions": {
+      "font": "born2bsporty",
+      "fontColorSelected": "black",
+      "fontColorUnselected": "black",
+      "selection": "frame_2"
     }
-    progress_knob_disabled: {
-      name: progress_knob
-      color: disabled
+  },
+  "com.badlogic.gdx.scenes.scene2d.ui.ProgressBar$ProgressBarStyle": {
+    "default-horizontal": {
+      "background": "progress_background",
+      "disabledBackground": "progress_background_disabled",
+      "knob": "progress_knob",
+      "disabledKnob": "progress_knob_disabled",
+      "knobBefore": "progress_knob_before_blue",
+      "disabledKnobBefore": "progress_knob_before_blue_disabled",
+      "knobAfter": "progress_knob_after",
+      "disabledKnobAfter": "progress_knob_after_disabled"
+    },
+    "green": {
+      "background": "progress_background",
+      "disabledBackground": "progress_background_disabled",
+      "knob": "progress_knob",
+      "disabledKnob": "progress_knob_disabled",
+      "knobBefore": "progress_knob_before_green",
+      "disabledKnobBefore": "progress_knob_before_green_disabled",
+      "knobAfter": "progress_knob_after",
+      "disabledKnobAfter": "progress_knob_after_disabled"
+    },
+    "yellow": {
+      "background": "progress_background",
+      "disabledBackground": "progress_background_disabled",
+      "knob": "progress_knob",
+      "disabledKnob": "progress_knob_disabled",
+      "knobBefore": "progress_knob_before_yellow",
+      "disabledKnobBefore": "progress_knob_before_yellow_disabled",
+      "knobAfter": "progress_knob_after",
+      "disabledKnobAfter": "progress_knob_after_disabled"
+    },
+    "red": {
+      "background": "progress_background",
+      "disabledBackground": "progress_background_disabled",
+      "knob": "progress_knob",
+      "disabledKnob": "progress_knob_disabled",
+      "knobBefore": "progress_knob_before_red",
+      "disabledKnobBefore": "progress_knob_before_red_disabled",
+      "knobAfter": "progress_knob_after",
+      "disabledKnobAfter": "progress_knob_after_disabled"
+    },
+    "brown": {
+      "background": "progress_background",
+      "disabledBackground": "progress_background_disabled",
+      "knob": "progress_knob",
+      "disabledKnob": "progress_knob_disabled",
+      "knobBefore": "progress_knob_before_brown",
+      "disabledKnobBefore": "progress_knob_before_brown_disabled",
+      "knobAfter": "progress_knob_after",
+      "disabledKnobAfter": "progress_knob_after_disabled"
     }
-    progress_knob_before_brown_disabled: {
-      name: progress_knob_before_brown
-      color: disabled
+  },
+  "com.badlogic.gdx.scenes.scene2d.ui.ScrollPane$ScrollPaneStyle": {
+    "default": {
+      "corner": "scroll_corner",
+      "hScroll": "scroll_h",
+      "hScrollKnob": "scroll_h_knob",
+      "vScroll": "scroll_v",
+      "vScrollKnob": "scroll_v_knob"
+    },
+    "frame": {
+      "background": "frame_1",
+      "corner": "scroll_corner",
+      "hScroll": "scroll_h",
+      "hScrollKnob": "scroll_h_knob",
+      "vScroll": "scroll_v",
+      "vScrollKnob": "scroll_v_knob"
     }
-    progress_knob_after_disabled: {
-      name: progress_knob_after
-      color: disabled
+  },
+  "com.badlogic.gdx.scenes.scene2d.ui.SelectBox$SelectBoxStyle": {
+    "default": {
+      "font": "born2bsporty",
+      "fontColor": "black",
+      "background": "button_1",
+      "scrollStyle": "default",
+      "listStyle": "default",
+      "backgroundDisabled": "button_1_disabled"
     }
-    progress_knob_before_red_disabled: {
-      name: progress_knob_before_red
-      color: disabled
+  },
+  "com.badlogic.gdx.scenes.scene2d.ui.Slider$SliderStyle": {
+    "default-horizontal": {
+      "background": "scroll_h",
+      "knob": "slider_knob",
+      "knobBefore": "scroll_h_knob"
     }
-    progress_knob_before_yellow_disabled: {
-      name: progress_knob_before_yellow
-      color: disabled
+  },
+  "com.badlogic.gdx.scenes.scene2d.ui.SplitPane$SplitPaneStyle": {
+    "default-horizontal": {
+      "handle": "slider_knob"
     }
-    progress_knob_before_green_disabled: {
-      name: progress_knob_before_green
-      color: disabled
+  },
+  "com.badlogic.gdx.scenes.scene2d.ui.TextButton$TextButtonStyle": {
+    "default": {
+      "font": "born2bsporty",
+      "up": "button_1",
+      "disabled": "button_1_disabled"
     }
-    progress_knob_before_blue_disabled: {
-      name: progress_knob_before_blue
-      color: disabled
+  },
+  "com.badlogic.gdx.scenes.scene2d.ui.TextField$TextFieldStyle": {
+    "default": {
+      "font": "born2bsporty",
+      "fontColor": "black",
+      "background": "text_field",
+      "disabledBackground": "text_field_disabled",
+      "selection": "text_field_selection"
     }
-    text_field_disabled: {
-      name: text_field
-      color: disabled
+  },
+  "com.badlogic.gdx.scenes.scene2d.ui.TextTooltip$TextTooltipStyle": {
+    "default": {
+      "label": "default",
+      "background": "list_background"
     }
-  }
-  com.badlogic.gdx.scenes.scene2d.ui.Button$ButtonStyle: {
-    default: {
-      up: button_1
-      disabled: button_1_disabled
+  },
+  "com.badlogic.gdx.scenes.scene2d.ui.Touchpad$TouchpadStyle": {
+    "default": {
+      "background": "touchpad",
+      "knob": "touchpad_knob"
     }
-  }
-  com.badlogic.gdx.scenes.scene2d.ui.CheckBox$CheckBoxStyle: {
-    default: {
-      checkboxOn: checkbox_on
-      checkboxOff: checkbox_off
-      checkboxOnDisabled: checkbox_on_disabled
-      checkboxOffDisabled: checkbox_off_disabled
-      font: born2bsporty
+  },
+  "com.badlogic.gdx.scenes.scene2d.ui.Tree$TreeStyle": {
+    "default": {
+      "plus": "tree_plus",
+      "minus": "tree_minus",
+      "selection": "list_selected",
+      "background": "list_background"
     }
-  }
-  com.badlogic.gdx.scenes.scene2d.ui.ImageButton$ImageButtonStyle: {
-    default: {
-      up: button_1
-      disabled: button_1_disabled
-    }
-  }
-  com.badlogic.gdx.scenes.scene2d.ui.ImageTextButton$ImageTextButtonStyle: {
-    default: {
-      font: born2bsporty
-      up: button_1
-      disabled: button_1_disabled
-    }
-  }
-  com.badlogic.gdx.scenes.scene2d.ui.Label$LabelStyle: {
-    default: {
-      font: born2bsporty
-    }
-  }
-  com.badlogic.gdx.scenes.scene2d.ui.List$ListStyle: {
-    default: {
-      font: born2bsporty
-      fontColorSelected: black
-      fontColorUnselected: black
-      selection: list_selected
-      background: list_background
-    }
-    dialogueOptions: {
-      font: born2bsporty
-      fontColorSelected: black
-      fontColorUnselected: black
-      selection: frame_2
-    }
-  }
-  com.badlogic.gdx.scenes.scene2d.ui.ProgressBar$ProgressBarStyle: {
-    default-horizontal: {
-      background: progress_background
-      disabledBackground: progress_background_disabled
-      knob: progress_knob
-      disabledKnob: progress_knob_disabled
-      knobBefore: progress_knob_before_blue
-      disabledKnobBefore: progress_knob_before_blue_disabled
-      knobAfter: progress_knob_after
-      disabledKnobAfter: progress_knob_after_disabled
-    }
-    green: {
-      background: progress_background
-      disabledBackground: progress_background_disabled
-      knob: progress_knob
-      disabledKnob: progress_knob_disabled
-      knobBefore: progress_knob_before_green
-      disabledKnobBefore: progress_knob_before_green_disabled
-      knobAfter: progress_knob_after
-      disabledKnobAfter: progress_knob_after_disabled
-    }
-    yellow: {
-      background: progress_background
-      disabledBackground: progress_background_disabled
-      knob: progress_knob
-      disabledKnob: progress_knob_disabled
-      knobBefore: progress_knob_before_yellow
-      disabledKnobBefore: progress_knob_before_yellow_disabled
-      knobAfter: progress_knob_after
-      disabledKnobAfter: progress_knob_after_disabled
-    }
-    red: {
-      background: progress_background
-      disabledBackground: progress_background_disabled
-      knob: progress_knob
-      disabledKnob: progress_knob_disabled
-      knobBefore: progress_knob_before_red
-      disabledKnobBefore: progress_knob_before_red_disabled
-      knobAfter: progress_knob_after
-      disabledKnobAfter: progress_knob_after_disabled
-    }
-    brown: {
-      background: progress_background
-      disabledBackground: progress_background_disabled
-      knob: progress_knob
-      disabledKnob: progress_knob_disabled
-      knobBefore: progress_knob_before_brown
-      disabledKnobBefore: progress_knob_before_brown_disabled
-      knobAfter: progress_knob_after
-      disabledKnobAfter: progress_knob_after_disabled
-    }
-  }
-  com.badlogic.gdx.scenes.scene2d.ui.ScrollPane$ScrollPaneStyle: {
-    default: {
-      corner: scroll_corner
-      hScroll: scroll_h
-      hScrollKnob: scroll_h_knob
-      vScroll: scroll_v
-      vScrollKnob: scroll_v_knob
-    }
-    frame: {
-      background: frame_1
-      corner: scroll_corner
-      hScroll: scroll_h
-      hScrollKnob: scroll_h_knob
-      vScroll: scroll_v
-      vScrollKnob: scroll_v_knob
-    }
-  }
-  com.badlogic.gdx.scenes.scene2d.ui.SelectBox$SelectBoxStyle: {
-    default: {
-      font: born2bsporty
-      fontColor: black
-      background: button_1
-      scrollStyle: default
-      listStyle: default
-      backgroundDisabled: button_1_disabled
-    }
-  }
-  com.badlogic.gdx.scenes.scene2d.ui.Slider$SliderStyle: {
-    default-horizontal: {
-      background: scroll_h
-      knob: slider_knob
-      knobBefore: scroll_h_knob
-    }
-  }
-  com.badlogic.gdx.scenes.scene2d.ui.SplitPane$SplitPaneStyle: {
-    default-horizontal: {
-      handle: slider_knob
-    }
-  }
-  com.badlogic.gdx.scenes.scene2d.ui.TextButton$TextButtonStyle: {
-    default: {
-      font: born2bsporty
-      up: button_1
-      disabled: button_1_disabled
-    }
-  }
-  com.badlogic.gdx.scenes.scene2d.ui.TextField$TextFieldStyle: {
-    default: {
-      font: born2bsporty
-      fontColor: black
-      background: text_field
-      disabledBackground: text_field_disabled
-      selection: text_field_selection
-    }
-  }
-  com.badlogic.gdx.scenes.scene2d.ui.TextTooltip$TextTooltipStyle: {
-    default: {
-      label: default
-      background: list_background
-    }
-  }
-  com.badlogic.gdx.scenes.scene2d.ui.Touchpad$TouchpadStyle: {
-    default: {
-      background: touchpad
-      knob: touchpad_knob
-    }
-  }
-  com.badlogic.gdx.scenes.scene2d.ui.Tree$TreeStyle: {
-    default: {
-      plus: tree_plus
-      minus: tree_minus
-      selection: list_selected
-      background: list_background
-    }
-  }
-  com.badlogic.gdx.scenes.scene2d.ui.Window$WindowStyle: {
-    default: {
-      background: frame_1
-      titleFont: born2bsporty
-      stageBackground: list_background
+  },
+  "com.badlogic.gdx.scenes.scene2d.ui.Window$WindowStyle": {
+    "default": {
+      "background": "frame_1",
+      "titleFont": "born2bsporty",
+      "stageBackground": "list_background"
     }
   }
 }
