@@ -28,11 +28,12 @@ class Bus(
             speed: MetersPerSeconds,
         ) = Bus(
             koin.get<World>().entity {
-                it += archetype(direction4, color, speed)
+                it += archetype(it, direction4, color, speed)
             },
         )
 
         suspend fun archetype(
+            entity: Entity,
             direction4: Direction4,
             color: BusColor,
             speed: MetersPerSeconds,
@@ -45,7 +46,7 @@ class Bus(
                 this += Powered()
                 this += BusLights.Headlights(direction4, physicsBody)
                 this += Speed(speed)
-                this += MovementInput.Multiplex()
+                this += MovementInput.Multiplex(entity)
                 this += MovementInput.AI(direction4)
             }
         }
