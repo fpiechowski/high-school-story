@@ -1,4 +1,4 @@
 [submodule "engine"]
 	path = engine
-	url = https://gitlab.piechowski.pro/kotlin-game-engine/engine
+	url = https://github.com/fpiechowski/kotlin-game-engine
 	branch = master
