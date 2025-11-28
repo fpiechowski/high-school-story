@@ -51,10 +51,10 @@ class IntroScene :
                 Bus(Direction4.Right, BusColor.YELLOW, 10f.mps)
                     .apply {
                         position = Tile.Position(15, 8).toPixel() * px.toMeter()
-                        aiMovementInput.movementInput = Direction4.Right.vector
+                        //aiMovementInput.movementInput = Direction4.Right.vector
                     }
 
-            cameraManager.currentStrategy = FollowingCameraStrategy(bus.body)
+            //cameraManager.currentStrategy = FollowingCameraStrategy(bus.body)
 
             delay(1000)
 
