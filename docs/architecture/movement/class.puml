@@ -1,0 +1,63 @@
+@startuml
+'https://plantuml.com/class-diagram
+
+circle start
+
+package core {
+    package domain <<Rectangle>> {
+        interface Manager {
+            << domain state >>
+        }
+
+        package ecs {
+            package system {
+                interface System
+
+                interface IteratingSystem {
+                    frame(entity)
+                }
+                interface IntervalSystem {
+                    frame()
+                }
+
+                IteratingSystem --|> IntervalSystem
+                IntervalSystem --|> System
+            }
+
+            interface Component
+
+            interface Entity
+        }
+        interface Entrypoint {
+            run()
+        }
+
+        interface Launcher {
+            launch()
+        }
+
+        interface GameLoop {
+            frame(deltaTime)
+        }
+
+        package gameObject {
+            interface GameObject
+            interface EntityGameObject
+
+            EntityGameObject --|> GameObject
+            EntityGameObject --> "references" Component
+            EntityGameObject "entity" --o Entity
+        }
+    }
+
+    start --> "invokes" Launcher
+
+    System --> "accesses" Manager
+
+    Launcher --> "runs" Entrypoint
+    Launcher --> "runs" GameLoop
+
+    GameLoop --> "invokes" System
+}
+
+@enduml
