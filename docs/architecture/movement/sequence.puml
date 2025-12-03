@@ -1,0 +1,32 @@
+@startuml
+'https://plantuml.com/sequence-diagram
+
+autonumber
+
+control main
+
+main -> Launcher
+Launcher -> Entrypoint
+Launcher -> GameLoop
+
+
+loop frame
+GameLoop -> World
+
+collections System
+
+World -> System
+
+collections Entity
+
+System -> Entity
+
+collections Component
+
+System -> Component
+
+collections Manager
+
+System -> Manager
+end
+@enduml
