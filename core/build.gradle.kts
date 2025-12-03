@@ -24,16 +24,16 @@ val koinVersion: String by project
 val koinAnnotationsVersion: String by project
 
 dependencies {
-    api("pro.piechowski.kge:core")
-    api("pro.piechowski.kge:character")
-    api("pro.piechowski.kge:story")
-    api("pro.piechowski.kge:dialogue")
-    api("pro.piechowski.kge:interaction")
-    api("pro.piechowski.kge:time")
-    api("pro.piechowski.kge:scene")
-    api("pro.piechowski.kge:weather")
-    api("pro.piechowski.kge:vehicle")
-    api("pro.piechowski.kge:power")
+    implementation("pro.piechowski.kge:core")
+    implementation("pro.piechowski.kge:character")
+    implementation("pro.piechowski.kge:story")
+    implementation("pro.piechowski.kge:dialogue")
+    implementation("pro.piechowski.kge:interaction")
+    implementation("pro.piechowski.kge:time")
+    implementation("pro.piechowski.kge:scene")
+    implementation("pro.piechowski.kge:weather")
+    implementation("pro.piechowski.kge:vehicle")
+    implementation("pro.piechowski.kge:power")
 
     api(libs.bundles.kotlin)
     api(libs.bundles.libgdx)
@@ -42,6 +42,7 @@ dependencies {
     api(libs.bundles.hoplite)
     api(libs.koin)
     api(libs.fleks)
+    api(libs.arrow.fx.coroutines)
 }
 
 tasks.test {

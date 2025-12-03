@@ -3,7 +3,7 @@
 import box2dLight.ConeLight
 import com.badlogic.gdx.graphics.Color
 import pro.piechowski.kge.direction.Direction4
-import pro.piechowski.kge.DependencyInjection.Companion.get
+import pro.piechowski.kge.di.DependencyInjection.Global.get
 import pro.piechowski.kge.physics.body.PhysicsBody
 import pro.piechowski.kge.vehicle.VehicleLights
 

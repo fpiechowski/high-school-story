@@ -7,7 +7,7 @@ import kotlinx.datetime.LocalTime
 import pro.piechowski.highschoolstory.map.Road
 import pro.piechowski.highschoolstory.vehicle.bus.Bus
 import pro.piechowski.highschoolstory.vehicle.bus.BusColor
-import pro.piechowski.kge.DependencyInjection.Companion.inject
+import pro.piechowski.kge.di.DependencyInjection.Global.inject
 import pro.piechowski.kge.camera.CameraManager
 import pro.piechowski.kge.camera.MeterCamera
 import pro.piechowski.kge.character.player.PlayerCharacterManager
@@ -16,7 +16,6 @@ import pro.piechowski.kge.dialogue.DialogueManager
 import pro.piechowski.kge.dialogue.await
 import pro.piechowski.kge.dialogue.dialogue
 import pro.piechowski.kge.direction.Direction4
-import pro.piechowski.kge.map.MapManager
 import pro.piechowski.kge.map.Tile
 import pro.piechowski.kge.map.TiledMapManagerAdapter
 import pro.piechowski.kge.physics.mps

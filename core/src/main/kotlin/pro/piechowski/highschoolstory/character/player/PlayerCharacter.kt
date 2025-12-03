@@ -4,6 +4,7 @@ import com.github.quillraven.fleks.Entity
 import kotlinx.serialization.Serializable
 import pro.piechowski.highschoolstory.animation.character.player.PlayerCharacterMovementAnimationSet
 import pro.piechowski.highschoolstory.physics.body.character.CharacterBody
+import pro.piechowski.highschoolstory.sprite.character.player.PlayerCharacterSpriteSheet
 import pro.piechowski.kge.character.player.PlayerCharacterBase
 
 @Serializable(with = PlayerCharacterBase.Serializer::class)

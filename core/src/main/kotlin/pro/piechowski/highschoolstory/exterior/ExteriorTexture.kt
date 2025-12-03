@@ -1,19 +1,16 @@
 package pro.piechowski.highschoolstory.exterior
 
 import com.badlogic.gdx.graphics.g2d.TextureRegion
-import ktx.assets.async.AssetStorage
-import org.koin.core.component.KoinComponent
-import org.koin.core.component.inject
 import pro.piechowski.highschoolstory.asset.Assets
-import pro.piechowski.kge.DependencyInjection.Companion.inject
+import pro.piechowski.kge.di.DependencyInjection.Global.inject
 
 class ExteriorTexture {
-    val texture = Assets.Textures.Exteriors
+    val assets by inject<Assets>()
 
-    suspend fun region(
+    fun region(
         x: Int,
         y: Int,
         width: Int,
         height: Int,
-    ) = TextureRegion(texture.load().value, x, y, width, height)
+    ) = TextureRegion(assets.textures.exteriorsTexture, x, y, width, height)
 }

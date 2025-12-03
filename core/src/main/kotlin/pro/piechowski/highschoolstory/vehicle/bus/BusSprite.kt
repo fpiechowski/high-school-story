@@ -5,7 +5,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion
 import pro.piechowski.highschoolstory.exterior.ExteriorTexture
 import pro.piechowski.highschoolstory.physics.body.character.CharacterBody.HEIGHT_TO_DEPTH_RATIO
 import pro.piechowski.kge.direction.Direction4
-import pro.piechowski.kge.DependencyInjection.Companion.get
+import pro.piechowski.kge.di.DependencyInjection.Global.get
 import pro.piechowski.kge.physics.px
 import pro.piechowski.kge.sprite.CurrentSprite
 
