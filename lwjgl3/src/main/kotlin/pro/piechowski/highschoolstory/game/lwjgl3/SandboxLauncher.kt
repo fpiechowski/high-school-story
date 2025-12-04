@@ -2,6 +2,7 @@
 
 package pro.piechowski.highschoolstory.game.lwjgl3
 
+import arrow.fx.coroutines.await.ExperimentalAwaitAllApi
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import org.koin.core.annotation.KoinInternalApi
 import pro.piechowski.highschoolstory.SandboxEntrypoint
@@ -12,6 +13,7 @@ import pro.piechowski.kge.di.DependencyInjection
 import pro.piechowski.kge.lwjgl3.Lwjgl3Launcher.Companion.launch
 import kotlin.time.ExperimentalTime
 
+@ExperimentalAwaitAllApi
 @ExperimentalUnsignedTypes
 @ExperimentalTime
 @KoinInternalApi

@@ -40,7 +40,6 @@ class IntroScene :
     override suspend fun play() =
         with(world) {
 
-
             calendar.currentDate = LocalDate(2020, 8, 29)
             clock.currentTime = LocalTime(17, 0, 0)
 
